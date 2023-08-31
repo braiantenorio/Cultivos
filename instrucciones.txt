@@ -1,0 +1,23 @@
+sudo chmod +x lpl
+
+sudo chown -R username ~/camino/a/tu/proyecto -- en username pone el tu nombre de usuario en linux y luego el path al proyecto
+
+./lpl build
+
+./lpl up
+
+./lpl sh frontend
+
+npx create-react-app app --template typescript
+
+exit
+
+./lpl down
+
+-- descomentas en Docker file de frontend y en docker-compose.yml y guardas
+-- Osea que descomentas los 2 comentarios del Dockerfile del frontend y en docker-compose, comentas el working_dir y descomentas las 2 lineas de abajo
+
+./lpl up
+
+listo
+
