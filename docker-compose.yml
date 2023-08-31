@@ -38,9 +38,9 @@ services:
       dockerfile: Dockerfile
     container_name: frontend
     ### --- SEGUIR INSTRUCIVO AQUI ####
-    working_dir: /home/node # -- Descomentar luego de ng new
-    # working_dir: /home/node/app
-    # command: npm start
+    #working_dir: /home/node # -- Descomentar luego de ng new
+    working_dir: /home/node/app
+    command: npm start
     ### ------------------------- ####
     restart: always
     ports:
