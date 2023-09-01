@@ -18,10 +18,10 @@ import lombok.Setter;
 @NoArgsConstructor
 public class Categoria {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
- 
-    @Column(nullable = false)
-    private String nombre;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+
+	@Column(nullable = false)
+	private String nombre;
 }

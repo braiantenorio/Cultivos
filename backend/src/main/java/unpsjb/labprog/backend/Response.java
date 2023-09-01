@@ -10,12 +10,20 @@ public class Response {
 
 	public static ResponseEntity<Object> response(HttpStatus status, String message, Object responseObj) {
 		Map<String, Object> map = new HashMap<String, Object>();
-		
+
 		map.put("status", status.value());
-		map.put("message", message);		
+		map.put("message", message);
 		map.put("data", responseObj);
 
-		return new ResponseEntity<Object>(map,status);
+		return new ResponseEntity<Object>(map, status);
+	}
+
+	public static ResponseEntity<Object> ok(Object responseObj) {
+		return response(HttpStatus.OK, "OK", responseObj);
+	}
+
+	public static ResponseEntity<Object> ok(Object responseObj, String msj) {
+		return response(HttpStatus.OK, msj, responseObj);
 	}
 
 }
