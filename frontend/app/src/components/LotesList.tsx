@@ -1,11 +1,12 @@
-import { Lote } from '../types/lote';
-import React, { useEffect, useState } from 'react';
+import { Link } from "react-router-dom";
+import { Lote } from "../types/lote";
+import React, { useEffect, useState } from "react";
 
 function Loteslist() {
-  const [lotes, setLotes] = useState<Lote[]>([]); 
+  const [lotes, setLotes] = useState<Lote[]>([]);
 
   useEffect(() => {
-    const url = '/lotes';
+    const url = "/lotes";
 
     fetch(url)
       .then((response) => {
@@ -24,34 +25,33 @@ function Loteslist() {
 
   return (
     <div>
-      <h2>Lotes</h2>
-      <ul>
-
-        <table className="table" >
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Codigo</th>
-              <th>Cantidad</th>
-              <th>Categoria</th>
-              <th></th>
+      <h2>
+        Lotes{" "}
+        <Link to="/lotes/crear-lote" className="btn btn-primary ms-3">
+          Crear Lote
+        </Link>
+      </h2>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Codigo</th>
+            <th>Cantidad</th>
+            <th>Categoria</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {lotes.map((lote, index) => (
+            <tr key={lote.id}>
+              <td>{index + 1}</td>
+              <td>{lote.codigo}</td>
+              <td>{lote.cantidad}</td>
+              <td>{lote.categoria.nombre}</td>
             </tr>
-          </thead>
-          <tbody>
-
-            {lotes.map((lote, index) => (
-              <tr >
-                <td>{index + 1}</td>
-                <td>{lote.codigo}</td>
-                <td>{lote.cantidad}</td>
-                <td>{lote.categoria.nombre}</td>
-
-              </tr>
-            ))}
-          </tbody>
-        </table>
-
-      </ul>
+          ))}
+        </tbody>
+      </table>
     </div>
   );
 }

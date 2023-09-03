@@ -1,8 +1,8 @@
 package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
-import unpsjb.labprog.backend.model.Lote;
-import unpsjb.labprog.backend.business.LoteService;
+import unpsjb.labprog.backend.model.Categoria;
+import unpsjb.labprog.backend.business.CategoriaService;
 import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -17,22 +17,16 @@ import org.springframework.web.bind.annotation.RestController;
 
 
 @RestController
-@RequestMapping("lotes")
-public class LotePresenter {
+@RequestMapping("categorias")
+
+public class CategoriaPresenter {
 
   @Autowired
-  LoteService service;
+  CategoriaService service;
 
   @GetMapping
   public ResponseEntity<Object> findAll() {
     return Response.ok(service.findAll());
   }
 
-  @RequestMapping(method = RequestMethod.POST)
-  public ResponseEntity<Object> creat(@RequestBody Lote Lote) {
-
-    return Response.ok(
-        service.add(Lote),
-        "lote creado correctamente");
-  }
 }

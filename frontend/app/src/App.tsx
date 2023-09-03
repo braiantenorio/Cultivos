@@ -1,14 +1,16 @@
 // App.tsx
-import React from 'react';
-import { BrowserRouter, Route, Routes } from 'react-router-dom';
-import Loteslist from './components/LotesList';
+import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Loteslist from "./components/LotesList";
 import logo from "./logo.svg";
 import "./App.css";
+import CrearLote from "./components/CrearLote";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/lotes/crear-lote" element={<CrearLote />} />
         <Route path="/lotes" element={<Loteslist />} />
         <Route path="/" element={<Home />} />
       </Routes>
@@ -36,6 +38,5 @@ function Home() {
     </div>
   );
 }
-
 
 export default App;
