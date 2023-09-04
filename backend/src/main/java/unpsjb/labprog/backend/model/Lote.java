@@ -1,6 +1,10 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
+
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+
 import io.micrometer.common.lang.Nullable;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;

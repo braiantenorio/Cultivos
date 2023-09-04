@@ -2,6 +2,7 @@
 import React from "react";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Loteslist from "./components/LotesList";
+import EditarLote from "./components/EditarLote";
 import logo from "./logo.svg";
 import "./App.css";
 import CrearLote from "./components/CrearLote";
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path="/lotes/crear-lote" element={<CrearLote />} />
         <Route path="/lotes" element={<Loteslist />} />
+        <Route path="/lotes/:loteId/edit" element={<EditarLote />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>

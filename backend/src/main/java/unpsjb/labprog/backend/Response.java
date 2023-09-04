@@ -25,5 +25,8 @@ public class Response {
 	public static ResponseEntity<Object> ok(Object responseObj, String msj) {
 		return response(HttpStatus.OK, msj, responseObj);
 	}
+	public static ResponseEntity<Object> notFound() {
+        return response(HttpStatus.NOT_FOUND, "Not found", null);
+    }
 
 }
