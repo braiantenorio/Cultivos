@@ -39,6 +39,6 @@ public class RegistroDeProcesos {
 
     @ManyToOne
     @JoinColumn(name = "usuario_id", nullable = false)
-    Proceso usuario;
+    Usuario usuario;
 
 }
