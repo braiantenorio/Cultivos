@@ -1,6 +1,7 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
+import org.hibernate.envers.Audited;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -15,6 +16,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "Procesos")
+@Audited
 public class Proceso {
 
     @Id

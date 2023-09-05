@@ -2,6 +2,9 @@ package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
 import java.time.LocalDate;
+
+import org.hibernate.envers.Audited;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +21,7 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "Categorias")
+@Audited
 public class Categoria {
 
 	@Id
