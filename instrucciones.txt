@@ -21,3 +21,13 @@ exit
 
 listo
 
+Ademas hay que instalar en frontend:
+
+
+npm install bootstrap
+luego en el archivo index.tsx en la primera fila pones 
+import 'bootstrap/dist/css/bootstrap.css';
+
+npm install --save react-router-dom
+
+npm install sweetalert
