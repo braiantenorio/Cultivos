@@ -42,6 +42,10 @@ public class LoteService {
 		return repository.findById(id).orElse(null);
 	}
 
+	public Lote findByCode(String code) {
+        return repository.findByCode(code).orElse(null);
+    }
+
 	@Transactional
 	public Lote update(Lote lote) {
 		return repository.save(lote);

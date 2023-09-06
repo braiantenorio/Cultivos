@@ -31,6 +31,11 @@ public class LotePresenter {
     Lote loteOrNull = service.findById(id);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
+     @RequestMapping(value = "/{code}", method = RequestMethod.GET)
+  public ResponseEntity<Object> findByCode(@PathVariable("code") String code) {
+     Lote loteOrNull = service.findByCode(code);
+    return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
+  }
 
   @GetMapping
   public ResponseEntity<Object> findAll(

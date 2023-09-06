@@ -7,11 +7,13 @@ import logo from "./logo.svg";
 import "./App.css";
 import CrearLote from "./components/CrearLote";
 import DetalleLote from "./components/DetalleLote";
+import BuscarLote from "./components/BuscarLote";
 
 function App() {
   return (
     <BrowserRouter>
       <Routes>
+        <Route path="/lotes/buscar" element={<BuscarLote />} />
         <Route path="/lotes/crear-lote" element={<CrearLote />} />
         <Route path="/lotes" element={<Loteslist />} />
         <Route path="/lotes/:loteId/edit" element={<EditarLote />} />
