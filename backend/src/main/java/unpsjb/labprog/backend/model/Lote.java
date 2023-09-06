@@ -1,6 +1,12 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
+
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.ParamDef;
+import org.hibernate.annotations.SQLDelete;
+import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
@@ -19,6 +25,9 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @Table(name = "Lotes")
+@SQLDelete(sql = "UPDATE Lotes SET deleted = true WHERE id=?")
+@FilterDef(name = "deletedLoteFilter", parameters = @ParamDef(name = "isDeleted", type = boolean.class))
+@Filter(name = "deletedLoteFilter", condition = "deleted = :isDeleted")
 public class Lote {
 
 	@Id
@@ -34,5 +43,7 @@ public class Lote {
 	@ManyToOne
 	@JoinColumn(name = "categoria_id", nullable = false)
 	private Categoria categoria;
+
+	private boolean deleted = Boolean.FALSE;
 
 }
