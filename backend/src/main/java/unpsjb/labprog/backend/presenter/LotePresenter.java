@@ -3,7 +3,13 @@ package unpsjb.labprog.backend.presenter;
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.business.LoteService;
+import unpsjb.labprog.backend.model.Agenda;
+import unpsjb.labprog.backend.business.AgendaService;
+import unpsjb.labprog.backend.business.ProcesoProgramadoService;
 import java.time.LocalDate;
+import java.util.List;
+import java.util.ArrayList;
+import unpsjb.labprog.backend.model.ProcesoProgramado; 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
@@ -25,6 +31,10 @@ public class LotePresenter {
 
   @Autowired
   LoteService service;
+  @Autowired
+  AgendaService serviceAgenda;
+  @Autowired
+  ProcesoProgramadoService serviceProcesoProgramado;
 
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> findById(@PathVariable("id") int id) {
@@ -44,10 +54,37 @@ public class LotePresenter {
   }
 
   @PostMapping
-  public ResponseEntity<Object> crear(@RequestBody Lote Lote) {
+  public ResponseEntity<Object> crear(@RequestBody Lote lote) {
+    Agenda agenda = serviceAgenda.findByCategoria(lote.getCategoria().getId());
+if (agenda != null) {
+  
+    Agenda agendaCopia = new Agenda();
+    agendaCopia.setCategoria(agenda.getCategoria());
+    
+    agendaCopia.setFechaInicio(LocalDate.now());
+  
+    
+  
+    List<ProcesoProgramado> procesosCopia = new ArrayList<>();
+    
+    for (ProcesoProgramado procesoOriginal : agenda.getProcesosProgramado()) {
+        ProcesoProgramado procesoCopia = new ProcesoProgramado();
+        procesoCopia.setCompletado(false);
+        procesoCopia.setProceso(procesoOriginal.getProceso());
+        
+        LocalDate fechaActual = LocalDate.now();
+        LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDia());
+        procesoCopia.setFechaARealizar(fechaARealizar);
+        procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+    }
+    
+  
+    lote.setAgenda(serviceAgenda.add(agendaCopia));
+    
+}
 
     return Response.ok(
-        service.add(Lote),
+        service.add(lote),
         "Lote creado correctamente");
   }
 

@@ -8,6 +8,7 @@ import "./App.css";
 import CrearLote from "./components/CrearLote";
 import DetalleLote from "./components/DetalleLote";
 import BuscarLote from "./components/BuscarLote";
+import AgendaDeProcesos from "./components/AgendaDeProcesos";
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         <Route path="/lotes" element={<Loteslist />} />
         <Route path="/lotes/:loteId/edit" element={<EditarLote />} />
         <Route path="/lotes/:loteId" element={<DetalleLote />} />
+        <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
