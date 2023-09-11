@@ -3,9 +3,7 @@ package unpsjb.labprog.backend.presenter;
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.business.LoteService;
-import java.time.LocalDate;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,9 +28,10 @@ public class LotePresenter {
     Lote loteOrNull = service.findById(id);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
-     @RequestMapping(value = "/{code}", method = RequestMethod.GET)
+
+  @RequestMapping(value = "/{code}", method = RequestMethod.GET)
   public ResponseEntity<Object> findByCode(@PathVariable("code") String code) {
-     Lote loteOrNull = service.findByCode(code);
+    Lote loteOrNull = service.findByCode(code);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
 

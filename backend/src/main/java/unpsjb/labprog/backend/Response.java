@@ -2,7 +2,6 @@ package unpsjb.labprog.backend;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-
 import java.util.HashMap;
 import java.util.Map;
 
@@ -26,7 +25,7 @@ public class Response {
 		return response(HttpStatus.OK, msj, responseObj);
 	}
 	public static ResponseEntity<Object> notFound() {
-        return response(HttpStatus.NOT_FOUND, "Not found", null);
+        return response(HttpStatus.NOT_FOUND, "Not Found", null);
     }
 
 }

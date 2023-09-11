@@ -1,7 +1,9 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
-import java.time.LocalDate;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -17,26 +19,23 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Registro_de_procesos")
-public class RegistroDeProcesos {
+@Table(name = "Valores")
+public class Valor {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
-    @Column(nullable = false)
-    private LocalDate fecha;
-
+    @JsonIgnore
     @ManyToOne
-    @JoinColumn(name = "lote_id", nullable = false)
-    Lote lote;
-
+    @JoinColumn(name = "Proceso_id")
+    private Proceso proceso;
+    
     @ManyToOne
-    @JoinColumn(name = "proceso_id", nullable = false)
-    Proceso proceso;
-
-    @ManyToOne
-    @JoinColumn(name = "usuario_id", nullable = false)
-    Usuario usuario;
+    @JoinColumn(name = "Atributo_id")
+    private Atributo atributo;
+    
+    @Column(name = "Valor")
+    private String valor; // You can change the data type to match your needs
 
 }

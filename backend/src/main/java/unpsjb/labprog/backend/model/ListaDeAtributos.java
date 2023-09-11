@@ -1,12 +1,14 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
+
+import java.util.List;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.List;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -18,22 +20,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Procesos")
-public class Proceso {
+@Table(name = "Lista_de_atributos")
+public class ListaDeAtributos {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable = false)
-	private String nombre;
+	@OneToMany(mappedBy = "listaDeAtributos")
+	private List<Atributo> atributos;
 
-	@Column(nullable = false)
-	private String descripcion;
-
-	@ManyToOne
-	private ListaDeAtributos listaDeAtributos;
-
-	@OneToMany(mappedBy = "proceso", cascade = CascadeType.ALL)
-	private List<Valor> valores;
+	/*@ManyToOne
+    @JoinColumn(name = "Proceso_id")
+    private Proceso proceso;
+    
+     @ManyToOne
+    @JoinColumn(name = "Atributo_id")
+    private Atributo atributo;
+   */ 
 }

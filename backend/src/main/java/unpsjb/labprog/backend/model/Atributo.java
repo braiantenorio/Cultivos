@@ -1,14 +1,13 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import java.util.List;
-import jakarta.persistence.CascadeType;
-import jakarta.persistence.Column;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -18,22 +17,22 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Procesos")
-public class Proceso {
+@Table(name = "Atributos")
+public class Atributo {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@Column(nullable = false)
+	@Column(name = "Nombre")
 	private String nombre;
 
-	@Column(nullable = false)
-	private String descripcion;
+	@Column(name = "Tipo")
+	private String tipo;
 
+	@JsonIgnore
 	@ManyToOne
+	@JoinColumn(name = "Lista_de_atributos")
 	private ListaDeAtributos listaDeAtributos;
 
-	@OneToMany(mappedBy = "proceso", cascade = CascadeType.ALL)
-	private List<Valor> valores;
 }

@@ -1,7 +1,6 @@
 import { Link } from "react-router-dom";
 import { Lote } from "../types/lote";
 import React, { useEffect, useState } from "react";
-import swal from "sweetalert"; // npm install sweetalert
 
 function Loteslist() {
   const [lotes, setLotes] = useState<Lote[]>([]);
@@ -25,7 +24,7 @@ function Loteslist() {
   }, []);
 
   return (
-    <div>
+    <div className="container">
       <h2>
         Lotes{" "}
         <Link to="/lotes/crear-lote" className="btn btn-primary ms-3">
@@ -63,26 +62,6 @@ function Loteslist() {
                 >
                   Editar
                 </Link>
-                <button
-                  className="btn btn-sm btn-danger"
-                  onClick={() => {
-                    swal({
-                      title: "¿Estás seguro?",
-                      text: "Una vez anulado, no podrás recuperar este lote.",
-                      icon: "warning",
-                      buttons: ["Cancelar", "Anular"],
-                      dangerMode: true,
-                    }).then((willAnular) => {
-                      if (willAnular) {
-                        swal("El lote ha sido anulado.", {
-                          icon: "success",
-                        });
-                      }
-                    });
-                  }}
-                >
-                  Anular
-                </button>
               </td>
             </tr>
           ))}

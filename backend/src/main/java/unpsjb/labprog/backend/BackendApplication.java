@@ -3,8 +3,7 @@ package unpsjb.labprog.backend;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import org.springframework.http.HttpStatus;
@@ -17,12 +16,12 @@ import unpsjb.labprog.backend.Response;
 @SpringBootApplication
 public class BackendApplication {
 
-	@RequestMapping(value = "/", method=RequestMethod.GET)
+	@GetMapping(value = "/")
 	public ResponseEntity home() {
 		return Response.response(
 			HttpStatus.OK,
 			"Server Online",
-			"Hello Labprog!");
+			"Hello!");
 	}
 
 	public static void main(String[] args) {

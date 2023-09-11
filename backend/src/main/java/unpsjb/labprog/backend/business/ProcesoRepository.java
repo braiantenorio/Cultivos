@@ -6,7 +6,8 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import unpsjb.labprog.backend.model.Lote;
+import unpsjb.labprog.backend.model.Proceso;
+
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.Query;
@@ -14,9 +15,7 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Repository
-public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSortingRepository<Lote, Long> {
-
-	@Query("SELECT l FROM Lote l WHERE l.codigo = ?1")
-	Optional<Lote> findByCode(String code);
+public interface ProcesoRepository extends CrudRepository<Proceso, Long>,
+        PagingAndSortingRepository<Proceso, Long> {
 
 }

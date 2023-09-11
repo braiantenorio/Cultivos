@@ -85,7 +85,7 @@ const CrearLote: React.FC = () => {
   };
 
   return (
-    <div>
+    <div className="container">
       <h1>Crear Nuevo Lote</h1>
       <form>
         <div className="mb-3">

@@ -1,12 +1,15 @@
 import React, { useEffect, useState } from "react";
-import { Link, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { Proceso } from "../types/proceso";
+import swal from "sweetalert";
 
 function DetalleLote() {
   const { loteId } = useParams();
   const [lote, setLote] = useState<Lote | null>(null);
   const [procesos, setProcesos] = useState<Proceso[]>([]);
+  const navigate = useNavigate(); 
+
   const url = `/lotes/id/${loteId}`;
   useEffect(() => {
     fetch(url)
@@ -43,9 +46,53 @@ function DetalleLote() {
     return <div>Cargando...</div>;
   }
 
+  const handleAnular = () => {
+    swal({
+      title: "¿Estás seguro?",
+      text: "Una vez anulado, no podrás recuperar este lote.",
+      icon: "warning",
+      buttons: ["Cancelar", "Anular"],
+      dangerMode: true,
+    }).then((willAnular) => {
+      if (willAnular) {
+        fetch(`/lotes/delete/${lote?.id}`, {
+          method: "DELETE",
+        })
+          .then((response) => {
+            if (response.ok) {
+              // Si la respuesta es exitosa, puedes realizar acciones adicionales aquí
+              swal("El lote ha sido anulado.", {
+                icon: "success",
+              });
+              navigate(-1);
+            } else {
+              // Si la respuesta no es exitosa, maneja el error aquí
+              console.error("Error al anular el lote");
+            }
+          })
+          .catch((error) => {
+            // Maneja cualquier error que ocurra durante la solicitud HTTP
+            console.error("Error al anular el lote", error);
+          });
+      }
+    });
+  };
+
+
+
   return (
-    <div>
-      <h2>Detalle del Lote</h2>
+    <div className="container">
+      <div className="d-flex justify-content-between align-items-center">
+        <h2>Detalle del Lote     </h2>
+        <button
+          className="btn btn-danger d-flex justify-content-end"
+          onClick={ handleAnular}
+        >
+          Anular
+        </button>
+      </div>
+
+
       <p>
         <strong>ID del Lote:</strong> {lote.id}
       </p>
