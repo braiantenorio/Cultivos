@@ -71,16 +71,28 @@ function BuscarLote() {
         <div>
           <h2>Detalle del Lote</h2>
           <p>
-            <strong>ID del Lote:</strong> {lote.id}
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              ID del Lote:
+            </span>{" "}
+            {lote.id}
           </p>
           <p>
-            <strong>Código:</strong> {lote.codigo}
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Código:
+            </span>{" "}
+            {lote.codigo}
           </p>
           <p>
-            <strong>Cantidad:</strong> {lote.cantidad}
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Cantidad:
+            </span>{" "}
+            {lote.cantidad}
           </p>
           <p>
-            <strong>Categoría:</strong> {lote.categoria.nombre}
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Categoría:
+            </span>{" "}
+            {lote.categoria.nombre}
           </p>
 
           <h3>Procesos :</h3>
