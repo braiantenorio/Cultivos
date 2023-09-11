@@ -19,7 +19,6 @@ import org.hibernate.envers.Audited;
 @Getter
 @Setter
 @NoArgsConstructor
-@Audited
 public class ProcesoProgramado {
 
 	@Id
