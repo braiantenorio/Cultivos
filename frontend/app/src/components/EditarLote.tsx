@@ -85,7 +85,7 @@ const EditarLote: React.FC = () => {
 	};
 
 	return (
-		<div>
+		<div className="container">
 			<h1>Editar Lote</h1>
 			<form>
 				<div className="mb-3">

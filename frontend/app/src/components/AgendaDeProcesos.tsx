@@ -44,7 +44,7 @@ function AgendaDeProcesos() {
     });
 
   return (
-    <div>
+    <div className="container">
       <h3>Agenda de Procesos :</h3>
       <table className="table">
         <thead>

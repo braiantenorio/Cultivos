@@ -54,7 +54,7 @@ function BuscarLote() {
   };
 
   return (
-    <div className="mb-3">
+    <div className="mb-3 container">
       <input
         type="text"
         placeholder="Buscar Lote"

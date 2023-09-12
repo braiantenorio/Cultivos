@@ -8,7 +8,7 @@ function DetalleLote() {
   const { loteId } = useParams();
   const [lote, setLote] = useState<Lote | null>(null);
   const [procesos, setProcesos] = useState<Proceso[]>([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const url = `/lotes/id/${loteId}`;
   useEffect(() => {
@@ -82,10 +82,16 @@ function DetalleLote() {
 
 
   return (
-
     <div className="container">
-      <h2>Detalle del Lote</h2>
-
+      <div className="d-flex justify-content-between align-items-center">
+        <h2>Detalle del Lote     </h2>
+        <button
+          className="btn btn-danger d-flex justify-content-end"
+          onClick={handleAnular}
+        >
+          Anular
+        </button>
+      </div>
       <Link to={`/lotes/${lote.id}/agenda`} className="btn btn-info float-end">
         Ver Agenda
       </Link>

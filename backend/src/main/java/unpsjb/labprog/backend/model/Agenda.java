@@ -17,12 +17,12 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.RelationTargetAuditMode;
+import org.hibernate.envers.NotAudited;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Audited( targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Agenda {
 
 	@Id

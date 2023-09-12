@@ -8,6 +8,8 @@ import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.Where;
 import org.hibernate.envers.Audited;
+import org.hibernate.envers.NotAudited;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -41,10 +43,12 @@ public class Lote {
 	@Column(nullable = false)
 	private int cantidad;
 
+	@NotAudited
 	@ManyToOne
 	@JoinColumn(name = "categoria_id", nullable = false)
 	private Categoria categoria;
 	
+	@NotAudited
    	@OneToOne
     @JoinColumn(name = "agenda_id") 
 	private Agenda agenda;

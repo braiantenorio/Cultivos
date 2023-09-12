@@ -5,8 +5,6 @@ import { Atributo } from '../types/atributo';
 import { Proceso } from '../types/proceso';
 import { Valor } from '../types/valor';
 
-//falta tema del id y luego el tema del
-
 function CrearProceso() {
 	const { listId } = useParams();
 	const [atributos, setAtributos] = useState<Atributo[]>([]);
@@ -25,10 +23,10 @@ function CrearProceso() {
 	}, []);
 
 	const [nuevoProceso, setNuevoProceso] = useState<Proceso>({
-		id: 0, // Puedes establecer el valor del ID según tu lógica
+		id: 0, 
 		nombre: "",
 		descripcion: "",
-		valores: [], // Inicialmente, la lista de valores está vacía
+		valores: [], 
 	});
 
 	const agregarValor = (atributo: Atributo, valor: string) => {
@@ -106,13 +104,12 @@ function CrearProceso() {
 
 	const handleSubmit = () => {
 		const nProceso: Proceso = {
-			id: 2, // Puedes establecer el valor del ID según tu lógica
+			id: 0, 
 			nombre: nuevoProceso.nombre,
 			descripcion: nuevoProceso.descripcion,
 			valores: valores,
 		};
 
-		// Realiza la solicitud POST al servidor para crear el proceso
 		fetch('/procesos', {
 			method: 'POST',
 			headers: {
@@ -122,7 +119,6 @@ function CrearProceso() {
 		})
 			.then((response) => response.json())
 			.then((data) => {
-				// Handle the response from the server (e.g., display a success message)
 				console.log('Respuesta del servidor:', data);
 			})
 			.catch((error) => {
@@ -161,7 +157,7 @@ function CrearProceso() {
 						required
 					/>
 				</div>
-
+				
 				{atributos.map((atributo, index) => (
 					<div className='col-md-7' key={atributo.id}>
 						<label htmlFor={atributo.id.toString()} className='form-label'>{atributo.nombre}</label>
