@@ -9,8 +9,9 @@ import unpsjb.labprog.backend.business.ProcesoProgramadoService;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
-import unpsjb.labprog.backend.model.ProcesoProgramado;
+import unpsjb.labprog.backend.model.ProcesoProgramado; 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -39,10 +41,9 @@ public class LotePresenter {
     Lote loteOrNull = service.findById(id);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
-
-  @RequestMapping(value = "/{code}", method = RequestMethod.GET)
+     @RequestMapping(value = "/{code}", method = RequestMethod.GET)
   public ResponseEntity<Object> findByCode(@PathVariable("code") String code) {
-    Lote loteOrNull = service.findByCode(code);
+     Lote loteOrNull = service.findByCode(code);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
 
@@ -54,29 +55,35 @@ public class LotePresenter {
 
   @PostMapping
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
+
     Agenda agenda = serviceAgenda.findByCategoria(lote.getCategoria().getId());
     if (agenda != null) {
-
+  
       Agenda agendaCopia = new Agenda();
       agendaCopia.setCategoria(agenda.getCategoria());
-
+    
       agendaCopia.setFechaInicio(LocalDate.now());
-
+  
+    
+  
       List<ProcesoProgramado> procesosCopia = new ArrayList<>();
-
+    
       for (ProcesoProgramado procesoOriginal : agenda.getProcesosProgramado()) {
-        ProcesoProgramado procesoCopia = new ProcesoProgramado();
-        procesoCopia.setCompletado(false);
-        procesoCopia.setProceso(procesoOriginal.getProceso());
-
-        LocalDate fechaActual = LocalDate.now();
-        LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDia());
-        procesoCopia.setFechaARealizar(fechaARealizar);
-        procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+          ProcesoProgramado procesoCopia = new ProcesoProgramado();
+          procesoCopia.setCompletado(false);
+          procesoCopia.setProceso(procesoOriginal.getProceso());
+        
+          LocalDate fechaActual = LocalDate.now();
+          LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDia());
+          procesoCopia.setFechaARealizar(fechaARealizar);
+          procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
       }
-
-      lote.setAgenda(serviceAgenda.add(agendaCopia));
-
+      
+      agendaCopia.setProcesosProgramado(procesosCopia);
+    
+  
+     lote.setAgenda(serviceAgenda.add(agendaCopia));
+    
     }
 
     return Response.ok(

@@ -79,12 +79,10 @@ function DetalleLote() {
     });
   };
 
-
-
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
-        <h2>Detalle del Lote     </h2>
+        <h2>Detalle del Lote </h2>
         <button
           className="btn btn-danger d-flex justify-content-end"
           onClick={handleAnular}
