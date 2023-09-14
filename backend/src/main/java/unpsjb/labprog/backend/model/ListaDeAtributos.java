@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -29,6 +30,9 @@ public class ListaDeAtributos {
 
 	@OneToMany(mappedBy = "listaDeAtributos")
 	private List<Atributo> atributos;
+
+    @Column(unique = true)
+    private String nombre;
 
 	/*@ManyToOne
     @JoinColumn(name = "Proceso_id")

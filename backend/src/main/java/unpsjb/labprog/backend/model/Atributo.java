@@ -1,7 +1,7 @@
 package unpsjb.labprog.backend.model;
 
-import jakarta.persistence.Entity;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -30,9 +30,14 @@ public class Atributo {
 	@Column(name = "Tipo")
 	private String tipo;
 
+	private String maximo;
+
+	private String minimo;
+
+	private boolean obligatorio;
+
 	@JsonIgnore
 	@ManyToOne
 	@JoinColumn(name = "Lista_de_atributos")
 	private ListaDeAtributos listaDeAtributos;
-
 }
