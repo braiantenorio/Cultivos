@@ -1,18 +1,13 @@
 package unpsjb.labprog.backend.model;
 
-import jakarta.persistence.Entity;
-
 import java.util.List;
-
+import jakarta.persistence.Entity;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.UniqueConstraint;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -31,15 +26,18 @@ public class ListaDeAtributos {
 	@OneToMany(mappedBy = "listaDeAtributos")
 	private List<Atributo> atributos;
 
-    @Column(unique = true)
-    private String nombre;
+	@Column(unique = true)
+	private String nombre;
 
-	/*@ManyToOne
-    @JoinColumn(name = "Proceso_id")
-    private Proceso proceso;
-    
-     @ManyToOne
-    @JoinColumn(name = "Atributo_id")
-    private Atributo atributo;
-   */ 
+	/*
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "Proceso_id")
+	 * private Proceso proceso;
+	 * 
+	 * @ManyToOne
+	 * 
+	 * @JoinColumn(name = "Atributo_id")
+	 * private Atributo atributo;
+	 */
 }

@@ -1,13 +1,11 @@
 package unpsjb.labprog.backend.business;
 
+import unpsjb.labprog.backend.model.Valor;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import unpsjb.labprog.backend.model.Valor;
-import unpsjb.labprog.backend.model.Valor;
 
 @Service
 public class ValorService {

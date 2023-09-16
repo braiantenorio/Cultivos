@@ -8,21 +8,19 @@ import { Valor } from '../types/valor';
 function CrearProceso() {
 	const { listId } = useParams();
 	const { loteId } = useParams();
-
 	const [atributos, setAtributos] = useState<Atributo[]>([]);
 	const [valores, setValores] = useState<Valor[]>([]);
+	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetch(`/listaDeAtributos/id/${listId}`)
 			.then((response) => response.json())
 			.then((data) => {
 				const atributosData = data.data.atributos;
-
-				// Mapear los atributos a la lista de valores
 				const valoresData: Valor[] = atributosData.map((atributo: Atributo) => ({
-					id: null, // El ID es nulo
-					atributo: atributo, // El atributo es el atributo de la lista
-					valor: null, // El valor es nulo
+					id: null,
+					atributo: atributo,
+					valor: null,
 				}));
 
 				setAtributos(atributosData);
@@ -38,10 +36,8 @@ function CrearProceso() {
 		const { value } = event.target;
 		setValores(valores.map(valor => {
 			if (valor.atributo.nombre === nombreAtributo) {
-				// Create a *new* object with changes
 				return { ...valor, valor: value };
 			} else {
-				// No changes
 				return valor;
 			}
 		}));
@@ -94,7 +90,6 @@ function CrearProceso() {
 		}
 	};
 
-
 	const handleSubmit = () => {
 		const nProceso: Proceso = {
 			id: 0,
@@ -117,14 +112,13 @@ function CrearProceso() {
 			.catch((error) => {
 				console.error('Error al crear el proceso:', error);
 			});
-		console.log(valores)
+		navigate(-1);
 	};
 
 	return (
 		<div className='container'>
+			<h2>NOMBRE DEL ATRIBUTO</h2>
 			<form className='row g-3' onSubmit={handleSubmit}>
-
-
 				{atributos.map((atributo, index) => (
 					<div className='col-md-7' key={atributo.id}>
 						<label htmlFor={atributo.id.toString()} className='form-label'>{atributo.nombre}</label>

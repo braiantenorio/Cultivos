@@ -91,7 +91,7 @@ public class Lote {
 		proceso.getLotes().remove(this);
 	}
 
-		@PrePersist
+	@PrePersist
 	public void prePersist() {
 		fecha = LocalDate.now();
 	}

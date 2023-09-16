@@ -1,9 +1,6 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;

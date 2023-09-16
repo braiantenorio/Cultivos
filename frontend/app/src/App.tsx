@@ -10,6 +10,7 @@ import DetalleLote from "./components/DetalleLote";
 import BuscarLote from "./components/BuscarLote";
 import CrearProceso from "./components/CrearProceso";
 import AgendaDeProcesos from "./components/AgendaDeProcesos";
+import DetalleProceso from "./components/DetalleProceso";
 
 function App() {
   return (
@@ -22,6 +23,7 @@ function App() {
         <Route path="/lotes/:loteId" element={<DetalleLote />} />
         <Route path="/lotes/:loteId/procesos/:listId/new" element={<CrearProceso />} />
         <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
+        <Route path="/procesos/:procesoId" element={< DetalleProceso />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
