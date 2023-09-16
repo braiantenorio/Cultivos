@@ -25,12 +25,12 @@ public class Valor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
+/* 
     @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "Proceso_id")
     private Proceso proceso;
-    
+   */ 
     @ManyToOne
     @JoinColumn(name = "Atributo_id")
     private Atributo atributo;

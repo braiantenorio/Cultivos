@@ -109,8 +109,8 @@ function BuscarLote() {
               {procesos.map((proceso) => (
                 <tr key={proceso.id}>
                   <td>{proceso.id}</td>
-                  <td>{proceso.nombre}</td>
-                  <td>{proceso.descripcion}</td>
+                  <td>{proceso.id}</td> {/* aca lo mismo, iba el nombre del proceso y la descripcion, ahora cambiamos el modelo de datos */}
+                  <td>{proceso.id}</td>
                   <td>
                     <Link
                       to={`/lotes/${lote.id}`}

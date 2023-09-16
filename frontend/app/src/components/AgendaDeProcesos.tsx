@@ -60,7 +60,7 @@ function AgendaDeProcesos() {
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
               <td>{new Date(proceso.fechaARealizar).toLocaleDateString()}</td>
-              <td>{proceso.proceso.nombre}</td>
+              <td>{proceso.proceso.id}</td>  {/* aca iba el nombre del proceso pero cambiamos el modelo de datos */}
               <td>
                 <span
                   className={

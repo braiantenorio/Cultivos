@@ -1,6 +1,7 @@
 package unpsjb.labprog.backend.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
@@ -10,6 +11,7 @@ import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -18,6 +20,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
@@ -60,7 +63,7 @@ public class Lote {
 
 	private boolean esHoja = Boolean.TRUE; // Cuando lo creamos es activo no?
 
-	private LocalDate fechaDeCreacion; // cuando se cree poner la fecha del dia
+	private LocalDate fecha; // cuando se cree poner la fecha del dia
 
 	@ManyToOne(fetch = FetchType.LAZY)
 	private Lote lotePadre;
@@ -72,9 +75,24 @@ public class Lote {
 	@ManyToOne
 	private Usuario usuario;
 
-	@ManyToMany
+	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "Registro_de_procesos",
 		joinColumns = @JoinColumn(name = "lote_id"), 
 		inverseJoinColumns = @JoinColumn(name = "proceso_id"))
-	List<Proceso> procesos;
+	List<Proceso> procesos= new ArrayList<>();
+
+	public void addProceso(Proceso proceso) {
+		procesos.add(proceso);
+		proceso.getLotes().add(this);
+	}
+
+	public void removeProceso(Proceso proceso) {
+		procesos.remove(proceso);
+		proceso.getLotes().remove(this);
+	}
+
+		@PrePersist
+	public void prePersist() {
+		fecha = LocalDate.now();
+	}
 }

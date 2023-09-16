@@ -41,8 +41,4 @@ public class ValorService {
         repository.deleteById(id);
     }
 
-    public void processValues(Long id) {
-        repository.processValues(id);
-    }
-
 }

@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.model.Proceso;
 
 @Service
@@ -13,6 +14,9 @@ public class ProcesoService {
 
     @Autowired
     ProcesoRepository repository;
+
+    @Autowired
+    LoteService loteService;
 
     // TODO: Mejorar
     public List<Proceso> findAll() {
@@ -26,13 +30,20 @@ public class ProcesoService {
     }
 
     @Transactional
-    public Proceso update(Proceso lote) {
-        return repository.save(lote);
+    public Proceso update(Proceso proceso) {
+        return repository.save(proceso);
     }
 
     @Transactional
-    public Proceso add(Proceso lote) {
-        return repository.save(lote);
+    public Proceso add(Proceso proceso, int id) {
+        Lote lote = loteService.findById(id);
+        lote.addProceso(proceso);
+        try {
+            loteService.update(lote);
+        } catch (Exception e) {
+            // TODO: handle exception error de recursion
+        }
+        return null; //bueno esto no viene con el id xd
     }
 
     public void delete(Long id) {

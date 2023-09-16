@@ -14,6 +14,4 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 public interface ValorRepository extends CrudRepository<Valor, Long>,
 		PagingAndSortingRepository<Valor, Long> {
 
-	@Query("SELECT l FROM Valor l WHERE l.proceso.id = ?1")
-	Optional<Lote> processValues(Long id);
 }

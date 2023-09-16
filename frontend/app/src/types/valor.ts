@@ -1,8 +1,8 @@
 import { Atributo } from "./atributo";
 
 export interface Valor {
-    id: number;
+    id: number | null;
     atributo: Atributo;
-    valor: string;
+    valor: string | null;
   };
   

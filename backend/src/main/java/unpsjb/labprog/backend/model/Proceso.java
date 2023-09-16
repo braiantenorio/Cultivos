@@ -1,10 +1,13 @@
 package unpsjb.labprog.backend.model;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +19,7 @@ import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
+import jakarta.persistence.PrePersist;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -35,21 +39,28 @@ public class Proceso {
 
 	@NotAudited
 	@ManyToOne
-	@JoinColumn(name = "usuario_id", nullable = false)
+	// @JoinColumn(name = "usuario_id", nullable = false) //TODO: como todavia no
+	// implementamos usuarios, lo dejamos como opcional xd
 	Usuario usuario;
 
-	@Column(nullable = false)
+	// @Column(nullable = false) 
 	private LocalDate fecha;
 
 	@NotAudited
-	@OneToMany(mappedBy = "proceso", cascade = CascadeType.ALL)
+	@OneToMany(cascade = CascadeType.ALL)
 	private List<Valor> valores;
 
+	@JsonIgnore
 	@ManyToMany(mappedBy = "procesos")
-	List<Lote> lotes;
+	List<Lote> lotes = new ArrayList<>();;
 
 	@NotAudited
 	@ManyToOne
 	private ListaDeAtributos listaDeAtributos;
+
+	@PrePersist
+	public void prePersist() {
+		fecha = LocalDate.now();
+	}
 
 }

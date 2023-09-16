@@ -2,8 +2,8 @@ import { Atributo } from "./atributo";
 import { Valor } from "./valor";
 
 export type Proceso = {
-  id: number;
-  nombre: string;
-  descripcion: string;
+  id: number | null;
+  usuario: string | null;
+  fecha: Date | null;
   valores: Valor[];
 };
