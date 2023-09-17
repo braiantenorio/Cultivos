@@ -25,12 +25,7 @@ function Loteslist() {
 
   return (
     <div className="container">
-      <h2>
-        Lotes{" "}
-        <Link to="/lotes/crear-lote" className="btn btn-primary ms-3">
-          Crear Lote
-        </Link>
-      </h2>
+      <h2>Lotes </h2>
 
       <table className="table">
         <thead>

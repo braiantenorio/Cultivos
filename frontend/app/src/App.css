@@ -36,3 +36,15 @@
     transform: rotate(360deg);
   }
 }
+.custom {
+  background-color: #bbc3d7;
+  color: #a84141;
+}
+/* Estilo para la fuente personalizada */
+
+.titulo-personalizado {
+  font-family: cursive;
+  font-size: 45px;
+  font-weight: bold; /* Opcional: ajusta el peso de la fuente */
+  color: #231717; /* Opcional: ajusta el color del texto */
+}
