@@ -28,15 +28,19 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Entity
+@Entity  
 @Audited
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "Lotes")
 @SQLDelete(sql = "UPDATE Lotes SET deleted = true WHERE id=?")
-@FilterDef(name = "deletedLoteFilter", parameters = @ParamDef(name = "isDeleted", type = boolean.class))
-@Filter(name = "deletedLoteFilter", condition = "deleted = :isDeleted")
+@FilterDef(name = "deletedLoteFilter", parameters = {
+    @ParamDef(name = "isDeleted", type = boolean.class),
+    @ParamDef(name = "codigo", type = String.class)
+})
+@Filter(name = "deletedLoteFilter", condition = "deleted = :isDeleted AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
+
 public class Lote {
 
 	@Id

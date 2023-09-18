@@ -4,11 +4,11 @@ import React, { useEffect, useState } from "react";
 
 function Loteslist() {
   const [lotes, setLotes] = useState<Lote[]>([]);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [regla, setRegla] = useState(false);
 
   useEffect(() => {
-    const url = "/lotes";
-
-    fetch(url)
+    fetch(`/lotes?term=${searchTerm}`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -23,10 +23,55 @@ function Loteslist() {
       });
   }, []);
 
+  const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const inputValue = e.target.value;
+
+    // Utiliza una expresión regular para validar que el input contenga solo números y letras
+    const isValidInput = /^[a-zA-Z0-9]*$/.test(inputValue);
+
+    if (isValidInput) {
+      setSearchTerm(inputValue);
+      setRegla(false);
+    } else {
+      setRegla(true);
+    }
+  };
+
+  const handleBuscarLote = () => {
+    fetch(`/lotes?term=${searchTerm}`)
+      .then((response) => response.json())
+      .then((data) => {
+        setLotes(data.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
   return (
     <div className="container">
       <h2>Lotes </h2>
-
+      <div className="mb-3">
+        <input
+          type="text"
+          placeholder="Buscar Lote por Código"
+          value={searchTerm}
+          onChange={handleSearchInputChange}
+          className="form-control-sm"
+        />
+        <button
+          type="button"
+          className="btn btn-success"
+          onClick={handleBuscarLote}
+        >
+          Buscar
+        </button>
+        {regla && (
+          <div className="alert alert-danger alert-sm">
+            Solo Letras o Numeros
+          </div>
+        )}
+      </div>
       <table className="table">
         <thead>
           <tr>
@@ -62,6 +107,9 @@ function Loteslist() {
           ))}
         </tbody>
       </table>
+      {!lotes.length && (
+        <div className="alert alert-warning">No se encontraron lotes</div>
+      )}
     </div>
   );
 }

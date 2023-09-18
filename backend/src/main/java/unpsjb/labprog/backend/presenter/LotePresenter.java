@@ -53,8 +53,9 @@ public class LotePresenter {
 
   @GetMapping
   public ResponseEntity<Object> findAll(
-      @RequestParam(value = "filtered", required = false, defaultValue = "false") boolean filtered) {
-    return Response.ok(service.findAll(filtered));
+      @RequestParam(value = "filtered", required = false, defaultValue = "false") boolean filtered,
+      @RequestParam(value = "term", required = false) String term) {
+    return Response.ok(service.findAll(filtered,term));
   }
 
   @PostMapping

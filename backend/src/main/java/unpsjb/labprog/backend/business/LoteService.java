@@ -29,12 +29,16 @@ public class LoteService {
 	}
 
  	//find all con filtro de lotes con softdelete
-	public Iterable<Lote> findAll(boolean isDeleted){
+	public Iterable<Lote> findAll(boolean isDeleted,String term){
 		Session session = entityManager.unwrap(Session.class);
-        Filter filter = session.enableFilter("deletedLoteFilter");
-        filter.setParameter("isDeleted", isDeleted);
+
+    session.enableFilter("deletedLoteFilter")
+        .setParameter("isDeleted", false)
+        .setParameter("codigo", "%" + term + "%");
+
         Iterable<Lote> products =  repository.findAll();
         session.disableFilter("deletedLoteFilter");
+
         return products;
 	}
 

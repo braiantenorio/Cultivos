@@ -26,7 +26,7 @@ function TipoAgendaList() {
   const handleEliminarTipoAgenda = (tipoAgendaId: number) => {
     swal({
       title: "¿Estás seguro?",
-      text: "Una vez anulado, no podrás recuperar este lote.",
+      text: "Una vez borrado, no podrás recuperar esta agenda.",
       icon: "warning",
       buttons: ["Cancelar", "Anular"],
       dangerMode: true,
