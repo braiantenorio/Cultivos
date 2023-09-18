@@ -14,6 +14,7 @@ import DetalleProceso from "./components/DetalleProceso";
 import icono from "./assets/img/icono.png";
 import fondo from "./assets/img/cannabis.png";
 import CrearAgenda from "./components/CrearAgenda";
+import TipoAgendaList from "./components/TipoAgendaList";
 
 function App() {
   return (
@@ -31,7 +32,8 @@ function App() {
         />
         <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
         <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
-        <Route path="/agendas/new" element={<CrearAgenda />} />
+        <Route path="/agendas/:id" element={<CrearAgenda />} />
+        <Route path="/agendas" element={<TipoAgendaList />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
@@ -121,7 +123,7 @@ function Menu() {
 
         <ul className="dropdown-menu border border-dark border-2 ">
           <li>
-            <Link className="dropdown-item" to="/lotes">
+            <Link className="dropdown-item" to="/agendas">
               Listar
             </Link>
           </li>

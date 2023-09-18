@@ -28,7 +28,7 @@ public class TipoAgenda {
 
     private String version;
 
-    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @OneToMany(cascade = CascadeType.ALL)
     private Collection<ProcesoProgramado> procesosProgramado;
 
 }

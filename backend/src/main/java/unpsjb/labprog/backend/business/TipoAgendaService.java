@@ -26,6 +26,12 @@ public class TipoAgendaService {
 	public TipoAgenda add(TipoAgenda agenda) {
 		return repository.save(agenda);
 	}
+	public TipoAgenda findById(long id) {
+		return repository.findById(id).orElse(null);
+	}
+	public void delete(Long id){
+		repository.deleteById(id);
+	}
 
 
 }

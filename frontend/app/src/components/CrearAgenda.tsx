@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { Categoria } from "../types/categoria";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ProcesoProgramado } from "../types/procesoProgramado";
 
 function CrearAgenda() {
   const navigate = useNavigate();
+  const { id } = useParams();
   const [tipoAgenda, setTipoAgenda] = useState({
     categoria: "",
     version: "",
@@ -52,6 +53,25 @@ function CrearAgenda() {
       .catch((error) => {
         console.error(error);
       });
+
+    if (id != "new") {
+      // Realiza una solicitud al servidor para obtener los datos de la agenda por su ID
+      fetch(`/tipoagendas/id/${id}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `Error al realizar la solicitud: ${response.status}`
+            );
+          }
+          return response.json();
+        })
+        .then((responseData) => {
+          setTipoAgenda(responseData.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
   }, []);
 
   const guardarAgenda = () => {
