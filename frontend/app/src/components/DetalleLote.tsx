@@ -21,22 +21,6 @@ function DetalleLote() {
       })
       .then((responseData) => {
         setLote(responseData.data);
-        console.log(lote);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-
-    const registrosDeProcesosUrl = `/registros-de-procesos/lotes/${loteId}`;
-    fetch(registrosDeProcesosUrl)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        setProcesos(responseData.data);
       })
       .catch((error) => {
         console.error(error);
@@ -90,9 +74,7 @@ function DetalleLote() {
           Anular
         </button>
       </div>
-      <Link to={`/lotes/${lote.id}/agenda`} className="btn btn-info float-end">
-        Ver Agenda
-      </Link>
+
       <p>
         <span className="badge bg-secondary text-white me-2 fs-6">
           ID del Lote:
@@ -116,7 +98,16 @@ function DetalleLote() {
         {lote.categoria.nombre}
       </p>
 
-      <h3>Procesos :</h3>
+      <h3>
+        Procesos :
+        <Link
+          to={`/lotes/${lote.id}/agenda`}
+          className="btn btn-info float-end"
+        >
+          Ver Agenda
+        </Link>
+      </h3>
+
       <table className="table">
         <thead>
           <tr>
@@ -131,7 +122,8 @@ function DetalleLote() {
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
               <td>{proceso.id}</td>
-              <td>{proceso.id}</td>{/* aca lo mismo, iba el nombre del proceso y la descripcion, ahora cambiamos el modelo de datos */}
+              <td>{proceso.id}</td>
+              {/* aca lo mismo, iba el nombre del proceso y la descripcion, ahora cambiamos el modelo de datos */}
               <td>
                 <Link
                   to={`/lotes/${lote.id}`}

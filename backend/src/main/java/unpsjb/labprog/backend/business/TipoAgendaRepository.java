@@ -5,11 +5,13 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-import unpsjb.labprog.backend.model.Agenda;
+import unpsjb.labprog.backend.model.TipoAgenda;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Repository
-public interface AgendaRepository extends CrudRepository<Agenda, Long>,
-        PagingAndSortingRepository<Agenda, Long>  {
+public interface TipoAgendaRepository extends CrudRepository<TipoAgenda, Long>,
+        PagingAndSortingRepository<TipoAgenda, Long>  {
+    @Query("SELECT l FROM TipoAgenda l WHERE l.categoria = ?1 ")
+    Optional<TipoAgenda> findByCategoria(String categoria);
 }

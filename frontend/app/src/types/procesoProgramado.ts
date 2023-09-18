@@ -1,9 +1,9 @@
-import { Proceso } from "./proceso";
-
 export type ProcesoProgramado = {
   id: number;
   fechaARealizar: Date;
-  dia: number;
+  frecuencia: number;
+  cantidad: number;
+  diaInicio: number;
   completado: Boolean;
-  proceso: Proceso;
+  proceso: string;
 };

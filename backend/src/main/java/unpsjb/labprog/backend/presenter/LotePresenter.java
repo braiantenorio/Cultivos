@@ -4,7 +4,9 @@ import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.business.LoteService;
 import unpsjb.labprog.backend.model.Agenda;
+import unpsjb.labprog.backend.model.TipoAgenda;
 import unpsjb.labprog.backend.business.AgendaService;
+import unpsjb.labprog.backend.business.TipoAgendaService;
 import unpsjb.labprog.backend.business.ProcesoProgramadoService;
 import java.time.LocalDate;
 import java.util.List;
@@ -34,6 +36,8 @@ public class LotePresenter {
   @Autowired
   AgendaService serviceAgenda;
   @Autowired
+  TipoAgendaService serviceTipoAgenda;
+  @Autowired
   ProcesoProgramadoService serviceProcesoProgramado;
 
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -56,25 +60,21 @@ public class LotePresenter {
   @PostMapping
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
 
-    Agenda agenda = serviceAgenda.findByCategoria(lote.getCategoria().getId());
+    TipoAgenda agenda = serviceTipoAgenda.findByCategoria(lote.getCategoria().getNombre());
     if (agenda != null) {
   
       Agenda agendaCopia = new Agenda();
-      agendaCopia.setCategoria(agenda.getCategoria());
-    
-      agendaCopia.setFechaInicio(LocalDate.now());
-  
-    
   
       List<ProcesoProgramado> procesosCopia = new ArrayList<>();
     
       for (ProcesoProgramado procesoOriginal : agenda.getProcesosProgramado()) {
           ProcesoProgramado procesoCopia = new ProcesoProgramado();
+          procesoCopia.setCantidad(procesoOriginal.getCantidad());
+          procesoCopia.setFrecuencia(procesoOriginal.getFrecuencia());
           procesoCopia.setCompletado(false);
           procesoCopia.setProceso(procesoOriginal.getProceso());
-        
           LocalDate fechaActual = LocalDate.now();
-          LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDia());
+          LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDiaInicio());
           procesoCopia.setFechaARealizar(fechaARealizar);
           procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
       }

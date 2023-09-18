@@ -22,12 +22,14 @@ public class ProcesoProgramado {
   private Long id;
 
   private LocalDate fechaARealizar;
-  // frecuencia cada 5 dias y se realiza 3 veces (5 10 15)
-  private int dia;
+
+  private int frecuencia;
+
+  private int diaInicio;
+
+  private int cantidad;
 
   private Boolean completado;
 
-  @OneToOne
-  @JoinColumn(name = "proceso_id")
-  private Proceso proceso;
+  private String proceso;
 }

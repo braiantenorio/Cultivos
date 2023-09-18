@@ -5,22 +5,25 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import unpsjb.labprog.backend.model.Agenda;
+import unpsjb.labprog.backend.model.TipoAgenda;
 
 @Service
-public class AgendaService {
+public class TipoAgendaService {
 
 	@Autowired
-	AgendaRepository repository;
+	TipoAgendaRepository repository;
 
 	//TODO: Mejorar
-	public List<Agenda> findAll() {
-		List<Agenda> result = new ArrayList<>();
+	public List<TipoAgenda> findAll() {
+		List<TipoAgenda> result = new ArrayList<>();
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
 	}
+    public TipoAgenda findByCategoria(String categoria) {
+        return repository.findByCategoria(categoria).orElse(null);
+    }
     @Transactional
-	public Agenda add(Agenda agenda) {
+	public TipoAgenda add(TipoAgenda agenda) {
 		return repository.save(agenda);
 	}
 

@@ -13,6 +13,7 @@ import AgendaDeProcesos from "./components/AgendaDeProcesos";
 import DetalleProceso from "./components/DetalleProceso";
 import icono from "./assets/img/icono.png";
 import fondo from "./assets/img/cannabis.png";
+import CrearAgenda from "./components/CrearAgenda";
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
         />
         <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
         <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
+        <Route path="/agendas/new" element={<CrearAgenda />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
@@ -56,7 +58,7 @@ function Menu() {
   custom text-black border-bottom shadow-sm border border-dark border-1 "
     >
       <div className="navbar-brand bg-light p-3 rounded-circle">
-        <img src={icono} alt="" width="70" height="70" />
+        <img src={icono} alt="" width="60" height="50" />
       </div>
       <ul></ul>
       <div className="dropdown ">
@@ -118,6 +120,30 @@ function Menu() {
         </button>
 
         <ul className="dropdown-menu border border-dark border-2 ">
+          <li>
+            <Link className="dropdown-item" to="/lotes">
+              Listar
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/agendas/new">
+              Nuevo
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <ul></ul>
+      <div className="dropdown">
+        <button
+          className="btn dropdown-toggle btn-lg"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Categorias
+        </button>
+
+        <ul className="dropdown-menu  border border-dark border-2 ">
           <li>
             <Link className="dropdown-item" to="/lotes">
               Listar

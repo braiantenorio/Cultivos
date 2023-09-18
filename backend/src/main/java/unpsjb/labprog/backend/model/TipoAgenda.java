@@ -12,19 +12,23 @@ import jakarta.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.CascadeType;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-public class Agenda {
+public class TipoAgenda {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-    @OneToMany
-    private Collection<ProcesoProgramado> procesosProgramado;
+    private String categoria;
 
+    private String version;
+
+    @OneToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    private Collection<ProcesoProgramado> procesosProgramado;
 
 }
