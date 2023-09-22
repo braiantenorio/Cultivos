@@ -57,9 +57,29 @@ public class LotePresenter {
       @RequestParam(value = "term", required = false) String term) {
     return Response.ok(service.findAll(filtered,term));
   }
+  @RequestMapping(value = "/activos", method = RequestMethod.GET)
+  public ResponseEntity<Object> findAllActivos() {
+     return Response.ok(service.findAllActivos());
+  }
+  
 
   @PostMapping
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
+
+    if((!lote.getCategoria().getNombre().equals("Clone"))&&lote.getLotePadre()!=null){
+     
+            Long lotePadreId = lote.getLotePadre().getId();
+            int totalCantidadSublotes = service.calculateTotalCantidadSublotes(lotePadreId);
+
+            if (totalCantidadSublotes+lote.getCantidad() == lote.getLotePadre().getCantidad()) {
+                lote.getLotePadre().setEsHoja(false);
+			        	service.update(lote.getLotePadre());
+            }
+            if(totalCantidadSublotes+lote.getCantidad() > lote.getLotePadre().getCantidad()){
+                return Response.badRequest("");
+            }
+        } 
+    
 
     TipoAgenda agenda = serviceTipoAgenda.findByCategoria(lote.getCategoria().getNombre());
     if (agenda != null) {

@@ -28,6 +28,11 @@ public class LoteService {
 		return result;
 	}
 
+	public List<Lote> findAllActivos() {
+
+		return repository.findAllActivos();
+	}
+
  	//find all con filtro de lotes con softdelete
 	public Iterable<Lote> findAll(boolean isDeleted,String term){
 		Session session = entityManager.unwrap(Session.class);
@@ -43,22 +48,26 @@ public class LoteService {
 	}
 
 	public Lote findById(long id) {
-		return repository.findById(id).orElse(null);
+        return repository.findById(id).orElse(null);
 	}
 
 	public Lote findByCode(String code) {
         return repository.findByCode(code).orElse(null);
     }
+	public int calculateTotalCantidadSublotes(long lotePadreId){
+		return repository.calculateTotalCantidadSublotes(lotePadreId);
+	}
 
 	@Transactional
 	public Lote update(Lote lote) {
 		return repository.save(lote);
 	}
 
-	@Transactional
-	public Lote add(Lote lote) {
-		return repository.save(lote);
-	}
+   @Transactional
+    public Lote add(Lote lote) {
+
+        return repository.save(lote);
+    }
 
 	public void delete(Long id){
 		repository.deleteById(id);

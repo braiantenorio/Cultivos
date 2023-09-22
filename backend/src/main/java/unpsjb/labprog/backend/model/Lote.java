@@ -1,5 +1,7 @@
 package unpsjb.labprog.backend.model;
-
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,12 +23,14 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PostPersist;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity  
 @Audited
@@ -40,7 +44,7 @@ import lombok.Setter;
     @ParamDef(name = "codigo", type = String.class)
 })
 @Filter(name = "deletedLoteFilter", condition = "deleted = :isDeleted AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
-
+@JsonIgnoreProperties(value = {"lotePadre"}, allowSetters = true)
 public class Lote {
 
 	@Id
@@ -59,7 +63,7 @@ public class Lote {
 	private Categoria categoria;
 
 	@NotAudited
-	@OneToOne
+	@OneToOne 
 	@JoinColumn(name = "agenda_id")
 	private Agenda agenda;
 
@@ -69,9 +73,10 @@ public class Lote {
 
 	private LocalDate fecha; // cuando se cree poner la fecha del dia
 
-	@ManyToOne(fetch = FetchType.LAZY)
+	@ManyToOne //(fetch = FetchType.LAZY)
 	private Lote lotePadre;
-
+	
+    @JsonIgnore
 	@OneToMany(mappedBy = "lotePadre")
 	private List<Lote> subLotes;
 
@@ -97,6 +102,12 @@ public class Lote {
 
 	@PrePersist
 	public void prePersist() {
+	
 		fecha = LocalDate.now();
 	}
+	@PostPersist
+    public void afterInsert() {
+
+    }
+
 }
