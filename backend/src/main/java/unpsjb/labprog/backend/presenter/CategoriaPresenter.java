@@ -21,4 +21,5 @@ public class CategoriaPresenter {
     return Response.ok(service.findAll());
   }
 
+
 }

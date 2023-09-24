@@ -91,7 +91,8 @@ function Loteslist() {
               <td>{lote.categoria.nombre}</td>
               <td>
                 <Link
-                  to={`/lotes/${lote.id}`}
+                  //    to={`/lotes/${lote.id}`}
+                  to={`/lotes/${lote.codigo}`}
                   className="btn btn-sm btn-info me-2"
                 >
                   Detalle

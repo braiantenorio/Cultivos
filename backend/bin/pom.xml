@@ -47,6 +47,18 @@
 			<artifactId>spring-boot-starter-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+
+		<dependency>
+          <groupId>org.springframework.boot</groupId>
+          <artifactId>spring-boot-starter-mail</artifactId>
+        </dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate/hibernate-envers -->
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-envers</artifactId>
+			<version>6.1.6.Final</version>
+		</dependency>
+
 	</dependencies>
 
 	<build>

@@ -1,9 +1,14 @@
 // App.tsx
-import React from "react";
-import { BrowserRouter, Link, Route, Routes } from "react-router-dom";
+import React, { useEffect, useState } from "react";
+import {
+  BrowserRouter,
+  Link,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import Loteslist from "./components/LotesList";
 import EditarLote from "./components/EditarLote";
-import logo from "./logo.svg";
 import "./App.css";
 import CrearLote from "./components/CrearLote";
 import DetalleLote from "./components/DetalleLote";
@@ -14,6 +19,9 @@ import icono from "./assets/img/icono.png";
 import fondo from "./assets/img/cannabis.png";
 import CrearAgenda from "./components/CrearAgenda";
 import TipoAgendaList from "./components/TipoAgendaList";
+
+//import { NotificationList } from "./components/NotificationList";
+import { Notificacion } from "./types/notificacion";
 
 function App() {
   return (
@@ -52,6 +60,53 @@ function Home() {
   );
 }
 function Menu() {
+  const [notifications, setNotifications] = useState<Notificacion[]>([]);
+
+  const markAsRead = (index: number) => {
+    const updatedNotifications = [...notifications];
+    updatedNotifications[index].read = true;
+    setNotifications(updatedNotifications);
+
+    const notificationId = updatedNotifications[index].id;
+    fetch(`/notificaciones/${notificationId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error al realizar la solicitud: ${response.status}`);
+        }
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
+
+  const navigate = useNavigate();
+  const navigateToLink = (link: string) => {
+    const llink = "/lotes/" + link;
+    navigate(llink);
+  };
+  useEffect(() => {
+    fetch(`/usuarios/id/1`)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error al realizar la solicitud: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        const reversedNotifications =
+          responseData.data.notificaciones.reverse();
+        setNotifications(reversedNotifications);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
+
   return (
     <div
       className="d-flex flex-column flex-md-row align-items-center p-1 px-md-4 mb-3 
@@ -156,6 +211,15 @@ function Menu() {
           </li>
         </ul>
       </div>
+      {/*
+      <div>
+        <NotificationList
+          notifications={notifications}
+          markAsRead={markAsRead}
+          navigateToLink={navigateToLink}
+        />
+      </div>
+      */}
       <nav className="my-2 my-md-0 ms-auto ">
         <Link className="p-2 text-black " to="/">
           Home

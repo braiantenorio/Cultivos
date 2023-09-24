@@ -61,7 +61,6 @@ public class LotePresenter {
   public ResponseEntity<Object> findAllActivos() {
      return Response.ok(service.findAllActivos());
   }
-  
 
   @PostMapping
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
@@ -70,7 +69,7 @@ public class LotePresenter {
      
             Long lotePadreId = lote.getLotePadre().getId();
             int totalCantidadSublotes = service.calculateTotalCantidadSublotes(lotePadreId);
-
+        
             if (totalCantidadSublotes+lote.getCantidad() == lote.getLotePadre().getCantidad()) {
                 lote.getLotePadre().setEsHoja(false);
 			        	service.update(lote.getLotePadre());

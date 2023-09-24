@@ -67,6 +67,10 @@ public class Lote {
 	@JoinColumn(name = "agenda_id")
 	private Agenda agenda;
 
+	@NotAudited
+	@ManyToOne
+	private Usuario usuario;
+
 	private boolean deleted = Boolean.FALSE;
 
 	private boolean esHoja = Boolean.TRUE; // Cuando lo creamos es activo no?
@@ -80,9 +84,6 @@ public class Lote {
 	@OneToMany(mappedBy = "lotePadre")
 	private List<Lote> subLotes;
 
-	@NotAudited
-	@ManyToOne
-	private Usuario usuario;
 
 	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
 	@JoinTable(name = "Registro_de_procesos",

@@ -10,7 +10,8 @@ function DetalleLote() {
   const [procesos, setProcesos] = useState<Proceso[]>([]);
   const navigate = useNavigate();
 
-  const url = `/lotes/id/${loteId}`;
+  //const url = `/lotes/id/${loteId}`;
+  const url = `/lotes/${loteId}`;
   useEffect(() => {
     fetch(url)
       .then((response) => {
