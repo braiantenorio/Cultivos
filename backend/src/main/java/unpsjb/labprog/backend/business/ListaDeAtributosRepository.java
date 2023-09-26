@@ -7,6 +7,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Repository
 public interface ListaDeAtributosRepository extends CrudRepository<ListaDeAtributos, Long>,
-        PagingAndSortingRepository<ListaDeAtributos, Long>  {
-    
+                PagingAndSortingRepository<ListaDeAtributos, Long> {
+
 }

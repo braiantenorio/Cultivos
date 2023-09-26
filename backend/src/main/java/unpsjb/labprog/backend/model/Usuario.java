@@ -21,24 +21,24 @@ import java.util.List;
 @Table(name = "Usuarios")
 public class Usuario {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
+  @Id
+  @GeneratedValue(strategy = GenerationType.AUTO)
+  private Long id;
 
-    @Column(nullable = false)
-    private String nombre;
+  @Column(nullable = false)
+  private String nombre;
 
-    @Column(nullable = false)
-    private String apellido;
+  @Column(nullable = false)
+  private String apellido;
 
-    @Column(nullable = false)
-    private String email;
+  @Column(nullable = false)
+  private String email;
 
-    @OneToMany(fetch = FetchType.EAGER)
-    private List<Notificacion> notificaciones = new ArrayList<>();
+  @OneToMany(fetch = FetchType.EAGER)
+  private List<Notificacion> notificaciones = new ArrayList<>();
 
-    public void addNotificacion(Notificacion notificacion) {
-		notificaciones.add(notificacion);
-	}
+  public void addNotificacion(Notificacion notificacion) {
+    notificaciones.add(notificacion);
+  }
 
 }

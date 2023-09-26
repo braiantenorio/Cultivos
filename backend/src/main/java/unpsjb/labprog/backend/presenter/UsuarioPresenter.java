@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 @RestController
 @RequestMapping("usuarios")
 
@@ -33,6 +32,7 @@ public class UsuarioPresenter {
   public ResponseEntity<Object> findAll() {
     return Response.ok(service.findAll());
   }
+
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> findById(@PathVariable("id") int id) {
     Usuario usuario = service.findById(id);

@@ -32,5 +32,5 @@ public class ProcesoProgramado {
   private Boolean completado;
 
   private String proceso;
-  
+
 }

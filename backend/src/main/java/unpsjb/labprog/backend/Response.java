@@ -24,11 +24,13 @@ public class Response {
 	public static ResponseEntity<Object> ok(Object responseObj, String msj) {
 		return response(HttpStatus.OK, msj, responseObj);
 	}
+
 	public static ResponseEntity<Object> notFound() {
-        return response(HttpStatus.NOT_FOUND, "Not Found", null);
-    }
+		return response(HttpStatus.NOT_FOUND, "Not Found", null);
+	}
+
 	public static ResponseEntity<Object> badRequest(String message) {
-    return response(HttpStatus.BAD_REQUEST, message, null);
-}
+		return response(HttpStatus.BAD_REQUEST, message, null);
+	}
 
 }

@@ -19,9 +19,9 @@ public class LoteService {
 	LoteRepository repository;
 
 	@Autowired
-    private EntityManager entityManager;
+	private EntityManager entityManager;
 
-	//TODO: Mejorar
+	// TODO: Mejorar
 	public List<Lote> findAll() {
 		List<Lote> result = new ArrayList<>();
 		repository.findAll().forEach(e -> result.add(e));
@@ -33,28 +33,29 @@ public class LoteService {
 		return repository.findAllActivos();
 	}
 
- 	//find all con filtro de lotes con softdelete
-	public Iterable<Lote> findAll(boolean isDeleted,String term){
+	// find all con filtro de lotes con softdelete
+	public Iterable<Lote> findAll(boolean isDeleted, String term) {
 		Session session = entityManager.unwrap(Session.class);
 
-    session.enableFilter("deletedLoteFilter")
-        .setParameter("isDeleted", false)
-        .setParameter("codigo", "%" + term + "%");
+		session.enableFilter("deletedLoteFilter")
+				.setParameter("isDeleted", false)
+				.setParameter("codigo", "%" + term + "%");
 
-        Iterable<Lote> products =  repository.findAll();
-        session.disableFilter("deletedLoteFilter");
+		Iterable<Lote> products = repository.findAll();
+		session.disableFilter("deletedLoteFilter");
 
-        return products;
+		return products;
 	}
 
 	public Lote findById(long id) {
-        return repository.findById(id).orElse(null);
+		return repository.findById(id).orElse(null);
 	}
 
 	public Lote findByCode(String code) {
-        return repository.findByCode(code).orElse(null);
-    }
-	public int calculateTotalCantidadSublotes(long lotePadreId){
+		return repository.findByCode(code).orElse(null);
+	}
+
+	public int calculateTotalCantidadSublotes(long lotePadreId) {
 		return repository.calculateTotalCantidadSublotes(lotePadreId);
 	}
 
@@ -63,13 +64,13 @@ public class LoteService {
 		return repository.save(lote);
 	}
 
-   @Transactional
-    public Lote add(Lote lote) {
+	@Transactional
+	public Lote add(Lote lote) {
 
-        return repository.save(lote);
-    }
+		return repository.save(lote);
+	}
 
-	public void delete(Long id){
+	public void delete(Long id) {
 		repository.deleteById(id);
 	}
 

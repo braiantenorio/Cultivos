@@ -11,5 +11,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Repository
 public interface NotificacionRepository extends CrudRepository<Notificacion, Long>,
-        PagingAndSortingRepository<Notificacion, Long>  {
+                PagingAndSortingRepository<Notificacion, Long> {
 }

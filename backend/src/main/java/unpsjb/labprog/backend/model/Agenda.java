@@ -12,6 +12,7 @@ import jakarta.persistence.JoinColumn;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import java.util.ArrayList;
 
 @Entity
 @Getter
@@ -23,8 +24,11 @@ public class Agenda {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-    @OneToMany
-    private Collection<ProcesoProgramado> procesosProgramado;
+	@OneToMany
+	private Collection<ProcesoProgramado> procesosProgramado = new ArrayList();
 
+	public void addprocesoProgramado(ProcesoProgramado procesoProgramado) {
+		procesosProgramado.add(procesoProgramado);
+	}
 
 }

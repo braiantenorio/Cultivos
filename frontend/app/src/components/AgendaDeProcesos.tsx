@@ -6,10 +6,10 @@ import { ProcesoProgramado } from "../types/procesoProgramado";
 function AgendaDeProcesos() {
   const { loteId } = useParams();
   const [lote, setLote] = useState<Lote | null>(null);
-  const url = `/lotes/id/${loteId}`;
+  const url1 = `/lotes/id/${loteId}`;
 
   useEffect(() => {
-    fetch(url)
+    fetch(url1)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -23,6 +23,7 @@ function AgendaDeProcesos() {
         console.error(error);
       });
   }, []);
+
   const procesosOrdenados = lote?.agenda?.procesosProgramado
     .slice()
     .sort((a, b) => {
@@ -42,6 +43,38 @@ function AgendaDeProcesos() {
         return fechaA.getTime() - fechaB.getTime();
       }
     });
+  const completarProceso = (procesoId: string) => {
+    const url = `/procesos/completar/${loteId}/${procesoId}`;
+    fetch(url, {
+      method: "PUT", // O el método HTTP adecuado
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error al realizar la solicitud: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        fetch(url1)
+          .then((response) => {
+            if (!response.ok) {
+              throw new Error(
+                `Error al realizar la solicitud: ${response.status}`
+              );
+            }
+            return response.json();
+          })
+          .then((responseData) => {
+            setLote(responseData.data);
+          })
+          .catch((error) => {
+            console.error(error);
+          });
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  };
 
   return (
     <div className="container">
@@ -65,21 +98,23 @@ function AgendaDeProcesos() {
               <td>{proceso.proceso}</td>{" "}
               {/* aca iba el nombre del proceso pero cambiamos el modelo de datos */}
               <td>
-                <span
-                  className={
-                    proceso.completado
-                      ? "badge bg-success ms-2"
-                      : new Date() >= new Date(proceso.fechaARealizar)
-                      ? "badge bg-danger ms-2"
-                      : "badge bg-warning ms-2"
-                  }
-                >
-                  {proceso.completado
-                    ? "Realizado"
-                    : new Date() >= new Date(proceso.fechaARealizar)
-                    ? "No Realizado"
-                    : "A Realizar"}
-                </span>
+                {proceso.completado ? (
+                  <span className="badge bg-success ms-2">Realizado</span>
+                ) : new Date() >= new Date(proceso.fechaARealizar) ? (
+                  <>
+                    <span className="badge bg-danger ms-2">No Realizado</span>
+                    <button
+                      onClick={() => completarProceso(proceso.proceso)}
+                      className="btn btn-primary btn-sm ms-2"
+                    >
+                      Completar
+                    </button>
+                  </>
+                ) : (
+                  <>
+                    <span className="badge bg-warning ms-2">A Realizar</span>
+                  </>
+                )}
               </td>
             </tr>
           ))}

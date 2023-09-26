@@ -11,9 +11,9 @@ public class NotificacionServiceScheduler {
     public NotificacionServiceScheduler(NotificacionService notificacionService) {
         this.notificacionService = notificacionService;
     }
-   
-   @Scheduled(cron = "0 0 8 * * ?") // Programa la ejecución a las 8:00 AM todos los días
+
+    @Scheduled(cron = "0 0 8 * * ?") // Programa la ejecución a las 8:00 AM todos los días
     public void enviarRecordatoriosProgramados() {
         notificacionService.enviarRecordatoriosProcesos();
-    } 
-} 
+    }
+}

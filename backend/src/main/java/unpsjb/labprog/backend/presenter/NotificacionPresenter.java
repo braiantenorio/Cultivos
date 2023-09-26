@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 @RestController
 @RequestMapping("notificaciones")
 
@@ -33,12 +32,14 @@ public class NotificacionPresenter {
   public ResponseEntity<Object> findAll() {
     return Response.ok(service.findAll());
   }
-    //para probar el envio de correo
-  @GetMapping( value = "/enviar")
-	public ResponseEntity<Object> crear()  {
+
+  // para probar el envio de correo
+  @GetMapping(value = "/enviar")
+  public ResponseEntity<Object> crear() {
     service.enviarRecordatoriosProcesos();
-		return Response.ok(service.findAll(), "Enviado correctamente");
-	}
+    return Response.ok(service.findAll(), "Enviado correctamente");
+  }
+
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     Notificacion notificacion = service.findById(id);

@@ -22,7 +22,7 @@ public class Notificacion {
     private Long id;
 
     private String mensaje;
-    
+
     private String Lote;
 
     private Boolean read = Boolean.FALSE;

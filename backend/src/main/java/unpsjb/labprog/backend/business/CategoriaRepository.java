@@ -9,6 +9,6 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Repository
 public interface CategoriaRepository extends CrudRepository<Categoria, Long>,
-        PagingAndSortingRepository<Categoria, Long>  {
-    
+                PagingAndSortingRepository<Categoria, Long> {
+
 }

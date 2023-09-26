@@ -1,4 +1,5 @@
 package unpsjb.labprog.backend.model;
+
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
@@ -32,7 +33,7 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
-@Entity  
+@Entity
 @Audited
 @Getter
 @Setter
@@ -40,11 +41,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Table(name = "Lotes")
 @SQLDelete(sql = "UPDATE Lotes SET deleted = true WHERE id=?")
 @FilterDef(name = "deletedLoteFilter", parameters = {
-    @ParamDef(name = "isDeleted", type = boolean.class),
-    @ParamDef(name = "codigo", type = String.class)
+		@ParamDef(name = "isDeleted", type = boolean.class),
+		@ParamDef(name = "codigo", type = String.class)
 })
 @Filter(name = "deletedLoteFilter", condition = "deleted = :isDeleted AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
-@JsonIgnoreProperties(value = {"lotePadre"}, allowSetters = true)
+@JsonIgnoreProperties(value = { "lotePadre" }, allowSetters = true)
 public class Lote {
 
 	@Id
@@ -63,7 +64,7 @@ public class Lote {
 	private Categoria categoria;
 
 	@NotAudited
-	@OneToOne 
+	@OneToOne
 	@JoinColumn(name = "agenda_id")
 	private Agenda agenda;
 
@@ -77,19 +78,16 @@ public class Lote {
 
 	private LocalDate fecha; // cuando se cree poner la fecha del dia
 
-	@ManyToOne //(fetch = FetchType.LAZY)
+	@ManyToOne // (fetch = FetchType.LAZY)
 	private Lote lotePadre;
-	
-    @JsonIgnore
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "lotePadre")
 	private List<Lote> subLotes;
 
-
-	@ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-	@JoinTable(name = "Registro_de_procesos",
-		joinColumns = @JoinColumn(name = "lote_id"), 
-		inverseJoinColumns = @JoinColumn(name = "proceso_id"))
-	List<Proceso> procesos= new ArrayList<>();
+	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
+	@JoinTable(name = "Registro_de_procesos", joinColumns = @JoinColumn(name = "lote_id"), inverseJoinColumns = @JoinColumn(name = "proceso_id"))
+	List<Proceso> procesos = new ArrayList<>();
 
 	public void addProceso(Proceso proceso) {
 		procesos.add(proceso);
@@ -103,12 +101,13 @@ public class Lote {
 
 	@PrePersist
 	public void prePersist() {
-	
+
 		fecha = LocalDate.now();
 	}
-	@PostPersist
-    public void afterInsert() {
 
-    }
+	@PostPersist
+	public void afterInsert() {
+
+	}
 
 }

@@ -13,28 +13,29 @@ public class UsuarioService {
 	@Autowired
 	UsuarioRepository repository;
 
-	//TODO: Mejorar
+	// TODO: Mejorar
 	public List<Usuario> findAll() {
 		List<Usuario> result = new ArrayList<>();
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
 	}
-    @Transactional
+
+	@Transactional
 	public Usuario add(Usuario usuario) {
 		return repository.save(usuario);
 	}
-    @Transactional
+
+	@Transactional
 	public Usuario update(Usuario usuario) {
 		return repository.save(usuario);
 	}
 
-    public Usuario obtenerUsuarioPorEmail(String email) {
-        return repository.findByEmail(email);
-    }
+	public Usuario obtenerUsuarioPorEmail(String email) {
+		return repository.findByEmail(email);
+	}
 
 	public Usuario findById(long id) {
 		return repository.findById(id).orElse(null);
 	}
-
 
 }

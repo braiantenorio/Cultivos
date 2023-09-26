@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 @RestController
 @RequestMapping("tipoagendas")
 
@@ -33,19 +32,22 @@ public class TipoAgendaPresenter {
   public ResponseEntity<Object> findAll() {
     return Response.ok(service.findAll());
   }
-  @PostMapping
-	public ResponseEntity<Object> crear(@RequestBody TipoAgenda tipoAgenda) {
 
-		return Response.ok(
-				service.add(tipoAgenda),
-				"Agenda creada correctamente");
-	}
+  @PostMapping
+  public ResponseEntity<Object> crear(@RequestBody TipoAgenda tipoAgenda) {
+
+    return Response.ok(
+        service.add(tipoAgenda),
+        "Agenda creada correctamente");
+  }
+
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> findById(@PathVariable("id") int id) {
     TipoAgenda loteOrNull = service.findById(id);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
-    @DeleteMapping(value = "/delete/{id}")
+
+  @DeleteMapping(value = "/delete/{id}")
   public void delete(@PathVariable("id") Long id) {
     service.delete(id);
   }

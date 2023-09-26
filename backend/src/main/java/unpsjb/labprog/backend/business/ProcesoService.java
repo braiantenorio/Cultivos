@@ -6,7 +6,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unpsjb.labprog.backend.model.Lote;
+import unpsjb.labprog.backend.model.Agenda;
 import unpsjb.labprog.backend.model.Proceso;
+import unpsjb.labprog.backend.model.ProcesoProgramado;
 
 @Service
 public class ProcesoService {
@@ -16,6 +18,12 @@ public class ProcesoService {
 
 	@Autowired
 	LoteService loteService;
+
+	@Autowired
+	ProcesoProgramadoService procesoProgramadoService;
+
+	@Autowired
+	AgendaService agendaService;
 
 	// TODO: Mejorar
 	public List<Proceso> findAll() {
@@ -37,6 +45,8 @@ public class ProcesoService {
 	public Proceso add(Proceso proceso, int id) {
 		Lote lote = loteService.findById(id);
 		lote.addProceso(proceso);
+		// completarProcesoProgramado(id,proceso.getTipoProceso().getNombre());?
+
 		try {
 			loteService.update(lote);
 		} catch (Exception e) {
@@ -47,6 +57,31 @@ public class ProcesoService {
 
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+
+	public ProcesoProgramado completarProcesoProgramado(long id, String proceso) {
+
+		ProcesoProgramado pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
+		if (pp != null) {
+			pp.setCompletado(true);
+			procesoProgramadoService.update(pp);
+			if (pp.getCantidad() != 1) {
+				ProcesoProgramado ppNew = new ProcesoProgramado();
+				ppNew.setCantidad(pp.getCantidad() - 1);
+				ppNew.setFrecuencia(pp.getFrecuencia());
+				ppNew.setCompletado(false);
+				ppNew.setProceso(pp.getProceso());
+				ppNew.setFechaARealizar(pp.getFechaARealizar().plusDays(pp.getFrecuencia()));
+				ppNew = procesoProgramadoService.add(ppNew);
+				Lote lote = loteService.findById(id);
+				Agenda agenda = lote.getAgenda();
+				agenda.addprocesoProgramado(ppNew);
+				agendaService.update(agenda);
+				return ppNew;
+			}
+
+		}
+		return null;
 	}
 
 }

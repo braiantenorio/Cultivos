@@ -21,9 +21,9 @@ public class BackendApplication {
 	@GetMapping(value = "/")
 	public ResponseEntity home() {
 		return Response.response(
-			HttpStatus.OK,
-			"Server Online",
-			"Hello!");
+				HttpStatus.OK,
+				"Server Online",
+				"Hello!");
 	}
 
 	public static void main(String[] args) {

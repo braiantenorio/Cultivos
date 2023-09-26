@@ -3,6 +3,7 @@ package unpsjb.labprog.backend.DTOs;
 import lombok.Getter;
 import lombok.Setter;
 import unpsjb.labprog.backend.model.Lote;
+
 @Getter
 @Setter
 public class ProcesoProgramadoDTO {

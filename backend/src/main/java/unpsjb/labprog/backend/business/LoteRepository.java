@@ -11,12 +11,12 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 @Repository
 public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSortingRepository<Lote, Long> {
 
-	@Query("SELECT l FROM Lote l WHERE UPPER(l.codigo) = UPPER(?1)")
-	Optional<Lote> findByCode(String code);
-	
+    @Query("SELECT l FROM Lote l WHERE UPPER(l.codigo) = UPPER(?1)")
+    Optional<Lote> findByCode(String code);
+
     @Query("SELECT COALESCE(SUM(l.cantidad), 0) FROM Lote l WHERE l.lotePadre.id = ?1")
     int calculateTotalCantidadSublotes(Long lotePadreId);
 
     @Query("SELECT l FROM Lote l WHERE l.deleted=false AND l.esHoja=true ")
-	List<Lote> findAllActivos();
+    List<Lote> findAllActivos();
 }

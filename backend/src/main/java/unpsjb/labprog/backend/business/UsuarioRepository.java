@@ -9,7 +9,6 @@ import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import unpsjb.labprog.backend.model.Usuario;
 
-
 @Repository
 public interface UsuarioRepository extends CrudRepository<Usuario, Long> {
 

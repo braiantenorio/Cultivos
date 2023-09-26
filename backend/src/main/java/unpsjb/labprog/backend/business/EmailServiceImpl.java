@@ -13,7 +13,7 @@ import java.io.File;
 import java.nio.charset.StandardCharsets;
 
 @Service
-public class EmailServiceImpl implements IEmailService{
+public class EmailServiceImpl implements IEmailService {
 
     @Value("${email.sender}")
     private String emailUser;
@@ -39,7 +39,8 @@ public class EmailServiceImpl implements IEmailService{
 
         try {
             MimeMessage mimeMessage = mailSender.createMimeMessage();
-            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true, StandardCharsets.UTF_8.name());
+            MimeMessageHelper mimeMessageHelper = new MimeMessageHelper(mimeMessage, true,
+                    StandardCharsets.UTF_8.name());
 
             mimeMessageHelper.setFrom(emailUser);
             mimeMessageHelper.setTo(toUser);

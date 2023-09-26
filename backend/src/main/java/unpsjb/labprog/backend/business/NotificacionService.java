@@ -13,8 +13,8 @@ import unpsjb.labprog.backend.DTOs.ProcesoProgramadoDTO;
 @Service
 public class NotificacionService {
 
-	@Autowired
-	NotificacionRepository repository;
+    @Autowired
+    NotificacionRepository repository;
 
     @Autowired
     private IEmailService emailService;
@@ -25,58 +25,57 @@ public class NotificacionService {
     @Autowired
     private UsuarioService usuarioService;
 
-	//TODO: Mejorar
-	public List<Notificacion> findAll() {
-		List<Notificacion> result = new ArrayList<>();
-		repository.findAll().forEach(e -> result.add(e));
-		return result;
-	}
-    @Transactional
-	public Notificacion add(Notificacion notificacion) {
-		return repository.save(notificacion);
-	}
-    @Transactional
-	public Notificacion update(Notificacion  notificacion) {
-		return repository.save( notificacion);
-	}
+    // TODO: Mejorar
+    public List<Notificacion> findAll() {
+        List<Notificacion> result = new ArrayList<>();
+        repository.findAll().forEach(e -> result.add(e));
+        return result;
+    }
 
-	public Notificacion findById(long id) {
-		return repository.findById(id).orElse(null);
-	}
+    @Transactional
+    public Notificacion add(Notificacion notificacion) {
+        return repository.save(notificacion);
+    }
+
+    @Transactional
+    public Notificacion update(Notificacion notificacion) {
+        return repository.save(notificacion);
+    }
+
+    public Notificacion findById(long id) {
+        return repository.findById(id).orElse(null);
+    }
 
     public void enviarRecordatoriosProcesos() {
 
-    Map<String, List<ProcesoProgramadoDTO>> procesosPorEmail = procesoProgramadoService.obtenerProcesosProgramados();
-    
-    procesosPorEmail.forEach((email, procesosUsuario) -> {
-        String subject = "Recordatorio de Procesos";
-        String saludo = "Hola " + procesosUsuario.get(0).getNombre() + ",";
-        
-    
-        Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email);
-      
-        for (ProcesoProgramadoDTO proceso : procesosUsuario) {
-       
-            String mensaje = "Proceso: " + proceso.getProceso() + "\n" + "Lote: " + proceso.getLote();
+        Map<String, List<ProcesoProgramadoDTO>> procesosPorEmail = procesoProgramadoService
+                .obtenerProcesosProgramados();
 
-            Notificacion notificacion = new Notificacion();
-            notificacion.setMensaje(mensaje);
-            notificacion.setLote(proceso.getLote()); 
+        procesosPorEmail.forEach((email, procesosUsuario) -> {
+            String subject = "Recordatorio de Procesos";
+            String saludo = "Hola " + procesosUsuario.get(0).getNombre() + ",";
 
-            
-            usuario.addNotificacion(add(notificacion));
-        }
-        usuarioService.update(usuario);
+            Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email);
 
-      
-        StringBuilder message = new StringBuilder(saludo + "\n\n");
-        procesosUsuario.forEach(proceso -> {
-            message.append("Proceso: ").append(proceso.getProceso()).append("\n");
-            message.append("Lote: ").append(proceso.getLote()).append("\n\n");
+            for (ProcesoProgramadoDTO proceso : procesosUsuario) {
+
+                String mensaje = "Proceso: " + proceso.getProceso() + "\n" + "Lote: " + proceso.getLote();
+
+                Notificacion notificacion = new Notificacion();
+                notificacion.setMensaje(mensaje);
+                notificacion.setLote(proceso.getLote());
+
+                usuario.addNotificacion(add(notificacion));
+            }
+            usuarioService.update(usuario);
+
+            StringBuilder message = new StringBuilder(saludo + "\n\n");
+            procesosUsuario.forEach(proceso -> {
+                message.append("Proceso: ").append(proceso.getProceso()).append("\n");
+                message.append("Lote: ").append(proceso.getLote()).append("\n\n");
+            });
+            emailService.sendEmail(new String[] { email }, subject, message.toString());
         });
-        emailService.sendEmail(new String[] { email }, subject, message.toString());
-    });
-}
+    }
 
-    
 }

@@ -15,40 +15,50 @@ import java.util.HashMap;
 @Service
 public class ProcesoProgramadoService {
 
-	@Autowired
-	ProcesoProgramadoRepository repository;
+    @Autowired
+    ProcesoProgramadoRepository repository;
 
-	//TODO: Mejorar
-	public List<ProcesoProgramado> findAll() {
-		List<ProcesoProgramado> result = new ArrayList<>();
-		repository.findAll().forEach(e -> result.add(e));
-		return result;
-	}
+    // TODO: Mejorar
+    public List<ProcesoProgramado> findAll() {
+        List<ProcesoProgramado> result = new ArrayList<>();
+        repository.findAll().forEach(e -> result.add(e));
+        return result;
+    }
+
     @Transactional
-	public ProcesoProgramado add(ProcesoProgramado procesoProgramado) {
-		return repository.save(procesoProgramado);
-	}
+    public ProcesoProgramado add(ProcesoProgramado procesoProgramado) {
+        return repository.save(procesoProgramado);
+    }
+
+    @Transactional
+    public ProcesoProgramado update(ProcesoProgramado procesoProgramado) {
+        return repository.save(procesoProgramado);
+    }
+
+    public ProcesoProgramado findProcesoProgramado(long lote, String proceso) {
+        return repository.findProcesoProgramado(lote, proceso);
+    }
 
     public Map<String, List<ProcesoProgramadoDTO>> obtenerProcesosProgramados() {
 
-       LocalDate fechaMañana = LocalDate.now().plusDays(1); 
+        LocalDate fechaMañana = LocalDate.now().plusDays(1);
 
-       List<Object[]> resultados = repository.findProcesosProgramadosParaMañana(fechaMañana);
+        List<Object[]> resultados = repository.findProcesosProgramadosParaMañana(fechaMañana);
 
-       Map<String, List<ProcesoProgramadoDTO>> procesosPorEmail = new HashMap<>();
+        Map<String, List<ProcesoProgramadoDTO>> procesosPorEmail = new HashMap<>();
 
-       for (Object[] resultado : resultados) {
-           String email = (String) resultado[0];
-           String nombreUsuario = (String) resultado[1];
-           String codigoLote = (String) resultado[2];
-           String proceso = (String) resultado[3];
+        for (Object[] resultado : resultados) {
+            String email = (String) resultado[0];
+            String nombreUsuario = (String) resultado[1];
+            String codigoLote = (String) resultado[2];
+            String proceso = (String) resultado[3];
 
-           ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(email, nombreUsuario, codigoLote, proceso);
+            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(email, nombreUsuario, codigoLote, proceso);
 
-           procesosPorEmail.computeIfAbsent(email, k -> new ArrayList<>()).add(dto);
-       }
+            procesosPorEmail.computeIfAbsent(email, k -> new ArrayList<>()).add(dto);
+        }
 
-       return procesosPorEmail;
+        return procesosPorEmail;
     }
 
 }
