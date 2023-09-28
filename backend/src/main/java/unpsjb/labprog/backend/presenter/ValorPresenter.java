@@ -37,23 +37,23 @@ public class ValorPresenter {
 		return (valorOrNull != null) ? Response.ok(valorOrNull) : Response.notFound();
 	}
 
-  @PostMapping
-  public ResponseEntity<Object> crear(@RequestBody Valor valor) {
+	@PostMapping
+	public ResponseEntity<Object> crear(@RequestBody Valor valor) {
 
-    return Response.ok(
-        service.add(valor),
-        "Valor creado correctamente");
-  }
+		return Response.ok(
+				service.add(valor),
+				"Valor creado correctamente");
+	}
 
-  @PutMapping
-  public ResponseEntity<Object> update(@RequestBody Valor valor) {
-    return Response.ok(service.update(valor), "Lote actualizado correctamente");
-  }
+	@PutMapping
+	public ResponseEntity<Object> update(@RequestBody Valor valor) {
+		return Response.ok(service.update(valor), "Lote actualizado correctamente");
+	}
 
-  @DeleteMapping(value = "/delete/{id}")
-  public void delete(@PathVariable("id") Long id) {
-    service.delete(id);
-  }
+	@DeleteMapping(value = "/delete/{id}")
+	public void delete(@PathVariable("id") Long id) {
+		service.delete(id);
+	}
 
 	@GetMapping(value = "/procesos/{id}")
 	public ResponseEntity<Object> processValues(@PathVariable("id") int id) {

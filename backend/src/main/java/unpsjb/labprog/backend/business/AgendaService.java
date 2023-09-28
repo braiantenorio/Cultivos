@@ -13,16 +13,21 @@ public class AgendaService {
 	@Autowired
 	AgendaRepository repository;
 
-	//TODO: Mejorar
+	// TODO: Mejorar
 	public List<Agenda> findAll() {
 		List<Agenda> result = new ArrayList<>();
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
 	}
-    @Transactional
+
+	@Transactional
 	public Agenda add(Agenda agenda) {
 		return repository.save(agenda);
 	}
 
+	@Transactional
+	public Agenda update(Agenda agenda) {
+		return repository.save(agenda);
+	}
 
 }

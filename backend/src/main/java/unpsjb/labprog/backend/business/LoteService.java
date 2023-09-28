@@ -19,27 +19,32 @@ public class LoteService {
 	LoteRepository repository;
 
 	@Autowired
-    private EntityManager entityManager;
+	private EntityManager entityManager;
 
-	//TODO: Mejorar
+	// TODO: Mejorar
 	public List<Lote> findAll() {
 		List<Lote> result = new ArrayList<>();
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
 	}
 
- 	//find all con filtro de lotes con softdelete
-	public Iterable<Lote> findAll(boolean isDeleted,String term){
+	public List<Lote> findAllActivos() {
+
+		return repository.findAllActivos();
+	}
+
+	// find all con filtro de lotes con softdelete
+	public Iterable<Lote> findAll(boolean isDeleted, String term) {
 		Session session = entityManager.unwrap(Session.class);
 
-    session.enableFilter("deletedLoteFilter")
-        .setParameter("isDeleted", false)
-        .setParameter("codigo", "%" + term + "%");
+		session.enableFilter("deletedLoteFilter")
+				.setParameter("isDeleted", false)
+				.setParameter("codigo", "%" + term + "%");
 
-        Iterable<Lote> products =  repository.findAll();
-        session.disableFilter("deletedLoteFilter");
+		Iterable<Lote> products = repository.findAll();
+		session.disableFilter("deletedLoteFilter");
 
-        return products;
+		return products;
 	}
 
 	public Lote findById(long id) {
@@ -47,8 +52,12 @@ public class LoteService {
 	}
 
 	public Lote findByCode(String code) {
-        return repository.findByCode(code).orElse(null);
-    }
+		return repository.findByCode(code).orElse(null);
+	}
+
+	public int calculateTotalCantidadSublotes(long lotePadreId) {
+		return repository.calculateTotalCantidadSublotes(lotePadreId);
+	}
 
 	@Transactional
 	public Lote update(Lote lote) {
@@ -57,10 +66,11 @@ public class LoteService {
 
 	@Transactional
 	public Lote add(Lote lote) {
+
 		return repository.save(lote);
 	}
 
-	public void delete(Long id){
+	public void delete(Long id) {
 		repository.deleteById(id);
 	}
 

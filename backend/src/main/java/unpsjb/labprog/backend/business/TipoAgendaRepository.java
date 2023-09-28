@@ -11,7 +11,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Repository
 public interface TipoAgendaRepository extends CrudRepository<TipoAgenda, Long>,
-        PagingAndSortingRepository<TipoAgenda, Long>  {
+        PagingAndSortingRepository<TipoAgenda, Long> {
     @Query("SELECT l FROM TipoAgenda l WHERE l.categoria = ?1 ")
     Optional<TipoAgenda> findByCategoria(String categoria);
 }

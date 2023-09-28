@@ -11,5 +11,5 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 @Repository
 public interface AgendaRepository extends CrudRepository<Agenda, Long>,
-        PagingAndSortingRepository<Agenda, Long>  {
+                PagingAndSortingRepository<Agenda, Long> {
 }

@@ -13,12 +13,11 @@ public class CategoriaService {
 	@Autowired
 	CategoriaRepository repository;
 
-	//TODO: Mejorar
+	// TODO: Mejorar
 	public List<Categoria> findAll() {
 		List<Categoria> result = new ArrayList<>();
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
 	}
-
 
 }

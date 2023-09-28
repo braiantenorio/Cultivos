@@ -39,7 +39,7 @@ public class Proceso {
 	// implementamos usuarios, lo dejamos como opcional xd
 	Usuario usuario;
 
-	// @Column(nullable = false) 
+	// @Column(nullable = false)
 	private LocalDate fecha;
 
 	@NotAudited

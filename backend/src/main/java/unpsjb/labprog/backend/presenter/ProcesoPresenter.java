@@ -33,14 +33,20 @@ public class ProcesoPresenter {
 		return Response.ok(service.findAll());
 	}
 
-	@PostMapping( value = "/lote/{id}")
+	@PostMapping(value = "/lote/{id}")
 	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("id") int id) {
+
 		return Response.ok(service.add(Proceso, id), "Proceso creado correctamente");
 	}
 
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody Proceso lote) {
 		return Response.ok(service.update(lote), "Proceso actualizado correctamente");
+	}
+
+	@PutMapping(value = "/completar/{id}/{proceso}")
+	public ResponseEntity<Object> update(@PathVariable("id") long id, @PathVariable("proceso") String proceso) {
+		return Response.ok(service.completarProcesoProgramado(id, proceso), "Proceso actualizado correctamente");
 	}
 
 	@DeleteMapping(value = "/delete/{id}")

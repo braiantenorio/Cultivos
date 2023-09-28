@@ -20,9 +20,9 @@ import jakarta.persistence.CascadeType;
 @NoArgsConstructor
 public class TipoAgenda {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
     private String categoria;
 

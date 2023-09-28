@@ -6,5 +6,6 @@ export type Lote = {
   codigo: string;
   cantidad: number;
   categoria: Categoria;
+  lotePadre: Lote;
   agenda: Agenda;
 };
