@@ -1,26 +1,26 @@
 package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
-import unpsjb.labprog.backend.business.TipoAgendaService;
+import unpsjb.labprog.backend.business.AtributoService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.bind.annotation.PostMapping;
-import unpsjb.labprog.backend.model.TipoAgenda;
+import unpsjb.labprog.backend.model.Atributo;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @RestController
-@RequestMapping("tipoagendas")
+@RequestMapping("atributos")
 
-public class TipoAgendaPresenter {
+public class AtributoPresenter {
 
   @Autowired
-  TipoAgendaService service;
+  AtributoService service;
 
   @GetMapping
   public ResponseEntity<Object> findAll() {
@@ -28,7 +28,7 @@ public class TipoAgendaPresenter {
   }
 
   @PostMapping
-  public ResponseEntity<Object> crear(@RequestBody TipoAgenda tipoAgenda) {
+  public ResponseEntity<Object> crear(@RequestBody Atributo tipoAgenda) {
 
     return Response.ok(
         service.add(tipoAgenda),
@@ -37,7 +37,7 @@ public class TipoAgendaPresenter {
 
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> findById(@PathVariable("id") int id) {
-    TipoAgenda loteOrNull = service.findById(id);
+    Atributo loteOrNull = service.findById(id);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
 

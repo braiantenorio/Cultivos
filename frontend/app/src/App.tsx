@@ -14,6 +14,7 @@ import icono from "./assets/img/icono.png";
 import fondo from "./assets/img/cannabis.png";
 import CrearAgenda from "./components/CrearAgenda";
 import TipoAgendaList from "./components/TipoAgendaList";
+import CrearAtributo from "./components/CrearAtributo";
 
 function App() {
   return (
@@ -24,14 +25,12 @@ function App() {
         <Route path="/lotes" element={<Loteslist />} />
         <Route path="/lotes/:loteId/edit" element={<EditarLote />} />
         <Route path="/lotes/:loteId" element={<DetalleLote />} />
-        <Route
-          path="/lotes/:loteId/procesos/:listId/new"
-          element={<CrearProceso />}
-        />
+        <Route path="/lotes/:loteId/procesos/:listId/new" element={<CrearProceso />} />
         <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
         <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
         <Route path="/agendas/:id" element={<CrearAgenda />} />
         <Route path="/agendas" element={<TipoAgendaList />} />
+        <Route path="/atributos/new" element={<CrearAtributo />} />
         <Route path="/" element={<Home />} />
       </Routes>
     </BrowserRouter>
@@ -51,6 +50,7 @@ function Home() {
     </div>
   );
 }
+
 function Menu() {
   return (
     <div
@@ -58,7 +58,7 @@ function Menu() {
   custom text-black border-bottom shadow-sm border border-dark border-1 "
     >
       <div className="navbar-brand bg-light p-3 rounded-circle">
-        <img src={icono} alt="" width="60" height="50" />
+        <img src={icono} alt="" width="30" height="25" />
       </div>
       <ul></ul>
       <div className="dropdown ">

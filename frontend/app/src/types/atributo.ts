@@ -4,8 +4,8 @@ export type Atributo = {
 	nombre: string; 
     tipo: string;
     obligatorio: boolean;
-    limiteCaracteres: number;
-    rangoMinimo?: number;
-    rangoMaximo?: number;
-    limiteDecimales?: number;
+    caracteres: number;
+    minimo?: number;
+    maximo?: number;
+    decimales?: number;
 }

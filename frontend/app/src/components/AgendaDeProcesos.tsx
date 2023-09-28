@@ -23,6 +23,7 @@ function AgendaDeProcesos() {
         console.error(error);
       });
   }, []);
+  
   const procesosOrdenados = lote?.agenda?.procesosProgramado
     .slice()
     .sort((a, b) => {

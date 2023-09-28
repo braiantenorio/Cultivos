@@ -30,9 +30,13 @@ public class Atributo {
 	@Column(name = "Tipo")
 	private String tipo;
 
-	private String maximo;
+	private int maximo;
 
-	private String minimo;
+	private int minimo;
+
+	private int decimales;
+
+	private int caracteres;
 
 	private boolean obligatorio;
 

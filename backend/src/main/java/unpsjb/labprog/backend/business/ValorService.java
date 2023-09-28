@@ -10,16 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 public class ValorService {
 
-	@Autowired
-	ValorRepository repository;
+    @Autowired
+    ValorRepository repository;
 
-	//TODO: Mejorar
-	public List<Valor> findAll() {
-		List<Valor> result = new ArrayList<>();
-		repository.findAll().forEach(e -> result.add(e));
-		return result;
-	}
-
+    // TODO: Mejorar
+    public List<Valor> findAll() {
+        List<Valor> result = new ArrayList<>();
+        repository.findAll().forEach(e -> result.add(e));
+        return result;
+    }
 
     public Valor findById(long id) {
         return repository.findById(id).orElse(null);

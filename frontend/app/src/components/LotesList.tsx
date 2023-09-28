@@ -51,26 +51,30 @@ function Loteslist() {
   return (
     <div className="container">
       <h2>Lotes </h2>
-      <div className="mb-3">
-        <input
-          type="text"
-          placeholder="Buscar Lote por Código"
-          value={searchTerm}
-          onChange={handleSearchInputChange}
-          className="form-control-sm"
-        />
-        <button
-          type="button"
-          className="btn btn-success"
-          onClick={handleBuscarLote}
-        >
-          Buscar
-        </button>
-        {regla && (
-          <div className="alert alert-danger alert-sm">
-            Solo Letras o Numeros
-          </div>
-        )}
+      <div className="row g-3 align-items-center">
+        <div className="col-auto">
+          <input
+            type="search"
+            placeholder="Buscar Lote por código"
+            value={searchTerm}
+            onChange={handleSearchInputChange}
+            className="form-control"
+          />
+        </div>
+        <div className="col-auto">
+          <button
+            type="button"
+            className="btn btn-success"
+            onClick={handleBuscarLote}
+          >
+            Buscar
+          </button>
+          {regla && (
+            <div className="alert alert-danger alert-sm">
+              Solo Letras o Numeros
+            </div>
+          )}
+        </div>
       </div>
       <table className="table">
         <thead>

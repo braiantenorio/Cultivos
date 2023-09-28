@@ -54,7 +54,7 @@ function CrearProceso() {
 						name={atributo.nombre}
 						//value={formulario[atributo.nombre] || ''}
 						required={atributo.obligatorio}
-						maxLength={atributo.limiteCaracteres}
+						maxLength={atributo.caracteres}
 						onChange={(event) => handleAgregarValor(event, atributo.nombre)}
 					/>
 				);
@@ -67,9 +67,9 @@ function CrearProceso() {
 						name={atributo.nombre}
 						//value={formulario[atributo.nombre] || ''}
 						required={atributo.obligatorio}
-						min={atributo.rangoMinimo}
-						max={atributo.rangoMaximo}
-						step={1 / Math.pow(10, atributo.limiteDecimales || 0)}
+						min={atributo.minimo}
+						max={atributo.maximo}
+						step={1 / Math.pow(10, atributo.decimales || 0)}
 						onChange={(event) => handleAgregarValor(event, atributo.nombre)}
 					/>
 				);
