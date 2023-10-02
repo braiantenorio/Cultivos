@@ -34,12 +34,12 @@ import lombok.Setter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Audited
 @Getter
 @Setter
 @NoArgsConstructor
 @Table(name = "Lotes")
-@SQLDelete(sql = "UPDATE Lotes SET deleted = true WHERE id=?")
+@SQLDelete(sql = "UPDATE Lotes SET deleted = true, lote_padre_id = null  WHERE id=?")
+@Audited
 @FilterDef(name = "deletedLoteFilter", parameters = {
 		@ParamDef(name = "isDeleted", type = boolean.class),
 		@ParamDef(name = "codigo", type = String.class)
@@ -82,6 +82,7 @@ public class Lote {
 	private Lote lotePadre;
 
 	@JsonIgnore
+	@NotAudited
 	@OneToMany(mappedBy = "lotePadre")
 	private List<Lote> subLotes;
 

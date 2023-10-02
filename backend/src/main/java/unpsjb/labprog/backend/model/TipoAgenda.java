@@ -13,11 +13,14 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.CascadeType;
+import org.hibernate.annotations.SQLDelete;
+
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
+
 public class TipoAgenda {
 
     @Id
@@ -30,5 +33,7 @@ public class TipoAgenda {
 
     @OneToMany(cascade = CascadeType.ALL)
     private Collection<ProcesoProgramado> procesosProgramado;
+
+    private boolean deleted = Boolean.FALSE;
 
 }

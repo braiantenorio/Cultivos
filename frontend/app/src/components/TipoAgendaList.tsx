@@ -83,16 +83,24 @@ function TipoAgendaList() {
               <td>
                 <Link
                   to={`/agendas/${tipoAgenda.id}`}
-                  className="btn btn-sm btn-warning me-2"
+                  className="text-warning me-2"
+                  title="Editar"
                 >
-                  Editar
+                  <i
+                    className="bi bi-pencil"
+                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  ></i>
                 </Link>
                 &nbsp;&nbsp;
                 <button
-                  className="btn btn-sm btn-danger me-2"
+                  className="text-danger border-0 bg-transparent me-2"
                   onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
+                  title="Eliminar"
                 >
-                  Eliminar
+                  <i
+                    className="bi bi-trash"
+                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  ></i>
                 </button>
               </td>
             </tr>

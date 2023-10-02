@@ -1,0 +1,35 @@
+// Importa las variables y archivos de Bootstrap necesarios
+@import "../node_modules/bootstrap/scss/functions";
+@import "../node_modules/bootstrap/scss/variables";
+@import "../node_modules/bootstrap/scss/variables-dark";
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
+
+// Define tus colores personalizados
+$custom-color-1: #802713; // Primer color
+$custom-color-2: #2800c7; // Segundo color
+$custom-gradient: linear-gradient(to right, #4c31b8, #aec216);
+
+// Defisne tus colores personalizados en el mapa $custom-colors
+$custom-colors: (
+  "custom-color-1": $custom-color-1,
+  "custom-color-2": $custom-color-2,
+);
+
+// Fusiona tus colores personalizados con los colores de Bootstrap en el mapa $theme-colors
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+// Importa los estilos de Bootstrap
+@import "../node_modules/bootstrap/scss/bootstrap";
+
+.custom-button {
+  background: $custom-gradient; // Aplica el gradiente personalizado como fondo
+  color: #ffffff; // Color de texto personalizado
+  border: none; // Elimina el borde si lo deseas
+  border-radius: 5px; // Añade bordes redondeados si lo deseas
+  padding: 10px 20px; // Ajusta el espacio interno según tus necesidades
+  font-size: 16px; // Ajusta el tamaño de fuente según tus necesidades
+}
+
+// Para que funcione esto hay que instalar primero una extesion en vscode : Live Sass Compiler

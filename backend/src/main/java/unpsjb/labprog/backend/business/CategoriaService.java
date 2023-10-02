@@ -19,5 +19,8 @@ public class CategoriaService {
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
 	}
+	public Categoria findById(long id) {
+		return repository.findById(id).orElse(null);
+	}
 
 }

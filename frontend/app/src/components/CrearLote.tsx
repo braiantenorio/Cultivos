@@ -43,20 +43,27 @@ const CrearLote: React.FC = () => {
       .catch((error) => {
         console.error(error);
       });
-    fetch(`/lotes/activos`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        setLotes(responseData.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
   }, []);
+
+  const buscarLotesActivosPorCategoria = (categoria: Categoria | undefined) => {
+    if (categoria) {
+      fetch(`/lotes/activos/${categoria.id}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `Error al realizar la solicitud: ${response.status}`
+            );
+          }
+          return response.json();
+        })
+        .then((responseData) => {
+          setLotes(responseData.data);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
@@ -80,6 +87,7 @@ const CrearLote: React.FC = () => {
       ...prevLote,
       categoria: selectedCategoria || { id: 0, nombre: "" },
     }));
+    buscarLotesActivosPorCategoria(selectedCategoria);
   };
 
   const handleLoteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -185,25 +193,28 @@ const CrearLote: React.FC = () => {
           </select>
         </div>
 
-        <div className="mb-3">
-          <label htmlFor="lotePadre" className="form-label">
-            Lote Predecesor
-          </label>
-          <select
-            className="form-select"
-            id="lotePadre"
-            name="lotePadre"
-            value={nuevoLote.lotePadre?.id || 0}
-            onChange={handleLoteChange}
-          >
-            <option value={0}></option>
-            {lotes.map((categoria) => (
-              <option key={categoria.id} value={categoria.id}>
-                {categoria.codigo} - {categoria.categoria.nombre}
-              </option>
-            ))}
-          </select>
-        </div>
+        {lotes.length != 0 && (
+          <div className="mb-3">
+            <label htmlFor="lotePadre" className="form-label">
+              Lote Predecesor
+            </label>
+            <select
+              className="form-select"
+              id="lotePadre"
+              name="lotePadre"
+              value={nuevoLote.lotePadre?.id || 0}
+              onChange={handleLoteChange}
+              style={{ display: lotes.length > 0 ? "block" : "none" }}
+            >
+              <option value={0}></option>
+              {lotes.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.codigo} - {categoria.categoria.nombre}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
 
         <div className="mb-3">
           <button

@@ -90,33 +90,39 @@ function AgendaDeProcesos() {
           </tr>
         </thead>
         <tbody>
-          {procesosOrdenados?.map((proceso: ProcesoProgramado) => (
-            <tr key={proceso.id}>
-              <td>{proceso.id}</td>
-              <td>{new Date(proceso.fechaARealizar).toLocaleDateString()}</td>
-              <td>{proceso.proceso}</td>{" "}
-              {/* aca iba el nombre del proceso pero cambiamos el modelo de datos */}
-              <td>
-                {proceso.completado ? (
-                  <span className="badge bg-success ms-2">Realizado</span>
-                ) : new Date() >= new Date(proceso.fechaARealizar) ? (
-                  <>
-                    <span className="badge bg-danger ms-2">No Realizado</span>
-                    <button
-                      onClick={() => completarProceso(proceso.proceso)}
-                      className="btn btn-primary btn-sm ms-2"
-                    >
-                      Completar
-                    </button>
-                  </>
-                ) : (
-                  <>
-                    <span className="badge bg-warning ms-2">A Realizar</span>
-                  </>
-                )}
-              </td>
-            </tr>
-          ))}
+          {procesosOrdenados?.map((proceso: ProcesoProgramado) => {
+            const fechaARealizar = new Date(proceso.fechaARealizar);
+            fechaARealizar.setDate(fechaARealizar.getDate() + 1); // Agrega un día a la fecha
+            const fechaARealizar1 = new Date();
+            fechaARealizar1.setDate(fechaARealizar1.getDate() + 1); // Agrega un día a la fecha
+
+            return (
+              <tr key={proceso.id}>
+                <td>{proceso.id}</td>
+                <td>{fechaARealizar.toLocaleDateString()}</td>
+                <td>{proceso.proceso}</td>
+                <td>
+                  {proceso.completado ? (
+                    <span className="badge bg-success ms-2">Realizado</span>
+                  ) : fechaARealizar1 >= fechaARealizar ? (
+                    <>
+                      <span className="badge bg-danger ms-2">No Realizado</span>
+                      <button
+                        onClick={() => completarProceso(proceso.proceso)}
+                        className="btn btn-primary btn-sm ms-2"
+                      >
+                        Completado
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <span className="badge bg-warning ms-2">A Realizar</span>
+                    </>
+                  )}
+                </td>
+              </tr>
+            );
+          })}
         </tbody>
       </table>
     </div>

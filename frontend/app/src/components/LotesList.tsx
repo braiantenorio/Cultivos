@@ -1,11 +1,12 @@
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Lote } from "../types/lote";
-import React, { useEffect, useState } from "react";
 
 function Loteslist() {
   const [lotes, setLotes] = useState<Lote[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
   const [regla, setRegla] = useState(false);
+  const [showDeleted, setShowDeleted] = useState(false); // Estado para mostrar/ocultar elementos eliminados
 
   useEffect(() => {
     fetch(`/lotes?term=${searchTerm}`)
@@ -21,12 +22,10 @@ function Loteslist() {
       .catch((error) => {
         console.error(error);
       });
-  }, []);
+  }, []); // Agrega showDeleted como dependencia para que se actualice al cambiar el estado
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-
-    // Utiliza una expresión regular para validar que el input contenga solo números y letras
     const isValidInput = /^[a-zA-Z0-9]*$/.test(inputValue);
 
     if (isValidInput) {
@@ -38,7 +37,7 @@ function Loteslist() {
   };
 
   const handleBuscarLote = () => {
-    fetch(`/lotes?term=${searchTerm}`)
+    fetch(`/lotes?filtered=${showDeleted}&term=${searchTerm}`)
       .then((response) => response.json())
       .then((data) => {
         setLotes(data.data);
@@ -48,9 +47,13 @@ function Loteslist() {
       });
   };
 
+  const handleShowDeletedChange = () => {
+    setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
+  };
+
   return (
     <div className="container">
-      <h2>Lotes </h2>
+      <h2>Lotes</h2>
       <div className="row g-3 align-items-center">
         <div className="col-auto">
           <input
@@ -61,28 +64,39 @@ function Loteslist() {
             className="form-control"
           />
         </div>
+        <div
+          className="col-auto"
+          style={{ fontSize: "1.5rem", cursor: "pointer" }}
+          onClick={handleBuscarLote}
+        >
+          <i className="bi bi-search bi-lg text-primary"></i>
+        </div>
         <div className="col-auto">
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={handleBuscarLote}
-          >
-            Buscar
-          </button>
           {regla && (
             <div className="alert alert-danger alert-sm">
-              Solo Letras o Numeros
+              Solo Letras o Números
             </div>
           )}
+        </div>
+        <div className="col-auto">
+          <label className="form-check-label">
+            <input
+              className="form-check-input"
+              type="checkbox"
+              checked={showDeleted}
+              onChange={handleShowDeletedChange}
+            />
+            Mostrar Eliminados
+          </label>
         </div>
       </div>
       <table className="table">
         <thead>
           <tr>
             <th>#</th>
-            <th>Codigo</th>
+            <th>Código</th>
             <th>Cantidad</th>
-            <th>Categoria</th>
+            <th>Categoría</th>
             <th></th>
           </tr>
         </thead>
@@ -95,17 +109,44 @@ function Loteslist() {
               <td>{lote.categoria.nombre}</td>
               <td>
                 <Link
-                  //    to={`/lotes/${lote.id}`}
                   to={`/lotes/${lote.codigo}`}
-                  className="btn btn-sm btn-info me-2"
+                  className="text-info me-2"
+                  title="Detalle"
                 >
-                  Detalle
+                  <i
+                    className="bi bi-eye"
+                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  ></i>
                 </Link>
+                &nbsp;&nbsp;
+                {lote.deleted ? (
+                  <i
+                    className="bi bi-pencil-slash text-warning me-2"
+                    style={{ fontSize: "1.5rem", cursor: "not-allowed" }}
+                    title="Editar"
+                  ></i>
+                ) : (
+                  <Link
+                    to={`/lotes/${lote.id}/edit`}
+                    className="text-warning me-2"
+                    title="Editar"
+                  >
+                    <i
+                      className="bi bi-pencil"
+                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                    ></i>
+                  </Link>
+                )}
+                &nbsp;&nbsp;
                 <Link
-                  to={`/lotes/${lote.id}/edit`}
-                  className="btn btn-sm btn-warning me-2"
+                  to={`/lotes/log/${lote.id}`}
+                  className="text-secondary me-2"
+                  title="Logs"
                 >
-                  Editar
+                  <i
+                    className="bi bi-journal"
+                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                  ></i>
                 </Link>
               </td>
             </tr>

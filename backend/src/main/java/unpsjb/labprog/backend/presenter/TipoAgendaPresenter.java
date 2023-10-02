@@ -27,15 +27,23 @@ public class TipoAgendaPresenter {
 
   @GetMapping
   public ResponseEntity<Object> findAll() {
-    return Response.ok(service.findAll());
+    return Response.ok(service.findAllActivos());
   }
 
   @PostMapping
   public ResponseEntity<Object> crear(@RequestBody TipoAgenda tipoAgenda) {
-
-    return Response.ok(
+     TipoAgenda loteOrNull = service.findByCategoria(tipoAgenda.getCategoria(),tipoAgenda.getVersion());
+     if(tipoAgenda.getId()!=null && loteOrNull != null ){
+   
+      if(tipoAgenda.getId().equals(loteOrNull.getId()))
+        return Response.ok(
         service.add(tipoAgenda),
-        "Agenda creada correctamente");
+        "Agenda creada correctamente") ;
+     }
+    return 
+       (loteOrNull != null ) ? Response.notFound() :   Response.ok(
+        service.add(tipoAgenda),
+        "Agenda creada correctamente") ;
   }
 
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -46,7 +54,10 @@ public class TipoAgendaPresenter {
 
   @DeleteMapping(value = "/delete/{id}")
   public void delete(@PathVariable("id") Long id) {
-    service.delete(id);
+      TipoAgenda loteOrNull = service.findById(id);
+      loteOrNull.setDeleted(true);
+      service.update(loteOrNull);
+   // service.delete(id);
   }
 
 }

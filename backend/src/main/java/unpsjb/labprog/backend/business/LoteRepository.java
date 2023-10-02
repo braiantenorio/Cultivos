@@ -3,10 +3,12 @@ package unpsjb.labprog.backend.business;
 import unpsjb.labprog.backend.model.Lote;
 import java.util.Optional;
 import java.util.List;
+import unpsjb.labprog.backend.model.Categoria;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import org.springframework.data.repository.PagingAndSortingRepository;
+import org.springframework.data.repository.query.Param;
 
 @Repository
 public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSortingRepository<Lote, Long> {
@@ -19,4 +21,12 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
 
     @Query("SELECT l FROM Lote l WHERE l.deleted=false AND l.esHoja=true ")
     List<Lote> findAllActivos();
+
+    @Query("SELECT l FROM Lote l " +
+            "JOIN l.categoria c " +
+            "WHERE l.deleted = false " +
+            "AND l.esHoja = true " +
+            "AND :categoria MEMBER OF c.subCategorias")
+    List<Lote> findAllActivosByCategoria(@Param("categoria") Categoria categoria);
+
 }

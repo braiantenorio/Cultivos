@@ -8,4 +8,6 @@ export type Lote = {
   categoria: Categoria;
   lotePadre: Lote;
   agenda: Agenda;
+  deleted: boolean;
+  esHoja: boolean;
 };
