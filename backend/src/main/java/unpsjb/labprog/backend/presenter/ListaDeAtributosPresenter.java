@@ -2,6 +2,7 @@ package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.model.ListaDeAtributos;
+import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.business.ListaDeAtributosService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -51,4 +52,10 @@ public class ListaDeAtributosPresenter {
 		service.delete(id);
 	}
 
+
+	@RequestMapping(value = "/nombre/{code}", method = RequestMethod.GET)
+	public ResponseEntity<Object> findByNombre(@PathVariable("code") String code) {
+    ListaDeAtributos loteOrNull = service.findByNombre(code);
+    return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
+  }
 }

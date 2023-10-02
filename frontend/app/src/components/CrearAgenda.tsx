@@ -2,9 +2,15 @@ import React, { useEffect, useState } from "react";
 import { Categoria } from "../types/categoria";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProcesoProgramado } from "../types/procesoProgramado";
+import { TipoDeProceso } from "../types/tipoDeProceso";
 
 function CrearAgenda() {
   const navigate = useNavigate();
+  const [procesoSeleccionado, setProcesoSeleccionado] = useState<string>("");
+  const [procesosSeleccionados, setProcesosSeleccionados] = useState<string[]>(
+    []
+  );
+
   const [cantidadError, setCantidadError] = useState("");
   const [tipo, setTipo] = useState("Crear Agenda");
   const { id } = useParams();
@@ -17,9 +23,28 @@ function CrearAgenda() {
       cantidad: number;
       diaInicio: number;
       completado: boolean;
-      proceso: string;
+      proceso: TipoDeProceso;
     }[],
   });
+
+  const [tiposDeProcesos, setTipoDeProceso] = useState<TipoDeProceso[]>([]);
+  useEffect(() => {
+    const url = "/listaDeAtributos";
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error al realizar la solicitud: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        setTipoDeProceso(responseData.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+  }, []);
 
   const agregarProcesoProgramado = () => {
     console.log(tipoAgenda);
@@ -29,7 +54,7 @@ function CrearAgenda() {
       cantidad: 0,
       diaInicio: 0,
       completado: false,
-      proceso: "",
+      proceso: {} as TipoDeProceso,
     };
 
     setTipoAgenda((prevAgenda) => ({
@@ -103,6 +128,7 @@ function CrearAgenda() {
         setCantidadError("esta version ya existe");
       });
   };
+
   const handleInputChange = (
     index: number,
     field: keyof ProcesoProgramado,
@@ -110,6 +136,7 @@ function CrearAgenda() {
   ) => {
     const updatedProcesos = [...tipoAgenda.procesosProgramado];
     const procesoToUpdate = updatedProcesos[index];
+
     if (
       field === "frecuencia" ||
       field === "cantidad" ||
@@ -117,7 +144,12 @@ function CrearAgenda() {
     ) {
       procesoToUpdate[field] = parseInt(value as string, 10);
     } else if (field === "proceso") {
-      procesoToUpdate[field] = value;
+      // Actualiza el objeto proceso con el tipo de proceso seleccionado
+      procesoToUpdate.proceso =
+        tiposDeProcesos.find(
+          (proceso) => proceso.id === parseInt(value)
+        ) || ({} as TipoDeProceso);
+        console.log(value)
     }
 
     setTipoAgenda({ ...tipoAgenda, procesosProgramado: updatedProcesos });
@@ -231,15 +263,27 @@ function CrearAgenda() {
           {tipoAgenda.procesosProgramado.map((proceso, index) => (
             <tr key={index}>
               <td>
-                <input
-                  type="text"
-                  className="form-control"
-                  name="proceso"
-                  value={proceso.proceso}
-                  onChange={(e) =>
-                    handleInputChange(index, "proceso", e.target.value)
-                  }
-                />
+                <select
+                  className="form-select"
+                  id={`validationCustom04-${index}`}
+                  required
+                  value={procesosSeleccionados[index] || ""}
+                  onChange={(e) => {
+                    const newProcesosSeleccionados = [...procesosSeleccionados];
+                    newProcesosSeleccionados[index] = e.target.value;
+                    setProcesosSeleccionados(newProcesosSeleccionados);
+                    handleInputChange(index, "proceso", procesosSeleccionados[index]);
+                  }}
+                >
+                  <option value="" disabled hidden>
+                    Choose...
+                  </option>
+                  {tiposDeProcesos.map((proceso) => (
+                    <option key={proceso.id} value={proceso.id}>
+                      {proceso.nombre}
+                    </option>
+                  ))}
+                </select>
               </td>
               <td>
                 <input

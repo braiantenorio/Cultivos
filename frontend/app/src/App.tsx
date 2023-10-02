@@ -173,13 +173,23 @@ function Menu() {
 
         <ul className="dropdown-menu  border border-dark border-2 ">
           <li>
-            <Link className="dropdown-item" to="/lotes">
-              Listar
+            <Link className="dropdown-item" to="/atributos">
+              Atributos
             </Link>
           </li>
           <li>
-            <Link className="dropdown-item" to="/lotes/crear-lote">
-              Nuevo
+            <Link className="dropdown-item" to="/atributos/new">
+              Nuevo atributo
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/tipo-proceso">
+              Tipos de procesos
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/tipo-proceso/new">
+              Nuevo tipo de proceso
             </Link>
           </li>
         </ul>

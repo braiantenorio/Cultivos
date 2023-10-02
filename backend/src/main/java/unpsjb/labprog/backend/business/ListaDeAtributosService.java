@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import unpsjb.labprog.backend.model.ListaDeAtributos;
+import unpsjb.labprog.backend.model.Lote;
 
 @Service
 public class ListaDeAtributosService {
@@ -37,5 +38,9 @@ public class ListaDeAtributosService {
     public void delete(Long id) {
         repository.deleteById(id);
     }
+
+    public ListaDeAtributos findByNombre(String code) {
+		return repository.findByNombre(code).orElse(null);
+	}
 
 }

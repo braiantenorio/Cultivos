@@ -113,21 +113,22 @@ function DetalleLote() {
         <thead>
           <tr>
             <th>ID</th>
-            <th>Nombre</th>
-            <th>Descripción</th>
+            <th>Usuario</th>
+            <th>Fecha</th>
             <th></th>
           </tr>
         </thead>
         <tbody>
-          {procesos.map((proceso) => (
+          {lote.procesos.map((proceso) => (
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
-              <td>{proceso.id}</td>
-              <td>{proceso.id}</td>
+              <td>{proceso.usuario}</td>
+              <td>{proceso.fecha ? new Date(proceso.fecha).toLocaleDateString() : ''}</td>
+              {/*}<td>{proceso.tipoDeProceso.nombre}</td> a hay que hacer coincidir los nombres del backend con los del front / igual los procesos no tienen tipo ahora*/}
               {/* aca lo mismo, iba el nombre del proceso y la descripcion, ahora cambiamos el modelo de datos */}
               <td>
                 <Link
-                  to={`/lotes/${lote.id}`}
+                  to={`/procesos/${proceso.id}`}
                   className="btn btn-sm btn-info me-2"
                 >
                   Ver Detalle

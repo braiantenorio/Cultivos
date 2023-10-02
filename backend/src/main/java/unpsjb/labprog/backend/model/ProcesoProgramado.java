@@ -6,6 +6,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -31,6 +32,7 @@ public class ProcesoProgramado {
 
   private Boolean completado;
 
-  private String proceso;
+  @ManyToOne
+  private ListaDeAtributos proceso;
 
 }

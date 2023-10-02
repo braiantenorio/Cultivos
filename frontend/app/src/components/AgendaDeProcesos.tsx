@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useParams } from "react-router-dom";
+import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { ProcesoProgramado } from "../types/procesoProgramado";
 
@@ -42,6 +42,7 @@ function AgendaDeProcesos() {
         return fechaA.getTime() - fechaB.getTime();
       }
     });
+
   const completarProceso = (procesoId: string) => {
     const url = `/procesos/completar/${loteId}/${procesoId}`;
     fetch(url, {
@@ -100,19 +101,19 @@ function AgendaDeProcesos() {
               <tr key={proceso.id}>
                 <td>{proceso.id}</td>
                 <td>{fechaARealizar.toLocaleDateString()}</td>
-                <td>{proceso.proceso}</td>
+                <td>{proceso.proceso.nombre}</td>
                 <td>
                   {proceso.completado ? (
                     <span className="badge bg-success ms-2">Realizado</span>
                   ) : fechaARealizar1 >= fechaARealizar ? (
                     <>
                       <span className="badge bg-danger ms-2">No Realizado</span>
-                      <button
-                        onClick={() => completarProceso(proceso.proceso)}
+                      <Link
+                        to={`/lotes/${loteId}/procesos/${proceso.proceso.nombre}/new`} // Agregar proceso.id a la URL /lotes/:loteId/procesos/:listId/new
                         className="btn btn-primary btn-sm ms-2"
                       >
                         Completado
-                      </button>
+                      </Link>
                     </>
                   ) : (
                     <>

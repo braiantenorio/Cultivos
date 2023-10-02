@@ -1,3 +1,5 @@
+import { TipoDeProceso } from "./tipoDeProceso";
+
 export type ProcesoProgramado = {
   id: number;
   fechaARealizar: Date;
@@ -5,5 +7,5 @@ export type ProcesoProgramado = {
   cantidad: number;
   diaInicio: number;
   completado: Boolean;
-  proceso: string;
+  proceso: TipoDeProceso;
 };
