@@ -19,9 +19,13 @@ public class TipoAgendaService {
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
 	}
+	public List<TipoAgenda> findAllActivos() {
+	
+		return repository.findAllActivos();
+	}
 
-	public TipoAgenda findByCategoria(String categoria) {
-		return repository.findByCategoria(categoria).orElse(null);
+	public TipoAgenda findByCategoria(String categoria,String version) {
+		return repository.findByCategoria(categoria,version).orElse(null);
 	}
 
 	@Transactional
@@ -31,6 +35,10 @@ public class TipoAgendaService {
 
 	public TipoAgenda findById(long id) {
 		return repository.findById(id).orElse(null);
+	}
+	@Transactional
+	public TipoAgenda update(TipoAgenda lote) {
+		return repository.save(lote);
 	}
 
 	public void delete(Long id) {

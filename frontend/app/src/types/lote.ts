@@ -10,4 +10,6 @@ export type Lote = {
   lotePadre: Lote;
   agenda: Agenda;
   procesos: Proceso[];
+  deleted: boolean;
+  esHoja: boolean;
 };

@@ -1,10 +1,7 @@
-/* import React, { useState } from "react";
+import React, { useState } from "react";
 import { IconButton, Badge, Menu, MenuItem } from "@mui/material";
 import NotificationsIcon from "@mui/icons-material/Notifications";
 import { Notificacion } from "../types/notificacion";
-
-//npm install @mui/material @mui/icons-material
-//npm install @emotion/styled
 
 interface NotificationListProps {
   notifications: Notificacion[];
@@ -46,7 +43,7 @@ export const NotificationList = ({
           badgeContent={notifications.filter((n) => !n.read).length}
           color="error"
         >
-          <NotificationsIcon />
+          <NotificationsIcon fontSize="large" />
         </Badge>
       </IconButton>
       <Menu anchorEl={anchorEl} open={Boolean(anchorEl)} onClose={handleClose}>
@@ -60,6 +57,8 @@ export const NotificationList = ({
               marginBottom: "16px",
             }}
           >
+            <NotificationsIcon fontSize="large" />{" "}
+            {/* Aumenta el tamaño del ícono */}
             {notification.mensaje}
           </MenuItem>
         ))}
@@ -67,5 +66,5 @@ export const NotificationList = ({
     </div>
   );
 };
-*/
+
 export {};

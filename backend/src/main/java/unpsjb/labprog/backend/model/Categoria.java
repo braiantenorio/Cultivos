@@ -5,10 +5,13 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import java.util.List;
 import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import jakarta.persistence.ManyToMany;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Getter
@@ -23,5 +26,8 @@ public class Categoria {
 
 	@Column(nullable = false)
 	private String nombre;
-
+    
+    @JsonIgnore
+	@ManyToMany
+	private List<Categoria> subCategorias;
 }

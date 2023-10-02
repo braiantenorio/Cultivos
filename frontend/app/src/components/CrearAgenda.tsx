@@ -5,6 +5,8 @@ import { ProcesoProgramado } from "../types/procesoProgramado";
 
 function CrearAgenda() {
   const navigate = useNavigate();
+  const [cantidadError, setCantidadError] = useState("");
+  const [tipo, setTipo] = useState("Crear Agenda");
   const { id } = useParams();
   const [tipoAgenda, setTipoAgenda] = useState({
     categoria: "",
@@ -56,6 +58,7 @@ function CrearAgenda() {
 
     if (id != "new") {
       // Realiza una solicitud al servidor para obtener los datos de la agenda por su ID
+      setTipo("Editar agenda");
       fetch(`/tipoagendas/id/${id}`)
         .then((response) => {
           if (!response.ok) {
@@ -75,6 +78,7 @@ function CrearAgenda() {
   }, []);
 
   const guardarAgenda = () => {
+    console.log(tipoAgenda);
     fetch(`/tipoagendas`, {
       method: "POST",
       headers: {
@@ -82,14 +86,22 @@ function CrearAgenda() {
       },
       body: JSON.stringify(tipoAgenda),
     })
-      .then((response) => response.json())
+      .then((response) => {
+        if (!response.ok) {
+          // Es un error BadRequest
+          throw new Error("Error de solicitud incorrecta (BadRequest)");
+        }
+
+        response.json();
+      })
       .then((data) => {
         console.log("Respuesta del servidor:", data);
+        navigate(-1);
       })
       .catch((error) => {
         console.error("Error al crear la agenda:", error);
+        setCantidadError("esta version ya existe");
       });
-    navigate(-1);
   };
   const handleInputChange = (
     index: number,
@@ -122,6 +134,12 @@ function CrearAgenda() {
     }));
   };
 
+  const eliminarProcesoProgramado = (index: number) => {
+    const procesosActualizados = [...tipoAgenda.procesosProgramado];
+    procesosActualizados.splice(index, 1); // Elimina el proceso programado en la posición 'index'
+    setTipoAgenda({ ...tipoAgenda, procesosProgramado: procesosActualizados });
+  };
+
   const handleCancelar = () => {
     // Redirige al link anterior
     navigate(-1);
@@ -131,7 +149,7 @@ function CrearAgenda() {
     <div className="container">
       <form>
         <h2>
-          Crear Agenda &nbsp;&nbsp; &nbsp;&nbsp;
+          {tipo} &nbsp;&nbsp; &nbsp;&nbsp;
           <button
             type="button"
             className="btn btn-success"
@@ -181,6 +199,9 @@ function CrearAgenda() {
               setTipoAgenda({ ...tipoAgenda, version: e.target.value })
             }
           />
+          {cantidadError && (
+            <div className="alert alert-danger">{cantidadError}</div>
+          )}
         </div>
       </form>
 
@@ -201,7 +222,7 @@ function CrearAgenda() {
           <tr>
             <th style={{ width: "25%" }}>Proceso</th>
             <th style={{ width: "15%" }}>Día de Inicio</th>
-            <th style={{ width: "15%" }}>Cantidad de veces</th>
+            <th style={{ width: "15%" }}>Repetir</th>
             <th style={{ width: "15%" }}>Frecuencia</th>
             <th style={{ width: "30%" }}></th>
           </tr>
@@ -253,6 +274,16 @@ function CrearAgenda() {
                   }
                   disabled={proceso.cantidad <= 1}
                 />
+              </td>
+              <td>
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  onClick={() => eliminarProcesoProgramado(index)}
+                  title="Eliminar"
+                >
+                  <i className="bi bi-trash" style={{ cursor: "pointer" }}></i>
+                </button>
               </td>
             </tr>
           ))}

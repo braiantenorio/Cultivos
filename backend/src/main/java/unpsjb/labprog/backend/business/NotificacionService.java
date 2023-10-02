@@ -53,7 +53,10 @@ public class NotificacionService {
 
         procesosPorEmail.forEach((email, procesosUsuario) -> {
             String subject = "Recordatorio de Procesos";
-            String saludo = "Hola " + procesosUsuario.get(0).getNombre() + ",";
+         //   String saludo = "Hola " + procesosUsuario.get(0).getNombre() + ",";
+
+            String saludo = "Recordatorio de Procesos para mañana : ";
+            
 
             Usuario usuario = usuarioService.obtenerUsuarioPorEmail(email);
 

@@ -23,8 +23,10 @@ import TipoAgendaList from "./components/TipoAgendaList";
 import CrearAtributo from "./components/CrearAtributo";
 import CrearTipoDeProceso from "./components/CrearTipoDeProceso";
 
-//import { NotificationList } from "./components/NotificationList";
+import { NotificationList } from "./components/NotificationList";
 import { Notificacion } from "./types/notificacion";
+
+import LoteRevisiones from "./components/LoteRevisionComponent";
 import ListarAtributos from "./components/ListarAtributos";
 import ListarTiposDeProcesos from "./components/ListarTiposDeProcesos";
 import VerHistoriaLote from "./components/VerHistoriaLote";
@@ -38,10 +40,14 @@ function App() {
         <Route path="/lotes" element={<Loteslist />} />
         <Route path="/lotes/:loteId/edit" element={<EditarLote />} />
         <Route path="/lotes/:loteId" element={<DetalleLote />} />
-        <Route path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
+        <Route path="/lotes/log/:loteId" element={<LoteRevisiones />} />
+        <Route
+          path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
         <Route
           path="/lotes/:loteId/procesos/:listId/new"
+         
           element={<CrearProceso />}
+       
         />
         <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
         <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
@@ -227,7 +233,12 @@ function Menu() {
         />
       </div>
       */}
-    </nav>
+      <nav className="my-2 my-md-0 ms-auto ">
+        <Link className="p-2 text-black " to="/">
+          Home
+        </Link>
+      </nav>
+    </div>
   );
 }
 
