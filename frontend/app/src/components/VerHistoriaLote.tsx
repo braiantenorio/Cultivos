@@ -73,8 +73,7 @@ function VerHistoriaLote() {
                   <tr key={proceso.id}>
                     <td>{proceso.id}</td>
                     <td>{proceso.usuario}</td>
-                    <td>{proceso.fecha?.toLocaleDateString()}</td>
-                    <td>{proceso.tipoDeProceso.nombre}</td>
+                    <td>{proceso.fecha ? new Date(proceso.fecha).toLocaleDateString() : ''}</td>
                     <td>
                       <Link
                         to={`/lotes/${lote.id}`}
