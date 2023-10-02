@@ -107,6 +107,12 @@ function Loteslist() {
                 >
                   Editar
                 </Link>
+                <Link
+                  to={`/lotes/${lote.id}/historia`}
+                  className="btn btn-sm btn-success me-2"
+                >
+                  Historia
+                </Link>
               </td>
             </tr>
           ))}

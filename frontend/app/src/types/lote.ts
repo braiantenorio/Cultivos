@@ -1,5 +1,6 @@
 import { Agenda } from "./agenda";
 import { Categoria } from "./categoria";
+import { Proceso } from "./proceso";
 
 export type Lote = {
   id: number;
@@ -8,4 +9,5 @@ export type Lote = {
   categoria: Categoria;
   lotePadre: Lote;
   agenda: Agenda;
+  procesos: Proceso[];
 };

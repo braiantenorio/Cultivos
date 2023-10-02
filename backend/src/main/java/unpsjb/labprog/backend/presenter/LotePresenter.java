@@ -73,9 +73,10 @@ public class LotePresenter {
       int totalCantidadSublotes = service.calculateTotalCantidadSublotes(lotePadreId);
 
       if (totalCantidadSublotes + lote.getCantidad() == lote.getLotePadre().getCantidad()) {
-        lote.getLotePadre().setEsHoja(false);
+        lote.getLotePadre().setEsHoja(false);// en esta parte
         service.update(lote.getLotePadre());
       }
+
       if (totalCantidadSublotes + lote.getCantidad() > lote.getLotePadre().getCantidad()) {
         return Response.badRequest("");
       }
@@ -119,6 +120,11 @@ public class LotePresenter {
   @DeleteMapping(value = "/delete/{id}")
   public void delete(@PathVariable("id") Long id) {
     service.delete(id);
+  }
+
+  @GetMapping("/{loteId}/historia")
+  public ResponseEntity<Object> obtenerLotesPadres(@PathVariable Long loteId) {
+    return Response.ok(service.obtenerLotesPadres(loteId));
   }
 
 }

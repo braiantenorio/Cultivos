@@ -6,6 +6,9 @@ import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.JoinTable;
+import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.Getter;
@@ -23,11 +26,17 @@ public class ListaDeAtributos {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@OneToMany(mappedBy = "listaDeAtributos")
-	private List<Atributo> atributos;
+	//@OneToMany(mappedBy = "listaDeAtributos") anterio modelo
+	//private List<Atributo> atributos;
 
 	@Column(unique = true)
 	private String nombre;
+
+	@ManyToMany
+	@JoinTable(name = "listas_atributos",
+		joinColumns = @JoinColumn(name = "lista_id"),
+		inverseJoinColumns = @JoinColumn(name = "atributo_id"))
+	private List<Atributo> atributos;
 
 	/*
 	 * @ManyToOne

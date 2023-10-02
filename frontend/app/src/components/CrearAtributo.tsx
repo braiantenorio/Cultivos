@@ -80,7 +80,7 @@ function CrearAtributo() {
 				<div className="col-md-2">
 					<label htmlFor="validationCustom04" className="form-label">Tipo</label>
 					<select className="form-select" id="validationCustom04" required value={atributo.tipo} onChange={handleTipoChange}>
-						<option selected disabled>Choose...</option>
+						<option value="" disabled selected hidden>Choose...</option>
 						<option value="string">texto</option>
 						<option value="number">numerico</option>
 						<option value="fecha">fecha</option>
@@ -105,7 +105,7 @@ function CrearAtributo() {
 				</div>
 				<div className="col-12">
 					<div className="form-check">
-						<input className="form-check-input" type="checkbox" checked={atributo.obligatorio} id="invalidCheck" onChange={handleObligatorioChange} required />
+						<input className="form-check-input" type="checkbox" checked={atributo.obligatorio} id="invalidCheck" onChange={handleObligatorioChange} />
 						<label className="form-check-label" htmlFor="invalidCheck">
 							Obligatorio
 						</label>

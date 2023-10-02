@@ -1,0 +1,107 @@
+[
+  {
+    "id": 1,
+    "codigo": "11",
+    "cantidad": 1,
+    "categoria": {
+      "id": 1,
+      "nombre": "Planta Madre"
+    },
+    "agenda": null,
+    "usuario": {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Lopez",
+      "email": "nose@gmail.com",
+      "notificaciones": []
+    },
+    "deleted": false,
+    "esHoja": true,
+    "fecha": "2023-10-01",
+    "procesos": []
+  },
+  {
+    "id": 1,
+    "codigo": "22",
+    "cantidad": 1,
+    "categoria": {
+      "id": 1,
+      "nombre": "Planta Madre"
+    },
+    "agenda": null,
+    "usuario": {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Lopez",
+      "email": "nose@gmail.com",
+      "notificaciones": []
+    },
+    "deleted": false,
+    "esHoja": true,
+    "fecha": "2023-10-01",
+    "procesos": []
+  },
+  {
+    "id": 1,
+    "codigo": "33",
+    "cantidad": 1,
+    "categoria": {
+      "id": 1,
+      "nombre": "Planta Madre"
+    },
+    "agenda": null,
+    "usuario": {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Lopez",
+      "email": "nose@gmail.com",
+      "notificaciones": []
+    },
+    "deleted": false,
+    "esHoja": true,
+    "fecha": "2023-10-01",
+    "procesos": []
+  },
+  {
+    "id": 1,
+    "codigo": "44",
+    "cantidad": 1,
+    "categoria": {
+      "id": 1,
+      "nombre": "Planta Madre"
+    },
+    "agenda": null,
+    "usuario": {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Lopez",
+      "email": "nose@gmail.com",
+      "notificaciones": []
+    },
+    "deleted": false,
+    "esHoja": true,
+    "fecha": "2023-10-01",
+    "procesos": []
+  },
+  {
+    "id": 1,
+    "codigo": "55",
+    "cantidad": 1,
+    "categoria": {
+      "id": 1,
+      "nombre": "Planta Madre"
+    },
+    "agenda": null,
+    "usuario": {
+      "id": 1,
+      "nombre": "Juan",
+      "apellido": "Lopez",
+      "email": "nose@gmail.com",
+      "notificaciones": []
+    },
+    "deleted": false,
+    "esHoja": true,
+    "fecha": "2023-10-01",
+    "procesos": []
+  }
+]

@@ -17,6 +17,6 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
     @Query("SELECT COALESCE(SUM(l.cantidad), 0) FROM Lote l WHERE l.lotePadre.id = ?1")
     int calculateTotalCantidadSublotes(Long lotePadreId);
 
-    @Query("SELECT l FROM Lote l WHERE l.deleted=false AND l.esHoja=true ")
+    @Query("SELECT l FROM Lote l WHERE l.esHoja=true ")
     List<Lote> findAllActivos();
 }

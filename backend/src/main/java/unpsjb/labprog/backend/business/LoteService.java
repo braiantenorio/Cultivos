@@ -6,6 +6,7 @@ import java.util.List;
 import org.hibernate.Session;
 import org.hibernate.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,7 +30,6 @@ public class LoteService {
 	}
 
 	public List<Lote> findAllActivos() {
-
 		return repository.findAllActivos();
 	}
 
@@ -72,6 +72,22 @@ public class LoteService {
 
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+
+	public List<Lote> obtenerLotesPadres(Long loteId) {
+		List<Lote> lotesPadres = new ArrayList<>();
+		Lote lote = repository.findById(loteId).orElse(null);
+		if (lote != null) {
+			obtenerLotesPadresRecursivo(lote, lotesPadres);
+		}
+		return lotesPadres;
+	}
+
+	private void obtenerLotesPadresRecursivo(Lote lote, List<Lote> lotesPadres) {
+		if (lote != null) {
+			lotesPadres.add(lote);
+			obtenerLotesPadresRecursivo(lote.getLotePadre(), lotesPadres);
+		}
 	}
 
 }

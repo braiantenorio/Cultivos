@@ -4,19 +4,24 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Atributo } from '../types/atributo';
 import { Proceso } from '../types/proceso';
 import { Valor } from '../types/valor';
+import { TipoDeProceso } from '../types/tipoDeProceso';
 
 function CrearProceso() {
 	const { listId } = useParams();
 	const { loteId } = useParams();
 	const [atributos, setAtributos] = useState<Atributo[]>([]);
 	const [valores, setValores] = useState<Valor[]>([]);
+	const [tipoDeProceso, setTipoDeProceso] = useState<TipoDeProceso>({} as TipoDeProceso); // aca falta asignar hay que arreglar
+
 	const navigate = useNavigate();
 
 	useEffect(() => {
 		fetch(`/listaDeAtributos/id/${listId}`)
 			.then((response) => response.json())
 			.then((data) => {
-				const atributosData = data.data.atributos;
+				const atributosData = data.data; //aca
+
+
 				const valoresData: Valor[] = atributosData.map((atributo: Atributo) => ({
 					id: null,
 					atributo: atributo,
@@ -96,6 +101,7 @@ function CrearProceso() {
 			usuario: null,
 			fecha: null,
 			valores: valores,
+			tipoDeProceso: tipoDeProceso,
 		};
 
 		fetch(`/procesos/lote/${loteId}`, {

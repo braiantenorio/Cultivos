@@ -6,6 +6,8 @@ import com.fasterxml.jackson.annotation.JsonManagedReference;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale.Category;
+
 import org.hibernate.annotations.Filter;
 import org.hibernate.annotations.FilterDef;
 import org.hibernate.annotations.ParamDef;
@@ -78,7 +80,7 @@ public class Lote {
 
 	private LocalDate fecha; // cuando se cree poner la fecha del dia
 
-	@ManyToOne // (fetch = FetchType.LAZY)
+	@ManyToOne //(fetch = FetchType.LAZY) // (fetch = FetchType.EAGER)
 	private Lote lotePadre;
 
 	@JsonIgnore
@@ -101,7 +103,6 @@ public class Lote {
 
 	@PrePersist
 	public void prePersist() {
-
 		fecha = LocalDate.now();
 	}
 

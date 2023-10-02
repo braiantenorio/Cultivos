@@ -22,7 +22,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 @RestController
 @RequestMapping("usuarios")
-
 public class UsuarioPresenter {
 
   @Autowired
