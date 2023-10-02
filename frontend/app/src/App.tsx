@@ -41,13 +41,10 @@ function App() {
         <Route path="/lotes/:loteId/edit" element={<EditarLote />} />
         <Route path="/lotes/:loteId" element={<DetalleLote />} />
         <Route path="/lotes/log/:loteId" element={<LoteRevisiones />} />
-        <Route
-          path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
+        <Route path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
         <Route
           path="/lotes/:loteId/procesos/:listId/new"
-         
           element={<CrearProceso />}
-       
         />
         <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
         <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
@@ -124,107 +121,96 @@ function Menu() {
         console.error(error);
       });
   }, []);
-
   return (
-    <nav
-      className="navbar navbar-expand-lg"
-      style={{ backgroundColor: "#e2fcd6" }}
+    <div
+      className="d-flex flex-column flex-md-row align-items-center p-1 px-md-4 mb-3 
+  custom text-black border-bottom shadow-sm border border-dark border-1 "
     >
-      <div className="container-fluid">
-        <a className="navbar-brand" href="/">
-          <img src={Untitled} alt="" width="90" height="50" />
-        </a>
-        <button
-          className="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarSupportedContent"
-          aria-controls="navbarSupportedContent"
-          aria-expanded="false"
-          aria-label="Toggle navigation"
-        >
-          <span className="navbar-toggler-icon"></span>
-        </button>
-        <div className="collapse navbar-collapse" id="navbarSupportedContent">
-          <ul className="navbar-nav me-auto mb-2 mb-lg-0">
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="/"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Lotes
-              </a>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/lotes">
-                    Listar
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/lotes/crear-lote">
-                    Nuevo
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="/"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Procesos
-              </a>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/lotes">
-                    Listar
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/lotes/crear-lote">
-                    Nuevo
-                  </Link>
-                </li>
-              </ul>
-            </li>
-            <li className="nav-item dropdown">
-              <a
-                className="nav-link dropdown-toggle"
-                href="/"
-                role="button"
-                data-bs-toggle="dropdown"
-                aria-expanded="false"
-              >
-                Agendas
-              </a>
-              <ul className="dropdown-menu">
-                <li>
-                  <Link className="dropdown-item" to="/agendas">
-                    Listar
-                  </Link>
-                </li>
-                <li>
-                  <Link className="dropdown-item" to="/agendas/new">
-                    Nuevo
-                  </Link>
-                </li>
-              </ul>
-            </li>
-          </ul>
-          <div className="nav-item">
-            <Link className="p-2 text-black " to="/">
-              Home
-            </Link>
-          </div>
-        </div>
+      <div>
+        <img src={icono} alt="" width="60" height="60" />
       </div>
-      {/*
+      <ul></ul>
+      <div>
+        {" "}
+        <Link to="/" className="btn btn-custom-color-2">
+          Home
+        </Link>
+      </div>
+      <ul></ul>
+      <div className="dropdown ">
+        <button
+          className="btn btn-custom-color-2 dropdown-toggle "
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Lotes
+        </button>
+
+        <ul className="dropdown-menu border  border-dark border-2 ">
+          <li>
+            <Link className="dropdown-item" to="/lotes">
+              Listar
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/lotes/crear-lote">
+              Nuevo
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <ul></ul>
+      <div className="dropdown">
+        <button
+          className="btn btn-custom-color-2 dropdown-toggle "
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Procesos
+        </button>
+
+        <ul className="dropdown-menu  border border-dark border-2 ">
+          <li>
+            <Link className="dropdown-item" to="/lotes">
+              Listar
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/lotes/crear-lote">
+              Nuevo
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <ul></ul>
+      <div className="dropdown">
+        <button
+          className="btn btn-custom-color-2 dropdown-toggle "
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Agendas
+        </button>
+
+        <ul className="dropdown-menu border border-dark border-2 ">
+          <li>
+            <Link className="dropdown-item" to="/agendas">
+              Listar
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/agendas/new">
+              Nuevo
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <ul></ul>
+
+      <ul></ul>
       <div>
         <NotificationList
           notifications={notifications}
@@ -232,14 +218,7 @@ function Menu() {
           navigateToLink={navigateToLink}
         />
       </div>
-      */}
-      <nav className="my-2 my-md-0 ms-auto ">
-        <Link className="p-2 text-black " to="/">
-          Home
-        </Link>
-      </nav>
     </div>
   );
 }
-
 export default App;
