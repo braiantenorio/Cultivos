@@ -123,7 +123,7 @@ function DetalleLote() {
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
               <td>{proceso.usuario}</td>
-              <td>{proceso.fecha ? new Date(proceso.fecha).toLocaleDateString() : ''}</td>
+              <td>{proceso.fecha ? new Date(proceso.fecha).toISOString(): ''}</td>
               {/*}<td>{proceso.tipoDeProceso.nombre}</td> a hay que hacer coincidir los nombres del backend con los del front / igual los procesos no tienen tipo ahora*/}
               {/* aca lo mismo, iba el nombre del proceso y la descripcion, ahora cambiamos el modelo de datos */}
               <td>
