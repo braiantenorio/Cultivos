@@ -31,8 +31,8 @@ function CrearProceso() {
         );
 
         setAtributos(data.data.atributos);
-        setValores(valoresData);	
-		console.log(valores);	
+        setValores(valoresData);
+        console.log(valores);
       })
       .catch((error) => console.error("Error fetching attributes:", error));
   }, []);
@@ -41,7 +41,7 @@ function CrearProceso() {
     event: React.ChangeEvent<HTMLInputElement>,
     nombreAtributo: string
   ) => {
-	console.log("hola");
+    console.log("hola");
     const { value } = event.target;
     setValores(
       valores.map((valor) => {
@@ -63,7 +63,7 @@ function CrearProceso() {
             className="form-control"
             type="text"
             name={atributo.nombre}
-			//value={valores.find((valor) => valor.atributo.nombre === atributo.nombre)?.valor || ''}
+            //value={valores.find((valor) => valor.atributo.nombre === atributo.nombre)?.valor || ''}
             required={atributo.obligatorio}
             maxLength={atributo.caracteres}
             onChange={(event) => handleAgregarValor(event, atributo.nombre)}
@@ -76,7 +76,7 @@ function CrearProceso() {
             id={atributo.id.toString()}
             type="number"
             name={atributo.nombre}
-			//value={valores.find((valor) => valor.atributo.nombre === atributo.nombre)?.valor || ''}
+            //value={valores.find((valor) => valor.atributo.nombre === atributo.nombre)?.valor || ''}
             required={atributo.obligatorio}
             min={atributo.minimo}
             max={atributo.maximo}
@@ -91,7 +91,7 @@ function CrearProceso() {
             id={atributo.id.toString()}
             type="date"
             name={atributo.nombre}
-			//value={valores.find((valor) => valor.atributo.nombre === atributo.nombre)?.valor || ''}
+            //value={valores.find((valor) => valor.atributo.nombre === atributo.nombre)?.valor || ''}
             required={atributo.obligatorio}
             onChange={(event) => handleAgregarValor(event, atributo.nombre)}
           />
@@ -101,7 +101,8 @@ function CrearProceso() {
     }
   };
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     const nProceso: Proceso = {
       id: 0,
       usuario: null,

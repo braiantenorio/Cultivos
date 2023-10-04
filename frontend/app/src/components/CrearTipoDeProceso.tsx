@@ -52,7 +52,8 @@ function CrearTipoDeProceso() {
     });
   }
 
-  const handleSubmit = () => {
+  const handleSubmit = (e: { preventDefault: () => void }) => {
+    e.preventDefault();
     fetch(`/listaDeAtributos`, {
       method: "POST",
       headers: {

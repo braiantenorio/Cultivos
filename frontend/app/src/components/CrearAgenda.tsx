@@ -6,10 +6,6 @@ import { TipoDeProceso } from "../types/tipoDeProceso";
 
 function CrearAgenda() {
   const navigate = useNavigate();
-  const [procesoSeleccionado, setProcesoSeleccionado] = useState<string>("");
-  const [procesosSeleccionados, setProcesosSeleccionados] = useState<string[]>(
-    []
-  );
 
   const [cantidadError, setCantidadError] = useState("");
   const [tipo, setTipo] = useState("Crear Agenda");
@@ -146,10 +142,8 @@ function CrearAgenda() {
     } else if (field === "proceso") {
       // Actualiza el objeto proceso con el tipo de proceso seleccionado
       procesoToUpdate.proceso =
-        tiposDeProcesos.find(
-          (proceso) => proceso.id === parseInt(value)
-        ) || ({} as TipoDeProceso);
-        console.log(value)
+        tiposDeProcesos.find((proceso) => proceso.id === parseInt(value)) ||
+        ({} as TipoDeProceso);
     }
 
     setTipoAgenda({ ...tipoAgenda, procesosProgramado: updatedProcesos });
@@ -255,7 +249,7 @@ function CrearAgenda() {
             <th style={{ width: "25%" }}>Proceso</th>
             <th style={{ width: "15%" }}>Día de Inicio</th>
             <th style={{ width: "15%" }}>Repetir</th>
-            <th style={{ width: "15%" }}>Frecuencia</th>
+            <th style={{ width: "15%" }}>Intervalo de dias</th>
             <th style={{ width: "30%" }}></th>
           </tr>
         </thead>
@@ -267,12 +261,9 @@ function CrearAgenda() {
                   className="form-select"
                   id={`validationCustom04-${index}`}
                   required
-                  value={procesosSeleccionados[index] || ""}
+                  value={proceso.proceso.id || ""}
                   onChange={(e) => {
-                    const newProcesosSeleccionados = [...procesosSeleccionados];
-                    newProcesosSeleccionados[index] = e.target.value;
-                    setProcesosSeleccionados(newProcesosSeleccionados);
-                    handleInputChange(index, "proceso", procesosSeleccionados[index]);
+                    handleInputChange(index, "proceso", e.target.value);
                   }}
                 >
                   <option value="" disabled hidden>
