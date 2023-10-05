@@ -108,11 +108,14 @@ function AgendaDeProcesos() {
                   ) : fechaARealizar1 >= fechaARealizar ? (
                     <>
                       <span className="badge bg-danger ms-2">No Realizado</span>
+                      &nbsp;&nbsp;&nbsp;&nbsp;
                       <Link
-                        to={`/lotes/${loteId}/procesos/${proceso.proceso.nombre}/new`} // Agregar proceso.id a la URL /lotes/:loteId/procesos/:listId/new
+                        to={`/lotes/${lote!.codigo}/procesos/${
+                          proceso.proceso.nombre
+                        }`} // Agregar proceso.id a la URL /lotes/:loteId/procesos/:listId/new
                         className="btn btn-primary btn-sm ms-2"
                       >
-                        Completado
+                        Completar
                       </Link>
                     </>
                   ) : (

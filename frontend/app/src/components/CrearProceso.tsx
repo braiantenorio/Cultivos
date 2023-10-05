@@ -9,32 +9,50 @@ import { TipoDeProceso } from "../types/tipoDeProceso";
 function CrearProceso() {
   const { listId } = useParams();
   const { loteId } = useParams();
-  const [atributos, setAtributos] = useState<Atributo[]>([]);
   const [valores, setValores] = useState<Valor[]>([]);
   const [tipoDeProceso, setTipoDeProceso] = useState<TipoDeProceso>(
     {} as TipoDeProceso
   ); // aca falta asignar hay que arreglar
+  const [tiposDeProcesos, setTiposDeProcesos] = useState<TipoDeProceso[]>([]);
+  const [selectsHabilitados, setSelectsHabilitados] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    fetch(`/listaDeAtributos/nombre/${listId}`)
-      .then((response) => response.json())
-      .then((data) => {
-        setTipoDeProceso(data.data);
-        const valoresData: Valor[] = data.data.atributos.map(
-          (atributo: Atributo) => ({
-            id: null,
-            atributo: atributo,
-            valor: null,
-          })
-        );
+    if (listId !== "new") {
+      fetch(`/listaDeAtributos/nombre/${listId}`)
+        .then((response) => response.json())
+        .then((data) => {
+          setTipoDeProceso(data.data);
+          const valoresData: Valor[] = data.data.atributos.map(
+            (atributo: Atributo) => ({
+              id: null,
+              atributo: atributo,
+              valor: null,
+            })
+          );
 
-        setAtributos(data.data.atributos);
-        setValores(valoresData);
-        console.log(valores);
+          setValores(valoresData);
+          setSelectsHabilitados(true);
+          console.log(valores);
+        })
+        .catch((error) => console.error("Error fetching attributes:", error));
+    }
+    const url = "/listaDeAtributos";
+
+    fetch(url)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error al realizar la solicitud: ${response.status}`);
+        }
+        return response.json();
       })
-      .catch((error) => console.error("Error fetching attributes:", error));
+      .then((responseData) => {
+        setTiposDeProcesos(responseData.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
   }, []);
 
   const handleAgregarValor = (
@@ -51,6 +69,23 @@ function CrearProceso() {
           return valor;
         }
       })
+    );
+  };
+  const handleTiposDeProcesosChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { value } = event.target;
+    const selectedCategoria = tiposDeProcesos.find(
+      (categoria) => categoria.id === parseInt(value, 10)
+    );
+    setTipoDeProceso(selectedCategoria || ({} as TipoDeProceso));
+
+    setValores(
+      selectedCategoria?.atributos.map((atributo: Atributo) => ({
+        id: null,
+        atributo: atributo,
+        valor: null,
+      })) || []
     );
   };
 
@@ -135,16 +170,6 @@ function CrearProceso() {
         }
         return response.json();
       })
-      .then((responseData) => {
-        fetch(`/lotes/id/${loteId}`).then((response) => {
-          if (!response.ok) {
-            throw new Error(
-              `Error al realizar la solicitud: ${response.status}`
-            );
-          }
-          return response.json();
-        });
-      })
       .catch((error) => {
         console.error(error);
       });
@@ -154,22 +179,49 @@ function CrearProceso() {
 
   return (
     <div className="container">
-      <h2>Nuevo Proceso - {tipoDeProceso.nombre}</h2>
-      <form className="row g-3" onSubmit={handleSubmit}>
-        {tipoDeProceso.atributos?.map((atributo, index) => (
-          <div className="col-md-7" key={atributo.id}>
-            <label htmlFor={atributo.id.toString()} className="form-label">
-              {atributo.nombre}
-            </label>
-            {renderizarInput(atributo, index)}
+      <h2>Nuevo Proceso </h2>
+      <div className="col-md-6">
+        <label htmlFor="proceso" className="form-label">
+          Tipo de Proceso
+        </label>
+        <select
+          className="form-select"
+          id="proceso"
+          name="proceso"
+          value={tipoDeProceso.id}
+          onChange={handleTiposDeProcesosChange}
+          disabled={selectsHabilitados}
+        >
+          <option value="">Selecciona el tipo de proceso...</option>
+          {tiposDeProcesos.map((proceso) => (
+            <option key={proceso.id} value={proceso.id}>
+              {proceso.nombre}
+            </option>
+          ))}
+        </select>
+      </div>
+      <ul></ul>
+      {tipoDeProceso && (
+        <form className="row g-3" onSubmit={handleSubmit}>
+          {tipoDeProceso.atributos?.map((atributo, index) => (
+            <div className="col-md-7" key={atributo.id}>
+              <label htmlFor={atributo.id.toString()} className="form-label">
+                {atributo.nombre}
+              </label>
+              {renderizarInput(atributo, index)}
+            </div>
+          ))}
+          <div className="col-md-12">
+            <button
+              type="submit"
+              className="btn btn-success"
+              disabled={tipoDeProceso.atributos == null}
+            >
+              Enviar
+            </button>
           </div>
-        ))}
-        <div className="col-md-12">
-          <button type="submit" className="btn btn-success">
-            Enviar
-          </button>
-        </div>
-      </form>
+        </form>
+      )}
     </div>
   );
 }

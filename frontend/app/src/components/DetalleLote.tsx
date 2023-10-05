@@ -103,7 +103,10 @@ function DetalleLote() {
       </p>
 
       <h3>
-        Procesos :
+        Procesos &nbsp;&nbsp; &nbsp;&nbsp;
+        <Link to={`/lotes/${loteId}/procesos/new`} className="btn btn-primary ">
+          Agregar
+        </Link>
         <Link
           to={`/lotes/${lote.id}/agenda`}
           className="btn btn-info float-end"

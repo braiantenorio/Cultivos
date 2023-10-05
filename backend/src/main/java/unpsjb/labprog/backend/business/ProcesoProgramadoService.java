@@ -35,7 +35,7 @@ public class ProcesoProgramadoService {
         return repository.save(procesoProgramado);
     }
 
-    public ProcesoProgramado findProcesoProgramado(long lote, String proceso) {
+    public ProcesoProgramado findProcesoProgramado(String lote, String proceso) {
         return repository.findProcesoProgramado(lote, proceso);
     }
 

@@ -43,7 +43,7 @@ function App() {
         <Route path="/lotes/log/:loteId" element={<LoteRevisiones />} />
         <Route path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
         <Route
-          path="/lotes/:loteId/procesos/:listId/new"
+          path="/lotes/:loteId/procesos/:listId"
           element={<CrearProceso />}
         />
         <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />

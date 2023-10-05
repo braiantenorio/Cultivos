@@ -34,7 +34,7 @@ public class ProcesoPresenter {
 	}
 
 	@PostMapping(value = "/lote/{id}")
-	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("id") int id) {
+	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("id") String id) {
 
 		return Response.ok(service.add(Proceso, id), "Proceso creado correctamente");
 	}
@@ -45,7 +45,7 @@ public class ProcesoPresenter {
 	}
 
 	@PutMapping(value = "/completar/{id}/{proceso}")
-	public ResponseEntity<Object> update(@PathVariable("id") long id, @PathVariable("proceso") String proceso) {
+	public ResponseEntity<Object> update(@PathVariable("id") String id, @PathVariable("proceso") String proceso) {
 		return Response.ok(service.completarProcesoProgramado(id, proceso), "Proceso actualizado correctamente");
 	}
 

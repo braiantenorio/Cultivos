@@ -25,6 +25,6 @@ public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgr
                         "FROM Lote l " +
                         "JOIN l.agenda a " +
                         "JOIN a.procesosProgramado pp " +
-                        "WHERE pp.proceso.nombre = :proceso AND l.id = :lote AND pp.completado = false ")
-        ProcesoProgramado findProcesoProgramado(long lote, String proceso);
+                        "WHERE pp.proceso.nombre = :proceso AND l.codigo = :lote AND pp.completado = false ")
+        ProcesoProgramado findProcesoProgramado(String lote, String proceso);
 }

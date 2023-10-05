@@ -42,8 +42,8 @@ public class ProcesoService {
 	}
 
 	@Transactional
-	public Proceso add(Proceso proceso, int id) {
-		Lote lote = loteService.findById(id);
+	public Proceso add(Proceso proceso, String id) {
+		Lote lote = loteService.findByCode(id);
 		lote.addProceso(proceso);
 		// completarProcesoProgramado(id,proceso.getTipoProceso().getNombre());?
 
@@ -59,7 +59,7 @@ public class ProcesoService {
 		repository.deleteById(id);
 	}
 
-	public ProcesoProgramado completarProcesoProgramado(long id, String proceso) {
+	public ProcesoProgramado completarProcesoProgramado(String id, String proceso) {
 
 		ProcesoProgramado pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
 		if (pp != null) {
@@ -73,7 +73,7 @@ public class ProcesoService {
 				ppNew.setProceso(pp.getProceso());
 				ppNew.setFechaARealizar(pp.getFechaARealizar().plusDays(pp.getFrecuencia()));
 				ppNew = procesoProgramadoService.add(ppNew);
-				Lote lote = loteService.findById(id);
+				Lote lote = loteService.findByCode(id);
 				Agenda agenda = lote.getAgenda();
 				agenda.addprocesoProgramado(ppNew);
 				agendaService.update(agenda);
