@@ -64,6 +64,11 @@ public class Lote {
 	@ManyToOne
 	@JoinColumn(name = "categoria_id", nullable = false)
 	private Categoria categoria;
+	
+	@NotAudited
+	@ManyToOne
+	@JoinColumn(name = "cultivar_id", nullable = false)
+	private Cultivar cultivar;
 
 	@NotAudited
 	@OneToOne

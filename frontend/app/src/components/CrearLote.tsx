@@ -2,22 +2,14 @@ import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Categoria } from "../types/categoria";
 import { Lote } from "../types/lote";
+import { Cultivar } from "../types/cultivar";
 
 const CrearLote: React.FC = () => {
   const [cantidadError, setCantidadError] = useState("");
   const [lotes, setLotes] = useState<Lote[]>([]);
-  const [nuevoLote, setNuevoLote] = useState<{
-    codigo: string;
-    cantidad: number;
-    lotePadre?: Lote | undefined;
-    categoria: { id: number; nombre: string };
-  }>({
-    codigo: "",
-    cantidad: 0,
-    lotePadre: undefined,
-    categoria: { id: 0, nombre: "" },
-  });
+  const [nuevoLote, setNuevoLote] = useState<Lote>({} as Lote);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
+  const [cultivares, setCultivares] = useState<Cultivar[]>([]);
   const navigate = useNavigate();
   const requestOptions = {
     method: "POST", // Método de la solicitud POST
@@ -26,9 +18,14 @@ const CrearLote: React.FC = () => {
     },
     body: JSON.stringify(nuevoLote), // Convierte el objeto en formato JSON y lo establece como el cuerpo de la solicitud
   };
+  const [selectsHabilitados, setSelectsHabilitados] = useState({
+    cultivar: true,
+    // lotePadre: true,
+  });
 
   useEffect(() => {
     const url = "/categorias";
+    const url1 = "/cultivares";
 
     fetch(url)
       .then((response) => {
@@ -39,6 +36,19 @@ const CrearLote: React.FC = () => {
       })
       .then((responseData) => {
         setCategorias(responseData.data);
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    fetch(url1)
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error(`Error al realizar la solicitud: ${response.status}`);
+        }
+        return response.json();
+      })
+      .then((responseData) => {
+        setCultivares(responseData.data);
       })
       .catch((error) => {
         console.error(error);
@@ -85,9 +95,22 @@ const CrearLote: React.FC = () => {
 
     setNuevoLote((prevLote) => ({
       ...prevLote,
-      categoria: selectedCategoria || { id: 0, nombre: "" },
+      categoria: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
     }));
     buscarLotesActivosPorCategoria(selectedCategoria);
+  };
+  const handleCultivarChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    const { value } = event.target;
+    const selectedCategoria = cultivares.find(
+      (categoria) => categoria.id === parseInt(value, 10)
+    );
+
+    setNuevoLote((prevLote) => ({
+      ...prevLote,
+      cultivar: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
+    }));
   };
 
   const handleLoteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -99,6 +122,14 @@ const CrearLote: React.FC = () => {
     setNuevoLote((prevLote) => ({
       ...prevLote,
       lotePadre: selectdlote as Lote,
+    }));
+    setSelectsHabilitados((prevSelects) => ({
+      ...prevSelects,
+      cultivar: selectdlote === undefined,
+    }));
+    setNuevoLote((prevLote) => ({
+      ...prevLote,
+      cultivar: selectdlote?.cultivar || { id: 0, nombre: "", codigo: 0 },
     }));
   };
 
@@ -181,7 +212,7 @@ const CrearLote: React.FC = () => {
             className="form-select"
             id="categoria"
             name="categoria"
-            value={nuevoLote.categoria.id}
+            value={nuevoLote.categoria?.id}
             onChange={handleCategoriaChange}
           >
             <option value={0}></option>
@@ -192,29 +223,46 @@ const CrearLote: React.FC = () => {
             ))}
           </select>
         </div>
+        <div className="mb-3">
+          <label htmlFor="categoria" className="form-label">
+            Cultivar:
+          </label>
+          <select
+            className="form-select"
+            id="cultivar"
+            name="cultivar"
+            value={nuevoLote.cultivar?.id}
+            onChange={handleCultivarChange}
+            disabled={!selectsHabilitados.cultivar}
+          >
+            <option value={0}></option>
+            {cultivares.map((categoria) => (
+              <option key={categoria.id} value={categoria.id}>
+                {categoria.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
 
-        {lotes.length != 0 && (
-          <div className="mb-3">
-            <label htmlFor="lotePadre" className="form-label">
-              Lote Predecesor
-            </label>
-            <select
-              className="form-select"
-              id="lotePadre"
-              name="lotePadre"
-              value={nuevoLote.lotePadre?.id || 0}
-              onChange={handleLoteChange}
-              style={{ display: lotes.length > 0 ? "block" : "none" }}
-            >
-              <option value={0}></option>
-              {lotes.map((categoria) => (
-                <option key={categoria.id} value={categoria.id}>
-                  {categoria.codigo} - {categoria.categoria.nombre}
-                </option>
-              ))}
-            </select>
-          </div>
-        )}
+        <div className="mb-3">
+          <label htmlFor="lotePadre" className="form-label">
+            Lote Predecesor
+          </label>
+          <select
+            className="form-select"
+            id="lotePadre"
+            name="lotePadre"
+            value={nuevoLote.lotePadre?.id || 0}
+            onChange={handleLoteChange}
+          >
+            <option value={0}></option>
+            {lotes.map((categoria) => (
+              <option key={categoria.id} value={categoria.id}>
+                {categoria.codigo} - {categoria.categoria.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
 
         <div className="mb-3">
           <button
@@ -224,9 +272,8 @@ const CrearLote: React.FC = () => {
             disabled={
               nuevoLote.codigo === "" ||
               nuevoLote.cantidad < 1 ||
-              nuevoLote.categoria.id === 0 ||
-              (nuevoLote.categoria.nombre !== "Planta Madre" &&
-                nuevoLote.lotePadre === undefined)
+              nuevoLote.categoria === undefined ||
+              nuevoLote.cultivar === undefined
             }
           >
             Guardar

@@ -10,15 +10,13 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import jakarta.persistence.ManyToMany;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 @Getter
 @Setter
 @NoArgsConstructor
-@Table(name = "Categorias")
-public class Categoria {
+@Table(name = "Cultivares")
+public class Cultivar {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
@@ -26,11 +24,7 @@ public class Categoria {
 
 	@Column(nullable = false)
 	private String nombre;
-
-	@Column(nullable = false, unique = true)
-	private String codigo;
     
-    @JsonIgnore
-	@ManyToMany
-	private List<Categoria> subCategorias;
+    @Column(nullable = false, unique = true)
+	private String codigo;
 }

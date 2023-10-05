@@ -1,5 +1,6 @@
 import { Agenda } from "./agenda";
 import { Categoria } from "./categoria";
+import { Cultivar } from "./cultivar";
 import { Proceso } from "./proceso";
 
 export type Lote = {
@@ -12,4 +13,5 @@ export type Lote = {
   procesos: Proceso[];
   deleted: boolean;
   esHoja: boolean;
+  cultivar: Cultivar;
 };

@@ -75,13 +75,6 @@ function DetalleLote() {
           Anular
         </button>
       </div>
-
-      <p>
-        <span className="badge bg-secondary text-white me-2 fs-6">
-          ID del Lote:
-        </span>{" "}
-        {lote.id}
-      </p>
       <p>
         <span className="badge bg-secondary text-white me-2 fs-6">Código:</span>{" "}
         {lote.codigo}
@@ -97,6 +90,16 @@ function DetalleLote() {
           Categoría:
         </span>{" "}
         {lote.categoria.nombre}
+      </p>
+      <p>
+        <span className="badge bg-secondary text-white me-2 fs-6">
+          Cultivar:
+        </span>{" "}
+        {lote.cultivar.nombre}
+      </p>
+      <p>
+        <span className="badge bg-secondary text-white me-2 fs-6">Estado:</span>{" "}
+        {lote.esHoja ? "Activo" : "Inactivo"}
       </p>
 
       <h3>
@@ -123,7 +126,9 @@ function DetalleLote() {
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
               <td>{proceso.usuario}</td>
-              <td>{proceso.fecha ? new Date(proceso.fecha).toISOString(): ''}</td>
+              <td>
+                {proceso.fecha ? new Date(proceso.fecha).toISOString() : ""}
+              </td>
               {/*}<td>{proceso.tipoDeProceso.nombre}</td> a hay que hacer coincidir los nombres del backend con los del front / igual los procesos no tienen tipo ahora*/}
               {/* aca lo mismo, iba el nombre del proceso y la descripcion, ahora cambiamos el modelo de datos */}
               <td>
