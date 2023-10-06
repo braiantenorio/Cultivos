@@ -3,19 +3,22 @@ package unpsjb.labprog.backend.DTOs;
 import lombok.Getter;
 import lombok.Setter;
 import unpsjb.labprog.backend.model.Lote;
+import unpsjb.labprog.backend.model.ListaDeAtributos;
+import java.time.LocalDate;
 
 @Getter
 @Setter
 public class ProcesoProgramadoDTO {
-    private String email;
-    private String nombre;
+ 
     private String lote;
-    private String proceso;
+    private ListaDeAtributos proceso;
+    private LocalDate fechaARealizar;
+    private Boolean completado;
 
-    public ProcesoProgramadoDTO(String email, String nombre, String lote, String proceso) {
-        this.email = email;
-        this.nombre = nombre;
+    public ProcesoProgramadoDTO(String lote,ListaDeAtributos  proceso,LocalDate fechaARealizar,Boolean completado) {
         this.lote = lote;
         this.proceso = proceso;
+        this.fechaARealizar=fechaARealizar;
+        this.completado= completado;
     }
 }

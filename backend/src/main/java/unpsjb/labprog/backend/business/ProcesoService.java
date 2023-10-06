@@ -61,24 +61,10 @@ public class ProcesoService {
 
 	public ProcesoProgramado completarProcesoProgramado(String id, String proceso) {
 
-		ProcesoProgramado pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
+	    List<ProcesoProgramado> pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
 		if (pp != null) {
-			pp.setCompletado(true);
-			procesoProgramadoService.update(pp);
-			if (pp.getCantidad() != 1) {
-				ProcesoProgramado ppNew = new ProcesoProgramado();
-				ppNew.setCantidad(pp.getCantidad() - 1);
-				ppNew.setFrecuencia(pp.getFrecuencia());
-				ppNew.setCompletado(false);
-				ppNew.setProceso(pp.getProceso());
-				ppNew.setFechaARealizar(pp.getFechaARealizar().plusDays(pp.getFrecuencia()));
-				ppNew = procesoProgramadoService.add(ppNew);
-				Lote lote = loteService.findByCode(id);
-				Agenda agenda = lote.getAgenda();
-				agenda.addprocesoProgramado(ppNew);
-				agendaService.update(agenda);
-				return ppNew;
-			}
+			pp.get(0).setCompletado(true);
+			procesoProgramadoService.update(pp.get(0));
 
 		}
 		return null;

@@ -35,7 +35,7 @@ public class ProcesoProgramadoService {
         return repository.save(procesoProgramado);
     }
 
-    public ProcesoProgramado findProcesoProgramado(String lote, String proceso) {
+    public List<ProcesoProgramado> findProcesoProgramado(String lote, String proceso) {
         return repository.findProcesoProgramado(lote, proceso);
     }
 
@@ -51,14 +51,33 @@ public class ProcesoProgramadoService {
             String email = (String) resultado[0];
             String nombreUsuario = (String) resultado[1];
             String codigoLote = (String) resultado[2];
-            String proceso = (String) resultado[3];
+            ProcesoProgramado proceso = (ProcesoProgramado) resultado[3];
 
-            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(email, nombreUsuario, codigoLote, proceso);
+            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(codigoLote, proceso.getProceso(),proceso.getFechaARealizar(),proceso.getCompletado());
 
             procesosPorEmail.computeIfAbsent(email, k -> new ArrayList<>()).add(dto);
         }
 
         return procesosPorEmail;
+    }
+    public List<ProcesoProgramadoDTO> obtenerProcesosProgramadosPendientes() {
+
+        LocalDate fecha = LocalDate.now();
+
+        List<Object[]> resultados = repository.findProcesosProgramadosPendientes(fecha);
+
+        List<ProcesoProgramadoDTO> procesosPendientes = new ArrayList<>();
+
+        for (Object[] resultado : resultados) {
+            String codigoLote = (String) resultado[0];
+            ProcesoProgramado proceso = (ProcesoProgramado) resultado[1];
+
+            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(codigoLote, proceso.getProceso(),proceso.getFechaARealizar(),proceso.getCompletado());
+
+            procesosPendientes.add(dto);
+        }
+
+        return  procesosPendientes;
     }
 
 }

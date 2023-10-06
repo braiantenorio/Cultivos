@@ -53,3 +53,7 @@
   background: linear-gradient(to right, #3498db, #e74c3c);
   color: rgb(255, 255, 255);
 }
+.custom-icon {
+  font-size: 1.4rem; /* Tamaño personalizado, ajusta según tus necesidades */
+  color: rgb(255, 255, 255);
+}

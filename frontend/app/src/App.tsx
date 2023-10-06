@@ -22,14 +22,11 @@ import CrearAgenda from "./components/CrearAgenda";
 import TipoAgendaList from "./components/TipoAgendaList";
 import CrearAtributo from "./components/CrearAtributo";
 import CrearTipoDeProceso from "./components/CrearTipoDeProceso";
-
-import { NotificationList } from "./components/NotificationList";
-import { Notificacion } from "./types/notificacion";
-
 import LoteRevisiones from "./components/LoteRevisionComponent";
 import ListarAtributos from "./components/ListarAtributos";
 import ListarTiposDeProcesos from "./components/ListarTiposDeProcesos";
 import VerHistoriaLote from "./components/VerHistoriaLote";
+import AgendaGeneralDeProcesos from "./components/AgendaGeneralDeProcesos";
 
 function App() {
   return (
@@ -50,6 +47,7 @@ function App() {
         <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
         <Route path="/agendas/:id" element={<CrearAgenda />} />
         <Route path="/agendas" element={<TipoAgendaList />} />
+        <Route path="/agenda/general" element={<AgendaGeneralDeProcesos />} />
         <Route path="/atributos/new" element={<CrearAtributo />} />
         <Route path="/atributos" element={<ListarAtributos />} />
         <Route path="/tipo-proceso/new" element={<CrearTipoDeProceso />} />
@@ -75,37 +73,14 @@ function Home() {
 }
 
 function Menu() {
-  const [notifications, setNotifications] = useState<Notificacion[]>([]);
+  const [notifications, setNotifications] = useState(0);
 
-  const markAsRead = (index: number) => {
-    const updatedNotifications = [...notifications];
-    updatedNotifications[index].read = true;
-    setNotifications(updatedNotifications);
-
-    const notificationId = updatedNotifications[index].id;
-    fetch(`/notificaciones/${notificationId}`, {
-      method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+  const toggleNotifications = () => {
+    setNotifications(0);
   };
 
-  const navigate = useNavigate();
-  const navigateToLink = (link: string) => {
-    const llink = "/lotes/" + link;
-    navigate(llink);
-  };
   useEffect(() => {
-    fetch(`/usuarios/id/1`)
+    fetch(`/lotes/procesosPendientes`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -113,9 +88,7 @@ function Menu() {
         return response.json();
       })
       .then((responseData) => {
-        const reversedNotifications =
-          responseData.data.notificaciones.reverse();
-        setNotifications(reversedNotifications);
+        setNotifications(responseData.data.length);
       })
       .catch((error) => {
         console.error(error);
@@ -219,15 +192,24 @@ function Menu() {
         </ul>
       </div>
       <ul></ul>
-
       <ul></ul>
-      <div>
-        <NotificationList
-          notifications={notifications}
-          markAsRead={markAsRead}
-          navigateToLink={navigateToLink}
-        />
-      </div>
+
+      <Link
+        to="/agenda/general"
+        className="btn btn-custom-color-2 position-relative rounded-circle"
+        onClick={toggleNotifications}
+      >
+        <i className="bi bi-bell-fill custom-icon bi-lg"></i>
+
+        {notifications > 0 && (
+          <span
+            className="position-absolute  translate-middle badge rounded-pill bg-danger"
+            style={{ left: "35px", top: "6px" }}
+          >
+            {notifications}
+          </span>
+        )}
+      </Link>
     </div>
   );
 }

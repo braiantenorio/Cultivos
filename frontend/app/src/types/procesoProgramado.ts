@@ -8,4 +8,5 @@ export type ProcesoProgramado = {
   diaInicio: number;
   completado: Boolean;
   proceso: TipoDeProceso;
+  lote: string;
 };

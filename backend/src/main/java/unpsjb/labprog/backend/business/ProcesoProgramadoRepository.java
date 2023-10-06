@@ -12,7 +12,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgramado, Long> {
 
-        @Query("SELECT u.email AS email, u.nombre AS nombreUsuario, l.codigo AS codigoLote, pp.proceso.nombre AS proceso " +
+        @Query("SELECT u.email AS email, u.nombre AS nombreUsuario, l.codigo AS codigoLote, pp.proceso AS proceso " +
                         "FROM Lote l " +
                         "JOIN l.agenda a " +
                         "JOIN a.procesosProgramado pp " +
@@ -25,6 +25,16 @@ public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgr
                         "FROM Lote l " +
                         "JOIN l.agenda a " +
                         "JOIN a.procesosProgramado pp " +
-                        "WHERE pp.proceso.nombre = :proceso AND l.codigo = :lote AND pp.completado = false ")
-        ProcesoProgramado findProcesoProgramado(String lote, String proceso);
+                        "WHERE pp.proceso.nombre = :proceso AND l.codigo = :lote AND pp.completado = false ORDER BY pp.fechaARealizar ASC ")
+        List<ProcesoProgramado> findProcesoProgramado(String lote, String proceso);
+
+
+        @Query("SELECT  l.codigo AS codigoLote, pp AS proceso " +
+                        "FROM Lote l " +
+                        "JOIN l.agenda a " +
+                        "JOIN a.procesosProgramado pp " +
+                        "JOIN l.usuario u " +
+                        "WHERE pp.fechaARealizar <= :fecha AND pp.completado = false " +
+                        "ORDER BY pp.fechaARealizar ASC ")
+        List<Object[]> findProcesosProgramadosPendientes(LocalDate fecha);
 }

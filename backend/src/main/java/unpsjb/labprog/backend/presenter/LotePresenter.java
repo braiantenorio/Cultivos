@@ -105,17 +105,18 @@ public class LotePresenter {
       agendaCopia.setTipoAgenda(agenda);
 
       List<ProcesoProgramado> procesosCopia = new ArrayList<>();
-
+      LocalDate fechaActual = LocalDate.now();
       for (ProcesoProgramado procesoOriginal : agenda.getProcesosProgramado()) {
+        for(int i=0;i<procesoOriginal.getCantidad();i++){
         ProcesoProgramado procesoCopia = new ProcesoProgramado();
-        procesoCopia.setCantidad(procesoOriginal.getCantidad());
-        procesoCopia.setFrecuencia(procesoOriginal.getFrecuencia());
         procesoCopia.setCompletado(false);
         procesoCopia.setProceso(procesoOriginal.getProceso());
-        LocalDate fechaActual = LocalDate.now();
-        LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDiaInicio()-1);
+       
+        LocalDate fechaARealizar = fechaActual.plusDays((procesoOriginal.getDiaInicio()-1)+(procesoOriginal.getFrecuencia()*i));
         procesoCopia.setFechaARealizar(fechaARealizar);
         procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+        }
+
       }
 
       agendaCopia.setProcesosProgramado(procesosCopia);
@@ -151,6 +152,10 @@ public class LotePresenter {
   @GetMapping("/{loteId}/historia")
   public ResponseEntity<Object> obtenerLotesPadres(@PathVariable Long loteId) {
     return Response.ok(service.obtenerLotesPadres(loteId));
+  }
+  @GetMapping("/procesosPendientes")
+  public ResponseEntity<Object> obtenerLotesPadres() {
+    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes());
   }
 
 }

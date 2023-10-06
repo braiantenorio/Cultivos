@@ -62,7 +62,7 @@ public class NotificacionService {
 
             for (ProcesoProgramadoDTO proceso : procesosUsuario) {
 
-                String mensaje = "Proceso: " + proceso.getProceso() + "\n" + "Lote: " + proceso.getLote();
+                String mensaje = "Proceso: " + proceso.getProceso().getNombre() + "\n" + "Lote: " + proceso.getLote();
 
                 Notificacion notificacion = new Notificacion();
                 notificacion.setMensaje(mensaje);
@@ -74,7 +74,7 @@ public class NotificacionService {
 
             StringBuilder message = new StringBuilder(saludo + "\n\n");
             procesosUsuario.forEach(proceso -> {
-                message.append("Proceso: ").append(proceso.getProceso()).append("\n");
+                message.append("Proceso: ").append(proceso.getProceso().getNombre()).append("\n");
                 message.append("Lote: ").append(proceso.getLote()).append("\n\n");
             });
             emailService.sendEmail(new String[] { email }, subject, message.toString());
