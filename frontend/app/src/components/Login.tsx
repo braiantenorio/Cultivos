@@ -83,12 +83,12 @@ const Login: React.FC<Props> = () => {
             </div>
 
 
-            <div className="form-group">
+            <div className="d-grid gap-2">
               <button type="submit" className="btn btn-primary btn-block" disabled={loading}>
                 {loading && (
                   <span className="spinner-border spinner-border-sm"></span>
                 )}
-                <span>Login</span>
+                <span>Iniciar sesion</span>
               </button>
             </div>
 
