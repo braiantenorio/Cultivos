@@ -60,11 +60,11 @@ public class ProcesoProgramadoService {
 
         return procesosPorEmail;
     }
-    public List<ProcesoProgramadoDTO> obtenerProcesosProgramadosPendientes() {
+    public List<ProcesoProgramadoDTO> obtenerProcesosProgramadosPendientes(String codigo,String proces) {
 
         LocalDate fecha = LocalDate.now();
 
-        List<Object[]> resultados = repository.findProcesosProgramadosPendientes(fecha);
+        List<Object[]> resultados = repository.findProcesosProgramadosPendientes(fecha,"%" + codigo + "%","%" + proces + "%");
 
         List<ProcesoProgramadoDTO> procesosPendientes = new ArrayList<>();
 

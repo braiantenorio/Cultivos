@@ -154,8 +154,9 @@ public class LotePresenter {
     return Response.ok(service.obtenerLotesPadres(loteId));
   }
   @GetMapping("/procesosPendientes")
-  public ResponseEntity<Object> obtenerLotesPadres() {
-    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes());
+  public ResponseEntity<Object> obtenerLotesPadres(@RequestParam(value = "lote", required = false) String lote,
+      @RequestParam(value = "proceso", required = false) String proceso)  {
+    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote,proceso));
   }
 
 }

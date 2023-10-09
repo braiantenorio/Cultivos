@@ -5,6 +5,8 @@ import { Atributo } from "../types/atributo";
 import { Proceso } from "../types/proceso";
 import { Valor } from "../types/valor";
 import { TipoDeProceso } from "../types/tipoDeProceso";
+import { useNotifications } from "../Menu";
+import { LoteCodigo } from "../types/loteCodigo";
 
 function CrearProceso() {
   const { listId } = useParams();
@@ -15,6 +17,8 @@ function CrearProceso() {
   ); // aca falta asignar hay que arreglar
   const [tiposDeProcesos, setTiposDeProcesos] = useState<TipoDeProceso[]>([]);
   const [selectsHabilitados, setSelectsHabilitados] = useState(false);
+  const { notifications, updateNotifications } = useNotifications();
+  const { notificationMessages } = useNotifications();
 
   const navigate = useNavigate();
 
@@ -59,7 +63,6 @@ function CrearProceso() {
     event: React.ChangeEvent<HTMLInputElement>,
     nombreAtributo: string
   ) => {
-    console.log("hola");
     const { value } = event.target;
     setValores(
       valores.map((valor) => {
@@ -143,44 +146,66 @@ function CrearProceso() {
       usuario: null,
       fecha: null,
       valores: valores,
-      tipoDeProceso: tipoDeProceso,
+      listaDeAtributos: tipoDeProceso,
     };
-
-    fetch(`/procesos/lote/${loteId}`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(nProceso),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        console.log("Respuesta del servidor:", data);
+    if (notificationMessages.length > 0) {
+      const nLoteCodigo: LoteCodigo = {
+        lotesCodigos: notificationMessages,
+        proceso: nProceso,
+      };
+      fetch(`/procesos/lotes`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nLoteCodigo),
       })
-      .catch((error) => {
-        console.error("Error al crear el proceso:", error);
-      });
-
-    fetch(`/procesos/completar/${loteId}/${listId}`, {
-      method: "PUT", // O el método HTTP adecuado
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-        return response.json();
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Respuesta del servidor:", data);
+        })
+        .catch((error) => {
+          console.error("Error al crear el proceso:", error);
+        });
+    } else {
+      fetch(`/procesos/lote/${loteId}`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(nProceso),
       })
-      .catch((error) => {
-        console.error(error);
-      });
+        .then((response) => response.json())
+        .then((data) => {
+          console.log("Respuesta del servidor:", data);
+        })
+        .catch((error) => {
+          console.error("Error al crear el proceso:", error);
+        });
+    }
 
     navigate(-1);
+    updateNotifications(notifications, []);
   };
 
   return (
     <div className="container">
       <h2>Nuevo Proceso </h2>
       <div className="col-md-6">
+        {notificationMessages.length > 0 ? (
+          <ul className="list-inline">
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Lotes:
+            </span>{" "}
+            {notificationMessages.map((str, index) => (
+              <li key={index} className="list-inline-item">
+                {str},
+              </li>
+            ))}
+          </ul>
+        ) : (
+          <p></p>
+        )}
         <label htmlFor="proceso" className="form-label">
           Tipo de Proceso
         </label>

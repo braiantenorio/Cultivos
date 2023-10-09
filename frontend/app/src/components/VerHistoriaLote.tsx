@@ -43,56 +43,56 @@ function VerHistoriaLote() {
             <div className="accordion-item">
               <h2 className="accordion-header">
                 <button
-                  className="accordion-button"
+                  className="accordion-button btn-sm"
                   type="button"
                   data-bs-toggle="collapse"
                   data-bs-target={`#collapse-${lote.id}`}
                   aria-expanded="true"
                   aria-controls={`collapse-${lote.id}`}
-                  >
+                >
                   {lote.codigo}
                 </button>
               </h2>
               <div
-          id={`collapse-${lote.id}`}
-          className="accordion-collapse collapse show"
+                id={`collapse-${lote.id}`}
+                className="accordion-collapse collapse show"
               >
                 <div className="accordion-body">
-               <table className="table caption-top">
-              <caption>Procesos</caption>
-              <thead>
-                <tr>
-                  <th>ID</th>
-                  <th>Nombre</th>
-                  <th>Descripción</th>
-                  <th></th>
-                </tr>
-              </thead>
-              <tbody>
-                {lote.procesos.map((proceso) => (
-                  <tr key={proceso.id}>
-                    <td>{proceso.id}</td>
-                    <td>{proceso.usuario}</td>
-                    <td>{proceso.fecha ? new Date(proceso.fecha).toLocaleDateString() : ''}</td>
-                    <td>
-                      <Link
-                        to={`/lotes/${lote.id}`}
-                        className="btn btn-sm btn-info me-2"
-                      >
-                        Ver Detalle
-                      </Link>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-
-
+                  <table className="table caption-top">
+                    <caption>Procesos</caption>
+                    <thead>
+                      <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th></th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {lote.procesos.map((proceso) => (
+                        <tr key={proceso.id}>
+                          <td>{proceso.id}</td>
+                          <td>{proceso.usuario}</td>
+                          <td>
+                            {proceso.fecha
+                              ? new Date(proceso.fecha).toLocaleDateString()
+                              : ""}
+                          </td>
+                          <td>
+                            <Link
+                              to={`/lotes/${lote.id}`}
+                              className="btn btn-sm btn-info me-2"
+                            >
+                              Ver Detalle
+                            </Link>
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
                 </div>
               </div>
             </div>
-
-
           </div>
         </div>
       ))}

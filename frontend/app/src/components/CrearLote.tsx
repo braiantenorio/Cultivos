@@ -1,8 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import { Categoria } from "../types/categoria";
 import { Lote } from "../types/lote";
 import { Cultivar } from "../types/cultivar";
+import { useNotifications } from "../Menu";
 
 const CrearLote: React.FC = () => {
   const [cantidadError, setCantidadError] = useState("");
@@ -11,6 +12,7 @@ const CrearLote: React.FC = () => {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [cultivares, setCultivares] = useState<Cultivar[]>([]);
   const navigate = useNavigate();
+  const { notifications, updateNotifications } = useNotifications();
   const requestOptions = {
     method: "POST", // Método de la solicitud POST
     headers: {
@@ -153,6 +155,16 @@ const CrearLote: React.FC = () => {
       })
       .then((responseData) => {
         console.log("Respuesta del servidor:", responseData);
+        // Obtiene la fecha actual en formato ISO (yyyy-mm-dd)
+        const today = new Date().toISOString().split("T")[0];
+
+        // Filtra los procesos programados con fecha igual a la de hoy
+        const procesosHoy = responseData.data.agenda.procesosProgramado.filter(
+          (proceso: { fechaARealizar: string }) =>
+            proceso.fechaARealizar === today
+        );
+        updateNotifications(notifications + procesosHoy.length, []);
+
         navigate(-1);
       })
       .catch((error) => {

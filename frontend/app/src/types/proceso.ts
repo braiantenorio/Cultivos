@@ -7,5 +7,5 @@ export type Proceso = {
   usuario: string | null;
   fecha: Date | null;
   valores: Valor[];
-  tipoDeProceso: TipoDeProceso;
+  listaDeAtributos: TipoDeProceso;
 };

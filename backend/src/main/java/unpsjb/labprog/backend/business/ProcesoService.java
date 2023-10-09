@@ -45,10 +45,10 @@ public class ProcesoService {
 	public Proceso add(Proceso proceso, String id) {
 		Lote lote = loteService.findByCode(id);
 		lote.addProceso(proceso);
-		// completarProcesoProgramado(id,proceso.getTipoProceso().getNombre());?
 
 		try {
 			loteService.update(lote);
+			completarProcesoProgramado(id,proceso.getListaDeAtributos().getNombre());
 		} catch (Exception e) {
 			// TODO: handle exception error de recursion
 		}
@@ -59,7 +59,7 @@ public class ProcesoService {
 		repository.deleteById(id);
 	}
 
-	public ProcesoProgramado completarProcesoProgramado(String id, String proceso) {
+	private ProcesoProgramado completarProcesoProgramado(String id, String proceso) {
 
 	    List<ProcesoProgramado> pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
 		if (pp != null) {

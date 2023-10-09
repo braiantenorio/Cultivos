@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RestController;
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.business.ProcesoService;
 import unpsjb.labprog.backend.model.Proceso;
+import unpsjb.labprog.backend.DTOs.LoteCodigoDTO;
 
 @RestController
 @RequestMapping("procesos")
@@ -35,18 +36,23 @@ public class ProcesoPresenter {
 
 	@PostMapping(value = "/lote/{id}")
 	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("id") String id) {
-
+        
 		return Response.ok(service.add(Proceso, id), "Proceso creado correctamente");
+	}
+
+	@PostMapping(value = "/lotes")
+	public ResponseEntity<Object> crear(@RequestBody LoteCodigoDTO loteCodigo) {
+        
+        for(String lote:loteCodigo.getLotesCodigos()){
+			service.add(loteCodigo.getProceso(), lote);
+		}
+
+		return Response.ok(loteCodigo, "Proceso creado correctamente");
 	}
 
 	@PutMapping
 	public ResponseEntity<Object> update(@RequestBody Proceso lote) {
 		return Response.ok(service.update(lote), "Proceso actualizado correctamente");
-	}
-
-	@PutMapping(value = "/completar/{id}/{proceso}")
-	public ResponseEntity<Object> update(@PathVariable("id") String id, @PathVariable("proceso") String proceso) {
-		return Response.ok(service.completarProcesoProgramado(id, proceso), "Proceso actualizado correctamente");
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
