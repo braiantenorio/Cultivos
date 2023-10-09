@@ -1,0 +1,15 @@
+Contemplar cultivar
+es cultivar o lote padre
+
+imagenes en atributos
+
+Bueno, vamos a tener que dejar definir categorias, y codigos, que van a usar 
+para los codigos de los lotes. Tambien para cultivares
+
+
+los informes para el inase van solo en un excel
+
+
+ver que luego un lote puede pasar a lote padre
+procesos independientes
+
