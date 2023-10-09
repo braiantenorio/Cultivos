@@ -18,6 +18,7 @@ import unpsjb.labprog.backend.model.ProcesoProgramado;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -60,6 +61,7 @@ public class LotePresenter {
   }
 
   @GetMapping
+  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> findAll(
       @RequestParam(value = "filtered", required = false) boolean filtered,
       @RequestParam(value = "term", required = false) String term) {
@@ -71,11 +73,10 @@ public class LotePresenter {
     return Response.ok(service.findAllActivosByCategoria(serviceCategoria.findById(id)));
   }
 
-
-   @RequestMapping(value = "/log/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/log/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> findById(@PathVariable("id") long id) {
-  
-    return  Response.ok(service.findAllRevisions(id)) ;
+
+    return Response.ok(service.findAllRevisions(id));
   }
 
   @PostMapping
@@ -98,7 +99,7 @@ public class LotePresenter {
       }
     }
 
-    TipoAgenda agenda = serviceTipoAgenda.findByCategoria(lote.getCategoria().getNombre(),"estandar");
+    TipoAgenda agenda = serviceTipoAgenda.findByCategoria(lote.getCategoria().getNombre(), "estandar");
     if (agenda != null) {
 
       Agenda agendaCopia = new Agenda();
@@ -113,7 +114,7 @@ public class LotePresenter {
         procesoCopia.setCompletado(false);
         procesoCopia.setProceso(procesoOriginal.getProceso());
         LocalDate fechaActual = LocalDate.now();
-        LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDiaInicio()-1);
+        LocalDate fechaARealizar = fechaActual.plusDays(procesoOriginal.getDiaInicio() - 1);
         procesoCopia.setFechaARealizar(fechaARealizar);
         procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
       }
@@ -139,13 +140,13 @@ public class LotePresenter {
   @DeleteMapping(value = "/delete/{id}")
   public void delete(@PathVariable("id") Long id) {
     Lote lote = service.findById(id);
-     service.delete(id);
-    if(lote.getLotePadre()!=null){
+    service.delete(id);
+    if (lote.getLotePadre() != null) {
       Lote lotePadre = service.findById(lote.getLotePadre().getId());
       lotePadre.setEsHoja(true);
       service.update(lotePadre);
     }
-   // service.delete(id);
+    // service.delete(id);
   }
 
   @GetMapping("/{loteId}/historia")

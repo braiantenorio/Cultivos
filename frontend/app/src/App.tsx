@@ -7,6 +7,7 @@ import {
   Routes,
   useNavigate,
 } from "react-router-dom";
+
 import Loteslist from "./components/LotesList";
 import EditarLote from "./components/EditarLote";
 import "./App.css";
@@ -31,7 +32,21 @@ import ListarAtributos from "./components/ListarAtributos";
 import ListarTiposDeProcesos from "./components/ListarTiposDeProcesos";
 import VerHistoriaLote from "./components/VerHistoriaLote";
 
+import * as AuthService from "./services/auth.service";
+import Usuario from "./types/usuario";
+import Login from "./components/Login";
+import Register from "./components/Register";
+import Profile from "./components/Profile";
+import BoardUser from "./components/BoardUser";
+import BoardModerator from "./components/BoardModerator";
+import BoardAdmin from "./components/BoardAdmin";
+
+import EventBus from "./common/EventBus";
+
+
 function App() {
+
+
   return (
     <BrowserRouter>
       <Menu />
@@ -55,6 +70,13 @@ function App() {
         <Route path="/tipo-proceso/new" element={<CrearTipoDeProceso />} />
         <Route path="/tipo-proceso" element={<ListarTiposDeProcesos />} />
         <Route path="/" element={<Home />} />
+        <Route path="/home" element={<Home />} />
+        <Route path="/login" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route path="/profile" element={<Profile />} />
+        <Route path="/user" element={<BoardUser />} />
+        <Route path="/mod" element={<BoardModerator />} />
+        <Route path="/admin" element={<BoardAdmin />} />
       </Routes>
     </BrowserRouter>
   );
@@ -75,6 +97,36 @@ function Home() {
 }
 
 function Menu() {
+  
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(undefined);
+
+  useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
+
+    EventBus.on("logout", logOut);
+
+    return () => {
+      EventBus.remove("logout", logOut);
+    };
+  }, []);
+
+  const logOut = () => {
+    AuthService.logout();
+    setShowModeratorBoard(false);
+    setShowAdminBoard(false);
+    setCurrentUser(undefined);
+  };
+
+
+
   const [notifications, setNotifications] = useState<Notificacion[]>([]);
 
   const markAsRead = (index: number) => {
@@ -104,6 +156,7 @@ function Menu() {
     const llink = "/lotes/" + link;
     navigate(llink);
   };
+  
   useEffect(() => {
     fetch(`/usuarios/id/1`)
       .then((response) => {
@@ -121,6 +174,7 @@ function Menu() {
         console.error(error);
       });
   }, []);
+
   return (
     <div
       className="d-flex flex-column flex-md-row align-items-center p-1 px-md-4 mb-3 
@@ -228,6 +282,59 @@ function Menu() {
           navigateToLink={navigateToLink}
         />
       </div>
+
+      {showModeratorBoard && (
+            <li className="nav-item">
+              <Link to={"/mod"} className="nav-link">
+                Moderator Board
+              </Link>
+            </li>
+          )}
+
+          {showAdminBoard && (
+            <li className="nav-item">
+              <Link to={"/admin"} className="nav-link">
+                Admin Board
+              </Link>
+            </li>
+          )}
+
+          {currentUser && (
+            <li className="nav-item">
+              <Link to={"/user"} className="nav-link">
+                User
+              </Link>
+            </li>
+          )}
+
+        {currentUser ? (
+          <div className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link to={"/profile"} className="nav-link">
+                {currentUser.username}
+              </Link>
+            </li>
+            <li className="nav-item">
+              <a href="/login" className="nav-link" onClick={logOut}>
+                LogOut
+              </a>
+            </li>
+          </div>
+        ) : (
+          <div className="navbar-nav ml-auto">
+            <li className="nav-item">
+              <Link to={"/login"} className="nav-link">
+                Login
+              </Link>
+            </li>
+
+            <li className="nav-item">
+              <Link to={"/register"} className="nav-link">
+                Sign Up
+              </Link>
+            </li>
+          </div>
+)}
     </div>
   );
 }
