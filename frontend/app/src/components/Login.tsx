@@ -25,12 +25,14 @@ const Login: React.FC<Props> = () => {
   };
 
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
 
     setMessage("");
     setLoading(true);
 
     login(formData.username, formData.password).then(
       () => {
+        //console.log("nose")
         navigate("/profile");
         window.location.reload();
       },

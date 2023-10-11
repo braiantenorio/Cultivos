@@ -32,7 +32,7 @@ import unpsjb.labprog.backend.business.UsuarioRepository;
 import unpsjb.labprog.backend.jwt.JwtUtils;
 import unpsjb.labprog.backend.business.UserDetailsImpl;
 
-//@CrossOrigin(origins = "*", maxAge = 3600)
+@CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
 @RequestMapping("api/auth")
 public class AuthPresenter {
@@ -80,7 +80,7 @@ public class AuthPresenter {
 
     // Create new user's account
     Usuario user = new Usuario(signUpRequest.getUsername(), signUpRequest.getEmail(),
-        encoder.encode(signUpRequest.getPassword()));
+        encoder.encode(signUpRequest.getPassword()), signUpRequest.getNombre(), signUpRequest.getApellido());
 
     Set<String> strRoles = signUpRequest.getRole();
     Set<Role> roles = new HashSet<>();

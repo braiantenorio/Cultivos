@@ -69,4 +69,11 @@ insert into tipo_agenda_procesos_programado (tipo_agenda_id,procesos_programado_
 insert into usuarios (id,apellido,nombre,email) values
 (1,'tenorio','braian','tenoriovidalbraian@gmail.com')  
 
+
+-- muy necesario, sino no sirven los usuarios
+INSERT INTO roles(name) VALUES('ROLE_USER');
+INSERT INTO roles(name) VALUES('ROLE_MODERATOR');
+INSERT INTO roles(name) VALUES('ROLE_ADMIN');
+
+
 //despues crea un lote de categoria platan madre y otro de clone 

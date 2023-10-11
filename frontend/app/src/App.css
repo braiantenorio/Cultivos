@@ -91,17 +91,19 @@ body {
 
 .form-signup input[type="text"] {
   margin-top: 20px;
-  margin-bottom: 20px;
 
 }
 
 .form-signup input[type="password"] {
-  margin-bottom: 20px;
+  margin-top: 20px;
 
 }
 
 .form-signup input[type="email"] {
-  margin-bottom: 20px;
+  margin-top: 20px;
 
 }
 
+.button-with-margin {
+  margin-top: 20px;
+}

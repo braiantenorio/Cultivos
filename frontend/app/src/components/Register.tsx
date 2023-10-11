@@ -4,16 +4,26 @@ import { register } from "../services/auth.service";
 //import register from "../services/auth.service"
 
 interface FormData {
+  nombre: string;
+  apellido: string;
   username: string;
   email: string;
   password: string;
+  confirmPassword: string;
 }
 
 const Register: React.FC = () => {
+  
+  const [validated, setValidated] = useState(false);
+
+
   const [formData, setFormData] = useState<FormData>({
+    nombre: "",
+    apellido: "",
     username: "",
     email: "",
     password: "",
+    confirmPassword: "",
   });
 
   const [successful, setSuccessful] = useState<boolean>(false);
@@ -30,6 +40,15 @@ const Register: React.FC = () => {
   const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
+    const form = e.currentTarget;
+    if (!form.checkValidity()) {
+      e.preventDefault();
+      e.stopPropagation();
+    }
+
+    form.classList.add('was-validated')
+
+    
     // Realizar la validación manualmente aquí
     if (formData.username.length < 3 || formData.username.length > 20) {
       setMessage("El nombre de usuario debe tener entre 3 y 20 caracteres.");
@@ -50,24 +69,28 @@ const Register: React.FC = () => {
       return;
     }
 
-    // Aquí puedes realizar la llamada a tu función de registro
-    // Supongamos que tienes una función register que realiza la llamad
-     register(formData.username, formData.email, formData.password).then(
-       (response) => {
-         setMessage(response.data.message);
-         setSuccessful(true);
-       },
-       (error) => {
-         const resMessage =
-           (error.response &&
-             error.response.data &&
-             error.response.data.message) ||
-           error.message ||
-           error.toString()
-         setMessage(resMessage);
-         setSuccessful(false);
-       }
-     );
+    register(
+      formData.username,
+      formData.email,
+      formData.password,
+      formData.nombre,
+      formData.apellido
+    ).then(
+      (response) => {
+        setMessage(response.data.message);
+        setSuccessful(true);
+      },
+      (error) => {
+        const resMessage =
+          (error.response &&
+            error.response.data &&
+            error.response.data.message) ||
+          error.message ||
+          error.toString();
+        setMessage(resMessage);
+        setSuccessful(false);
+      }
+    );
   };
 
   return (
@@ -75,9 +98,45 @@ const Register: React.FC = () => {
       <div className="col-md-12">
         <div className="form-signup w-100 m-auto">
           <h2>Crear usuario</h2>
-          <form onSubmit={handleSubmit}>
+          <form className="needs-validation" noValidate onSubmit={handleSubmit} >
             {!successful && (
               <div>
+                <div className="form-floating">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="nombre"
+                    placeholder="Nombre"
+                    value={formData.nombre}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label htmlFor="name">Nombre</label>
+                  <div
+                    className="invalid-feedback"
+                    id="nombre-error"
+                  >
+                    Ingrese un nombre valido.
+                  </div>
+                </div>
+                <div className="form-floating">
+                  <input
+                    type="text"
+                    className="form-control"
+                    name="apellido"
+                    placeholder="Apellido"
+                    value={formData.apellido}
+                    onChange={handleInputChange}
+                    required
+                  />
+                  <label htmlFor="apellido">Apellido</label>
+                  <div
+                    className="invalid-feedback"
+                    id="apellido-error"
+                  >
+                    Ingrese un apellido valido.
+                  </div>
+                </div>
                 <div className="form-floating">
                   <input
                     type="text"
@@ -86,8 +145,15 @@ const Register: React.FC = () => {
                     placeholder="Username"
                     value={formData.username}
                     onChange={handleInputChange}
+                    required
                   />
                   <label htmlFor="username">Nombre de usuario</label>
+                  <div
+                    className="invalid-feedback"
+                    id="username-error"
+                  >
+                    Ingrese un nombre de usuario valido.
+                  </div>
                 </div>
                 <div className="form-floating">
                   <input
@@ -97,8 +163,15 @@ const Register: React.FC = () => {
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleInputChange}
+                    required
                   />
                   <label htmlFor="email">Email</label>
+                  <div
+                    className="invalid-feedback"
+                    id="email-error"
+                  >
+                    Ingrese un email valido.
+                  </div>
                 </div>
                 <div className="form-floating">
                   <input
@@ -108,8 +181,15 @@ const Register: React.FC = () => {
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    required
                   />
                   <label htmlFor="password">Contraseña</label>
+                  <div
+                    className="invalid-feedback"
+                    id="password-error"
+                  >
+                    Ingrese una contraseña valida.
+                  </div>
                 </div>
                 <div className="form-floating">
                   <input
@@ -118,12 +198,19 @@ const Register: React.FC = () => {
                     name="con-password"
                     id="con-password"
                     placeholder="Password"
+                    required
                   />
                   <label htmlFor="con-password">Confirmar contraseña</label>
+                  <div
+                    className="invalid-feedback"
+                    id="password-mismatch-error"
+                  >
+                    Las contraseñas no coinciden.
+                  </div>
                 </div>
 
                 <div className="d-grid gap-2">
-                  <button type="submit" className="btn btn-primary">
+                  <button type="submit" className="btn btn-primary button-with-margin">
                     Registrarse
                   </button>
                 </div>

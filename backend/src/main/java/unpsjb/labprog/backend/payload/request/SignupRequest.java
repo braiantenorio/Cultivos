@@ -17,6 +17,14 @@ public class SignupRequest {
     @Size(max = 50)
     @Email
     private String email;
+
+    @NotBlank
+    @Size(max = 50)
+    private String nombre;
+
+    @NotBlank
+    @Size(max = 50)
+    private String apellido;
     
     private Set<String> role;
     

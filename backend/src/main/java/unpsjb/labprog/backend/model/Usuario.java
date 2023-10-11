@@ -73,10 +73,12 @@ public class Usuario {
              inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
 
-  public Usuario(String username, String email, String password) {
+  public Usuario(String username, String email, String password, String nombre, String apellido) {
     this.username = username;
     this.email = email;
     this.password = password;
+    this.nombre = nombre;
+    this.apellido = apellido;
   }
 
   public void addNotificacion(Notificacion notificacion) {
