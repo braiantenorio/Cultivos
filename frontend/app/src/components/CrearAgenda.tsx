@@ -196,7 +196,7 @@ function CrearAgenda() {
           </button>
         </h2>
 
-        <div className="mb-3">
+        <div className="mb-3 col-5">
           <label htmlFor="categoria" className="form-label">
             Para La Categoría:
           </label>
@@ -215,7 +215,7 @@ function CrearAgenda() {
             ))}
           </select>
         </div>
-        <div className="mb-3">
+        <div className="mb-3 col-5">
           <label htmlFor="fechaInicio" className="form-label">
             Version:
           </label>

@@ -9,6 +9,7 @@ import unpsjb.labprog.backend.model.TipoAgenda;
 import unpsjb.labprog.backend.business.AgendaService;
 import unpsjb.labprog.backend.business.TipoAgendaService;
 import unpsjb.labprog.backend.business.CategoriaService;
+import unpsjb.labprog.backend.business.ListaDeAtributosService;
 import unpsjb.labprog.backend.business.UsuarioService;
 import unpsjb.labprog.backend.business.ProcesoProgramadoService;
 import java.time.LocalDate;
@@ -46,6 +47,8 @@ public class LotePresenter {
   CategoriaService serviceCategoria;
   @Autowired
   UsuarioService serviceUsuario;
+  @Autowired
+  ListaDeAtributosService serviceListaDeAtributos;
 
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> findById(@PathVariable("id") int id) {
@@ -80,7 +83,7 @@ public class LotePresenter {
   @PostMapping
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
 
-    if ((!lote.getCategoria().getNombre().equals("Clone")) && lote.getLotePadre() != null) {
+    if (lote.getCategoria().getLimite() && lote.getLotePadre() != null) {
 
       Lote lotePadre = service.findById(lote.getLotePadre().getId());
       int totalCantidadSublotes = service.calculateTotalCantidadSublotes(lotePadre.getId());
@@ -149,9 +152,20 @@ public class LotePresenter {
   }
 
   @GetMapping("/procesosPendientes")
-  public ResponseEntity<Object> obtenerLotesPadres(@RequestParam(value = "lote", required = false) String lote,
-      @RequestParam(value = "proceso", required = false) String proceso) {
-    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote, proceso));
+  public ResponseEntity<Object> obtenerLotesPadres(@RequestParam(value = "term", required = false) String lote
+
+      , @RequestParam(value = "dia", required = false) int dia) {
+    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote, dia));
+  }
+
+  @GetMapping("/search")
+  public ResponseEntity<Object> search(@RequestParam(value = "term", required = false) String term
+
+  // ,@RequestParam(value = "proceso", required = false) String proceso
+  ) {
+    List<String> resul = service.search(term);
+    resul.addAll(serviceListaDeAtributos.search(term));
+    return Response.ok(resul);
   }
 
 }

@@ -13,25 +13,28 @@ import org.springframework.data.repository.query.Param;
 @Repository
 public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSortingRepository<Lote, Long> {
 
-    @Query("SELECT l FROM Lote l WHERE UPPER(l.codigo) = UPPER(?1)")
-    Optional<Lote> findByCode(String code);
+        @Query("SELECT l FROM Lote l WHERE UPPER(l.codigo) = UPPER(?1)")
+        Optional<Lote> findByCode(String code);
 
-    @Query("SELECT COALESCE(SUM(l.cantidad), 0) FROM Lote l WHERE l.lotePadre.id = ?1")
-    int calculateTotalCantidadSublotes(Long lotePadreId);
+        @Query("SELECT COALESCE(SUM(l.cantidad), 0) FROM Lote l WHERE l.lotePadre.id = ?1 AND l.categoria.limite = true ")
+        int calculateTotalCantidadSublotes(Long lotePadreId);
 
-    @Query("SELECT l FROM Lote l WHERE l.esHoja=true ")
-    List<Lote> findAllActivos();
+        @Query("SELECT l FROM Lote l WHERE l.esHoja=true ")
+        List<Lote> findAllActivos();
 
-    @Query("SELECT l FROM Lote l " +
-            "JOIN l.categoria c " +
-            "WHERE l.deleted = false " +
-            "AND l.esHoja = true " +
-            "AND :categoria MEMBER OF c.subCategorias")
-    List<Lote> findAllActivosByCategoria(@Param("categoria") Categoria categoria);
+        @Query("SELECT l FROM Lote l " +
+                        "JOIN l.categoria c " +
+                        "WHERE l.deleted = false " +
+                        "AND l.esHoja = true " +
+                        "AND :categoria MEMBER OF c.subCategorias")
+        List<Lote> findAllActivosByCategoria(@Param("categoria") Categoria categoria);
 
-    @Query("SELECT COUNT(l) FROM Lote l " +
-            "JOIN l.categoria c " +
-            "WHERE c = :categoria")
-    int countLotesByCategoria(@Param("categoria") Categoria categoria);
+        @Query("SELECT COUNT(l) FROM Lote l " +
+                        "JOIN l.categoria c " +
+                        "WHERE c = :categoria")
+        int countLotesByCategoria(@Param("categoria") Categoria categoria);
+
+        @Query("SELECT l.codigo FROM Lote l WHERE UPPER(l.codigo) LIKE CONCAT('%', UPPER(?1), '%') ")
+        List<String> searchLote(String term);
 
 }

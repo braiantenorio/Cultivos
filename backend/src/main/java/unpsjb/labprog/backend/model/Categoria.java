@@ -29,8 +29,10 @@ public class Categoria {
 
 	@Column(nullable = false, unique = true)
 	private String codigo;
-    
-    @JsonIgnore
+
+	private Boolean limite;
+
+	@JsonIgnore
 	@ManyToMany
 	private List<Categoria> subCategorias;
 }

@@ -28,15 +28,14 @@ public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgr
                         "WHERE pp.proceso.nombre = :proceso AND l.codigo = :lote AND pp.completado = false ORDER BY pp.fechaARealizar ASC ")
         List<ProcesoProgramado> findProcesoProgramado(String lote, String proceso);
 
-
         @Query("SELECT  l.codigo AS codigoLote, pp AS proceso " +
                         "FROM Lote l " +
                         "JOIN l.agenda a " +
                         "JOIN a.procesosProgramado pp " +
                         "JOIN l.usuario u " +
                         "WHERE pp.fechaARealizar <= :fecha AND pp.completado = false " +
-                        "AND UPPER(l.codigo) LIKE CONCAT('%', UPPER(:codigo), '%') " +
-                        "AND UPPER(pp.proceso.nombre)  LIKE CONCAT('%', UPPER(:proceso), '%') " +
+                        "AND (UPPER(l.codigo) LIKE CONCAT('%', UPPER(:term), '%') " +
+                        "OR UPPER(pp.proceso.nombre)  LIKE CONCAT('%', UPPER(:term), '%')) " +
                         "ORDER BY pp.fechaARealizar ASC ")
-        List<Object[]> findProcesosProgramadosPendientes(LocalDate fecha,String codigo,String proceso);
+        List<Object[]> findProcesosProgramadosPendientes(LocalDate fecha, String term);
 }

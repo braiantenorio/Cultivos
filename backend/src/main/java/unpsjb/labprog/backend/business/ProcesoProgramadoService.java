@@ -53,18 +53,20 @@ public class ProcesoProgramadoService {
             String codigoLote = (String) resultado[2];
             ProcesoProgramado proceso = (ProcesoProgramado) resultado[3];
 
-            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(codigoLote, proceso.getProceso(),proceso.getFechaARealizar(),proceso.getCompletado());
+            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(codigoLote, proceso.getProceso(),
+                    proceso.getFechaARealizar(), proceso.getCompletado());
 
             procesosPorEmail.computeIfAbsent(email, k -> new ArrayList<>()).add(dto);
         }
 
         return procesosPorEmail;
     }
-    public List<ProcesoProgramadoDTO> obtenerProcesosProgramadosPendientes(String codigo,String proces) {
 
-        LocalDate fecha = LocalDate.now();
+    public List<ProcesoProgramadoDTO> obtenerProcesosProgramadosPendientes(String codigo, int dia) {
 
-        List<Object[]> resultados = repository.findProcesosProgramadosPendientes(fecha,"%" + codigo + "%","%" + proces + "%");
+        LocalDate fecha = LocalDate.now().plusDays(dia);
+
+        List<Object[]> resultados = repository.findProcesosProgramadosPendientes(fecha, "%" + codigo + "%");
 
         List<ProcesoProgramadoDTO> procesosPendientes = new ArrayList<>();
 
@@ -72,12 +74,13 @@ public class ProcesoProgramadoService {
             String codigoLote = (String) resultado[0];
             ProcesoProgramado proceso = (ProcesoProgramado) resultado[1];
 
-            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(codigoLote, proceso.getProceso(),proceso.getFechaARealizar(),proceso.getCompletado());
+            ProcesoProgramadoDTO dto = new ProcesoProgramadoDTO(codigoLote, proceso.getProceso(),
+                    proceso.getFechaARealizar(), proceso.getCompletado());
 
             procesosPendientes.add(dto);
         }
 
-        return  procesosPendientes;
+        return procesosPendientes;
     }
 
 }

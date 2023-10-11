@@ -71,7 +71,7 @@ function Menu() {
   };
 
   useEffect(() => {
-    fetch(`/lotes/procesosPendientes?lote=&proceso=`)
+    fetch(`/lotes/procesosPendientes?term=&dia=0`)
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);

@@ -239,45 +239,47 @@ const CrearLote: React.FC = () => {
     <div className="container">
       <h1>Crear Nuevo Lote</h1>
       <form>
-        <div className="mb-3">
-          <label htmlFor="categoria" className="form-label">
-            Categoría:
-          </label>
-          <select
-            className="form-select"
-            id="categoria"
-            name="categoria"
-            value={nuevoLote.categoria?.id}
-            onChange={handleCategoriaChange}
-          >
-            <option value={0}></option>
-            {categorias.map((categoria) => (
-              <option key={categoria.id} value={categoria.id}>
-                {categoria.nombre}
-              </option>
-            ))}
-          </select>
+        <div className="mb-3 row align-items-center">
+          <div className="col-3">
+            <label htmlFor="categoria" className="form-label">
+              Categoría:
+            </label>
+            <select
+              className="form-select"
+              id="categoria"
+              name="categoria"
+              value={nuevoLote.categoria?.id}
+              onChange={handleCategoriaChange}
+            >
+              <option value={0}></option>
+              {categorias.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.nombre}&nbsp;({categoria.codigo})
+                </option>
+              ))}
+            </select>
+          </div>
+          &nbsp; &nbsp;
+          <div className="col-3">
+            <label htmlFor="agenda" className="form-label">
+              Agenda version:
+            </label>
+            <select
+              className="form-select"
+              id="agenda"
+              name="agenda"
+              value={nuevoLote.agenda?.tipoAgenda.id}
+              onChange={handleAgendaChange}
+            >
+              {tipoAgendas.map((categoria) => (
+                <option key={categoria.id} value={categoria.id}>
+                  {categoria.version}
+                </option>
+              ))}
+            </select>
+          </div>
         </div>
-        <div className="mb-3">
-          <label htmlFor="agenda" className="form-label">
-            Agenda version:
-          </label>
-          <select
-            className="form-select"
-            id="agenda"
-            name="agenda"
-            value={nuevoLote.agenda?.tipoAgenda.id}
-            onChange={handleAgendaChange}
-          >
-            {tipoAgendas.map((categoria) => (
-              <option key={categoria.id} value={categoria.id}>
-                {categoria.version}
-              </option>
-            ))}
-          </select>
-        </div>
-
-        <div className="mb-3">
+        <div className="mb-3 col-5">
           <label htmlFor="lotePadre" className="form-label">
             Lote Predecesor
           </label>
@@ -296,7 +298,7 @@ const CrearLote: React.FC = () => {
             ))}
           </select>
         </div>
-        <div className="mb-3">
+        <div className="mb-3 col-5">
           <label htmlFor="cultivar" className="form-label">
             Cultivar:
           </label>
@@ -311,12 +313,12 @@ const CrearLote: React.FC = () => {
             <option value={0}></option>
             {cultivares.map((categoria) => (
               <option key={categoria.id} value={categoria.id}>
-                {categoria.nombre}
+                {categoria.nombre}&nbsp; ({categoria.codigo})
               </option>
             ))}
           </select>
         </div>
-        <div className="mb-3">
+        <div className="mb-3 col-5">
           <label htmlFor="cantidad" className="form-label">
             Cantidad:
           </label>
@@ -332,7 +334,7 @@ const CrearLote: React.FC = () => {
             <div className="alert alert-danger">{cantidadError}</div>
           )}
         </div>
-
+        &nbsp;
         <div className="mb-3">
           <button
             type="button"

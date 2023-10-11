@@ -7,7 +7,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import unpsjb.labprog.backend.model.ListaDeAtributos;
-import unpsjb.labprog.backend.model.Lote;
 
 @Service
 public class ListaDeAtributosService {
@@ -25,6 +24,10 @@ public class ListaDeAtributosService {
         return repository.findById(id).orElse(null);
     }
 
+    public List<String> search(String term) {
+        return repository.search("%" + term + "%");
+    }
+
     @Transactional
     public ListaDeAtributos update(ListaDeAtributos lote) {
         return repository.save(lote);
@@ -40,7 +43,7 @@ public class ListaDeAtributosService {
     }
 
     public ListaDeAtributos findByNombre(String code) {
-		return repository.findByNombre(code).orElse(null);
-	}
+        return repository.findByNombre(code).orElse(null);
+    }
 
 }

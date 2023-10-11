@@ -67,3 +67,12 @@
   background-color: rgba(0, 0, 0, 0.6); /* Fondo oscuro semi-transparente */
   z-index: 999; /* Asegura que la capa esté por encima de otros elementos */
 }
+/* styles.css */
+.list-group-item {
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.list-group-item:hover {
+  background-color: #f0f0f0;
+}

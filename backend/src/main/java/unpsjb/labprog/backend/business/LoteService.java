@@ -97,6 +97,10 @@ public class LoteService {
 		return repository.calculateTotalCantidadSublotes(lotePadreId);
 	}
 
+	public List<String> search(String term) {
+		return repository.searchLote("%" + term + "%");
+	}
+
 	@Transactional
 	public Lote update(Lote lote) {
 		return repository.save(lote);
