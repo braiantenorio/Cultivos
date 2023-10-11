@@ -11,7 +11,7 @@ function CrearAgenda() {
   const [tipo, setTipo] = useState("Crear Agenda");
   const { id } = useParams();
   const [tipoAgenda, setTipoAgenda] = useState({
-    categoria: "",
+    categoria: {} as Categoria,
     version: "",
     procesosProgramado: [] as {
       fechaARealizar: Date;
@@ -153,10 +153,13 @@ function CrearAgenda() {
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
     const { value } = event.target;
+    const selectedCategoria = categorias.find(
+      (categoria) => categoria.id === parseInt(value, 10)
+    );
 
     setTipoAgenda((prevLote) => ({
       ...prevLote,
-      categoria: value,
+      categoria: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
     }));
   };
 
@@ -201,12 +204,12 @@ function CrearAgenda() {
             className="form-select"
             id="categoria"
             name="categoria"
-            value={tipoAgenda.categoria}
+            value={tipoAgenda.categoria.id}
             onChange={handleCategoriaChange}
           >
             <option value={0}>Seleccione una categoría</option>
             {categorias.map((categoria) => (
-              <option key={categoria.id} value={categoria.nombre}>
+              <option key={categoria.id} value={categoria.id}>
                 {categoria.nombre}
               </option>
             ))}

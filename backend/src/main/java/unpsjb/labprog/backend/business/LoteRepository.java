@@ -29,4 +29,9 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
             "AND :categoria MEMBER OF c.subCategorias")
     List<Lote> findAllActivosByCategoria(@Param("categoria") Categoria categoria);
 
+    @Query("SELECT COUNT(l) FROM Lote l " +
+            "JOIN l.categoria c " +
+            "WHERE c = :categoria")
+    int countLotesByCategoria(@Param("categoria") Categoria categoria);
+
 }

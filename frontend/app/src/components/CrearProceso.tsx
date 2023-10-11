@@ -194,17 +194,28 @@ function CrearProceso() {
       <div className="col-md-6">
         {notificationMessages.length > 0 ? (
           <ul className="list-inline">
-            <span className="badge bg-secondary text-white me-2 fs-6">
+            <label htmlFor="proceso" className="form-label">
               Lotes:
-            </span>{" "}
+            </label>
+            &nbsp;&nbsp;
             {notificationMessages.map((str, index) => (
               <li key={index} className="list-inline-item">
-                {str},
+                <span className="badge bg-primary text-white me-2 fs-6">
+                  {str}
+                </span>{" "}
               </li>
             ))}
           </ul>
         ) : (
-          <p></p>
+          <ul className="list-inline">
+            <label htmlFor="proceso" className="form-label">
+              Lote:
+            </label>
+            &nbsp;&nbsp;
+            <span className="badge bg-primary text-white me-2 fs-6">
+              {loteId}
+            </span>{" "}
+          </ul>
         )}
         <label htmlFor="proceso" className="form-label">
           Tipo de Proceso

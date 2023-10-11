@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
+import java.time.LocalDate;
 import jakarta.persistence.EntityManager;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.model.Categoria;
@@ -19,8 +19,6 @@ import unpsjb.labprog.backend.DTOs.LoteRevisionDTO;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
 import org.hibernate.envers.RevisionType;
-
-
 
 @Service
 public class LoteService {
@@ -41,43 +39,44 @@ public class LoteService {
 	public List<Lote> findAllActivos() {
 		return repository.findAllActivos();
 	}
+
 	public List<Lote> findAllActivosByCategoria(Categoria categoria) {
-        return repository.findAllActivosByCategoria(categoria);
-    }
+		return repository.findAllActivosByCategoria(categoria);
+	}
 
-    public List<LoteRevisionDTO> findAllRevisions(long id) {
-        AuditReader reader = AuditReaderFactory.get(entityManager);
-        List<Number> revisionNumbers = reader.getRevisions(Lote.class, id);
-        List<LoteRevisionDTO> revisions = new ArrayList<>();
+	public List<LoteRevisionDTO> findAllRevisions(long id) {
+		AuditReader reader = AuditReaderFactory.get(entityManager);
+		List<Number> revisionNumbers = reader.getRevisions(Lote.class, id);
+		List<LoteRevisionDTO> revisions = new ArrayList<>();
 
-        for (Number revisionNumber : revisionNumbers) {
-            Lote entidad = reader.find(Lote.class, id, revisionNumber);
-            Date revisionDate = reader.getRevisionDate(revisionNumber);
-		
+		for (Number revisionNumber : revisionNumbers) {
+			Lote entidad = reader.find(Lote.class, id, revisionNumber);
+			Date revisionDate = reader.getRevisionDate(revisionNumber);
 
-            if (entidad == null) {
-               entidad = findById(id);
-            } 
-                    // Verificar si la revisión es una eliminación (revtype = 2)
-            LoteRevisionDTO revisionDTO = new LoteRevisionDTO();
-            revisionDTO.setEntidad(entidad);
-            revisionDTO.setRevisionDate(revisionDate);
+			if (entidad == null) {
+				entidad = findById(id);
+			}
+			// Verificar si la revisión es una eliminación (revtype = 2)
+			LoteRevisionDTO revisionDTO = new LoteRevisionDTO();
+			revisionDTO.setEntidad(entidad);
+			revisionDTO.setRevisionDate(revisionDate);
 
-            revisions.add(revisionDTO);
-        }
+			revisions.add(revisionDTO);
+		}
 
-        // Ordenar las revisiones por fecha de revisión de la más reciente a la más antigua
-        Collections.sort(revisions, Comparator.comparing(LoteRevisionDTO::getRevisionDate).reversed());
+		// Ordenar las revisiones por fecha de revisión de la más reciente a la más
+		// antigua
+		Collections.sort(revisions, Comparator.comparing(LoteRevisionDTO::getRevisionDate).reversed());
 
-        return revisions;
-    }
+		return revisions;
+	}
 
 	// find all con filtro de lotes con softdelete
 	public Iterable<Lote> findAll(boolean isDeleted, String term) {
 		Session session = entityManager.unwrap(Session.class);
 
 		session.enableFilter("deletedLoteFilter")
-				.setParameter("isDeleted",isDeleted)
+				.setParameter("isDeleted", isDeleted)
 				.setParameter("codigo", "%" + term + "%");
 
 		Iterable<Lote> products = repository.findAll();
@@ -127,6 +126,15 @@ public class LoteService {
 			lotesPadres.add(lote);
 			obtenerLotesPadresRecursivo(lote.getLotePadre(), lotesPadres);
 		}
+	}
+
+	public String generarCodigo(Lote lote) {
+		int count = repository.countLotesByCategoria(lote.getCategoria()) + 1;
+		LocalDate fecha = LocalDate.now();
+		int year = fecha.getYear() % 100;
+		String codigo = lote.getCultivar().getCodigo() + "-" + lote.getCategoria().getCodigo() +
+				"-" + count + "-" + year;
+		return codigo;
 	}
 
 }

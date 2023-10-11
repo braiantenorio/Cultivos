@@ -104,7 +104,12 @@ function Loteslist() {
           {lotes.map((lote, index) => (
             <tr key={lote.id}>
               <td>{index + 1}</td>
-              <td>{lote.codigo}</td>
+              <td>
+                {" "}
+                <span className="badge bg-primary text-white me-2 fs-6">
+                  {lote.codigo}
+                </span>
+              </td>
               <td>{lote.cantidad}</td>
               <td>{lote.categoria.nombre}</td>
               <td>

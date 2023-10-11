@@ -4,6 +4,8 @@ import { Categoria } from "../types/categoria";
 import { Lote } from "../types/lote";
 import { Cultivar } from "../types/cultivar";
 import { useNotifications } from "../Menu";
+import { TipoAgenda } from "../types/tipoAgenda";
+import { Agenda } from "../types/agenda";
 
 const CrearLote: React.FC = () => {
   const [cantidadError, setCantidadError] = useState("");
@@ -13,6 +15,10 @@ const CrearLote: React.FC = () => {
   const [cultivares, setCultivares] = useState<Cultivar[]>([]);
   const navigate = useNavigate();
   const { notifications, updateNotifications } = useNotifications();
+  const [tipoAgendas, setTipoAgendas] = useState<TipoAgenda[]>([]);
+  const [showModal, setShowModal] = useState(false);
+  const [codigoLoteGenerado, setCodigoLoteGenerado] = useState("");
+
   const requestOptions = {
     method: "POST", // Método de la solicitud POST
     headers: {
@@ -74,6 +80,31 @@ const CrearLote: React.FC = () => {
         .catch((error) => {
           console.error(error);
         });
+      fetch(`/tipoagendas/${categoria.nombre}`)
+        .then((response) => {
+          if (!response.ok) {
+            throw new Error(
+              `Error al realizar la solicitud: ${response.status}`
+            );
+          }
+          return response.json();
+        })
+        .then((responseData) => {
+          setTipoAgendas(responseData.data);
+          const agenda: Agenda = {
+            id: 0,
+            procesosProgramado: [],
+            tipoAgenda: responseData.data[0],
+          };
+
+          setNuevoLote((prevLote) => ({
+            ...prevLote,
+            agenda: agenda,
+          }));
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
 
@@ -99,6 +130,7 @@ const CrearLote: React.FC = () => {
       ...prevLote,
       categoria: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
     }));
+
     buscarLotesActivosPorCategoria(selectedCategoria);
   };
   const handleCultivarChange = (
@@ -112,6 +144,22 @@ const CrearLote: React.FC = () => {
     setNuevoLote((prevLote) => ({
       ...prevLote,
       cultivar: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
+    }));
+  };
+  const handleAgendaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
+    const { value } = event.target;
+    const selectedCategoria = tipoAgendas.find(
+      (categoria) => categoria.id === parseInt(value, 10)
+    );
+    const agenda: Agenda = {
+      id: 0,
+      procesosProgramado: [],
+      tipoAgenda: selectedCategoria!,
+    };
+
+    setNuevoLote((prevLote) => ({
+      ...prevLote,
+      agenda: agenda,
     }));
   };
 
@@ -164,8 +212,8 @@ const CrearLote: React.FC = () => {
             proceso.fechaARealizar === today
         );
         updateNotifications(notifications + procesosHoy.length, []);
-
-        navigate(-1);
+        setCodigoLoteGenerado(responseData.data.codigo);
+        setShowModal(true);
       })
       .catch((error) => {
         console.error("Error al enviar la solicitud POST:", error);
@@ -182,40 +230,15 @@ const CrearLote: React.FC = () => {
     // Redirige al link anterior
     navigate(-1);
   };
+  const closeModal = () => {
+    setShowModal(false);
+    navigate(-1);
+  };
 
   return (
     <div className="container">
       <h1>Crear Nuevo Lote</h1>
       <form>
-        <div className="mb-3">
-          <label htmlFor="codigo" className="form-label">
-            Código:
-          </label>
-          <input
-            type="text"
-            className="form-control"
-            id="codigo"
-            name="codigo"
-            value={nuevoLote.codigo}
-            onChange={handleInputChange}
-          />
-        </div>
-        <div className="mb-3">
-          <label htmlFor="cantidad" className="form-label">
-            Cantidad:
-          </label>
-          <input
-            type="number"
-            className="form-control"
-            id="cantidad"
-            name="cantidad"
-            value={nuevoLote.cantidad}
-            onChange={handleInputChange}
-          />
-          {cantidadError && (
-            <div className="alert alert-danger">{cantidadError}</div>
-          )}
-        </div>
         <div className="mb-3">
           <label htmlFor="categoria" className="form-label">
             Categoría:
@@ -236,21 +259,19 @@ const CrearLote: React.FC = () => {
           </select>
         </div>
         <div className="mb-3">
-          <label htmlFor="categoria" className="form-label">
-            Cultivar:
+          <label htmlFor="agenda" className="form-label">
+            Agenda version:
           </label>
           <select
             className="form-select"
-            id="cultivar"
-            name="cultivar"
-            value={nuevoLote.cultivar?.id}
-            onChange={handleCultivarChange}
-            disabled={!selectsHabilitados.cultivar}
+            id="agenda"
+            name="agenda"
+            value={nuevoLote.agenda?.tipoAgenda.id}
+            onChange={handleAgendaChange}
           >
-            <option value={0}></option>
-            {cultivares.map((categoria) => (
+            {tipoAgendas.map((categoria) => (
               <option key={categoria.id} value={categoria.id}>
-                {categoria.nombre}
+                {categoria.version}
               </option>
             ))}
           </select>
@@ -270,10 +291,46 @@ const CrearLote: React.FC = () => {
             <option value={0}></option>
             {lotes.map((categoria) => (
               <option key={categoria.id} value={categoria.id}>
-                {categoria.codigo} - {categoria.categoria.nombre}
+                {categoria.codigo} ({categoria.categoria.nombre})
               </option>
             ))}
           </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="cultivar" className="form-label">
+            Cultivar:
+          </label>
+          <select
+            className="form-select"
+            id="cultivar"
+            name="cultivar"
+            value={nuevoLote.cultivar?.id}
+            onChange={handleCultivarChange}
+            disabled={!selectsHabilitados.cultivar}
+          >
+            <option value={0}></option>
+            {cultivares.map((categoria) => (
+              <option key={categoria.id} value={categoria.id}>
+                {categoria.nombre}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div className="mb-3">
+          <label htmlFor="cantidad" className="form-label">
+            Cantidad:
+          </label>
+          <input
+            type="number"
+            className="form-control"
+            id="cantidad"
+            name="cantidad"
+            value={nuevoLote.cantidad}
+            onChange={handleInputChange}
+          />
+          {cantidadError && (
+            <div className="alert alert-danger">{cantidadError}</div>
+          )}
         </div>
 
         <div className="mb-3">
@@ -299,6 +356,41 @@ const CrearLote: React.FC = () => {
           </button>
         </div>
       </form>
+      <div
+        className="modal fade show overlay"
+        tabIndex={-1}
+        style={{ display: showModal ? "block" : "none" }}
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title">Código del Lote Generado</h5>
+              <button
+                type="button"
+                className="btn-close"
+                onClick={() => setShowModal(false)}
+              ></button>
+            </div>
+            <div className="modal-body">
+              <p>
+                El código del lote generado es:{" "}
+                <span className="badge bg-primary text-white me-2 fs-6">
+                  {codigoLoteGenerado}
+                </span>
+              </p>
+            </div>
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={closeModal}
+              >
+                OK
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 };

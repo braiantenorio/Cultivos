@@ -9,12 +9,11 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import jakarta.persistence.CascadeType;
-import org.hibernate.annotations.SQLDelete;
-
 
 @Entity
 @Getter
@@ -26,8 +25,8 @@ public class TipoAgenda {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
-
-    private String categoria;
+    @ManyToOne
+    private Categoria categoria;
 
     private String version;
 

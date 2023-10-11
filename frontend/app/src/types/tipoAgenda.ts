@@ -1,8 +1,9 @@
+import { Categoria } from "./categoria";
 import { ProcesoProgramado } from "./procesoProgramado";
 
 export type TipoAgenda = {
   id: number;
-  categoria: string;
+  categoria: Categoria;
   version: string;
   procesosProgramado: ProcesoProgramado[];
 };

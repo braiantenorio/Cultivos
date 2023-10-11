@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
 @RestController
 @RequestMapping("tipoagendas")
 
@@ -32,18 +31,18 @@ public class TipoAgendaPresenter {
 
   @PostMapping
   public ResponseEntity<Object> crear(@RequestBody TipoAgenda tipoAgenda) {
-     TipoAgenda loteOrNull = service.findByCategoria(tipoAgenda.getCategoria(),tipoAgenda.getVersion());
-     if(tipoAgenda.getId()!=null && loteOrNull != null ){
-   
-      if(tipoAgenda.getId().equals(loteOrNull.getId()))
+    TipoAgenda loteOrNull = service.findByCategoria(tipoAgenda.getCategoria().getNombre(), tipoAgenda.getVersion());
+    if (tipoAgenda.getId() != null && loteOrNull != null) {
+
+      if (tipoAgenda.getId().equals(loteOrNull.getId()))
         return Response.ok(
-        service.add(tipoAgenda),
-        "Agenda creada correctamente") ;
-     }
-    return 
-       (loteOrNull != null ) ? Response.notFound() :   Response.ok(
-        service.add(tipoAgenda),
-        "Agenda creada correctamente") ;
+            service.add(tipoAgenda),
+            "Agenda creada correctamente");
+    }
+    return (loteOrNull != null) ? Response.notFound()
+        : Response.ok(
+            service.add(tipoAgenda),
+            "Agenda creada correctamente");
   }
 
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -54,10 +53,15 @@ public class TipoAgendaPresenter {
 
   @DeleteMapping(value = "/delete/{id}")
   public void delete(@PathVariable("id") Long id) {
-      TipoAgenda loteOrNull = service.findById(id);
-      loteOrNull.setDeleted(true);
-      service.update(loteOrNull);
-   // service.delete(id);
+    TipoAgenda loteOrNull = service.findById(id);
+    loteOrNull.setDeleted(true);
+    service.update(loteOrNull);
+    // service.delete(id);
+  }
+
+  @GetMapping("/{categoria}")
+  public ResponseEntity<Object> findAllCategorias(@PathVariable String categoria) {
+    return Response.ok(service.findAllCategorias(categoria));
   }
 
 }

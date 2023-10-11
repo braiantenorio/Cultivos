@@ -78,7 +78,7 @@ function TipoAgendaList() {
           {tipoAgendas.map((tipoAgenda, index) => (
             <tr key={tipoAgenda.id}>
               <td>{index + 1}</td>
-              <td>{tipoAgenda.categoria}</td>
+              <td>{tipoAgenda.categoria.nombre}</td>
               <td>{tipoAgenda.version}</td>
               <td>
                 <Link

@@ -71,11 +71,10 @@ public class LotePresenter {
     return Response.ok(service.findAllActivosByCategoria(serviceCategoria.findById(id)));
   }
 
-
-   @RequestMapping(value = "/log/{id}", method = RequestMethod.GET)
+  @RequestMapping(value = "/log/{id}", method = RequestMethod.GET)
   public ResponseEntity<Object> findById(@PathVariable("id") long id) {
-  
-    return  Response.ok(service.findAllRevisions(id)) ;
+
+    return Response.ok(service.findAllRevisions(id));
   }
 
   @PostMapping
@@ -98,34 +97,29 @@ public class LotePresenter {
       }
     }
 
-    TipoAgenda agenda = serviceTipoAgenda.findByCategoria(lote.getCategoria().getNombre(),"estandar");
-    if (agenda != null) {
-
-      Agenda agendaCopia = new Agenda();
-      agendaCopia.setTipoAgenda(agenda);
-
-      List<ProcesoProgramado> procesosCopia = new ArrayList<>();
-      LocalDate fechaActual = LocalDate.now();
-      for (ProcesoProgramado procesoOriginal : agenda.getProcesosProgramado()) {
-        for(int i=0;i<procesoOriginal.getCantidad();i++){
+    List<ProcesoProgramado> procesosCopia = new ArrayList<>();
+    LocalDate fechaActual = LocalDate.now();
+    for (ProcesoProgramado procesoOriginal : lote.getAgenda().getTipoAgenda().getProcesosProgramado()) {
+      for (int i = 0; i < procesoOriginal.getCantidad(); i++) {
         ProcesoProgramado procesoCopia = new ProcesoProgramado();
         procesoCopia.setCompletado(false);
         procesoCopia.setProceso(procesoOriginal.getProceso());
-       
-        LocalDate fechaARealizar = fechaActual.plusDays((procesoOriginal.getDiaInicio()-1)+(procesoOriginal.getFrecuencia()*i));
+
+        LocalDate fechaARealizar = fechaActual
+            .plusDays((procesoOriginal.getDiaInicio() - 1) + (procesoOriginal.getFrecuencia() * i));
         procesoCopia.setFechaARealizar(fechaARealizar);
         procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
-        }
-
       }
 
-      agendaCopia.setProcesosProgramado(procesosCopia);
-
-      lote.setUsuario(serviceUsuario.findById(1));
-
-      lote.setAgenda(serviceAgenda.add(agendaCopia));
-
     }
+
+    lote.getAgenda().setProcesosProgramado(procesosCopia);
+
+    lote.setUsuario(serviceUsuario.findById(1));
+
+    lote.setAgenda(serviceAgenda.add(lote.getAgenda()));
+
+    lote.setCodigo(service.generarCodigo(lote));
 
     return Response.ok(
         service.add(lote),
@@ -140,23 +134,24 @@ public class LotePresenter {
   @DeleteMapping(value = "/delete/{id}")
   public void delete(@PathVariable("id") Long id) {
     Lote lote = service.findById(id);
-     service.delete(id);
-    if(lote.getLotePadre()!=null){
+    service.delete(id);
+    if (lote.getLotePadre() != null) {
       Lote lotePadre = service.findById(lote.getLotePadre().getId());
       lotePadre.setEsHoja(true);
       service.update(lotePadre);
     }
-   // service.delete(id);
+    // service.delete(id);
   }
 
   @GetMapping("/{loteId}/historia")
   public ResponseEntity<Object> obtenerLotesPadres(@PathVariable Long loteId) {
     return Response.ok(service.obtenerLotesPadres(loteId));
   }
+
   @GetMapping("/procesosPendientes")
   public ResponseEntity<Object> obtenerLotesPadres(@RequestParam(value = "lote", required = false) String lote,
-      @RequestParam(value = "proceso", required = false) String proceso)  {
-    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote,proceso));
+      @RequestParam(value = "proceso", required = false) String proceso) {
+    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote, proceso));
   }
 
 }

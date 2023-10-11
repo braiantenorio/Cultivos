@@ -26,8 +26,8 @@ public class Agenda {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@JsonIgnore
-    @ManyToOne
+	// @JsonIgnore
+	@ManyToOne
 	private TipoAgenda tipoAgenda;
 
 	@OneToMany
