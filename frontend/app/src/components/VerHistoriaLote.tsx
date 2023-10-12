@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { Proceso } from "../types/proceso";
 import swal from "sweetalert";
+import authHeader from "../services/auth-header";
 
 function VerHistoriaLote() {
   const { loteId } = useParams();
@@ -12,7 +13,9 @@ function VerHistoriaLote() {
 
   const url = `/lotes/${loteId}/historia`;
   useEffect(() => {
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);

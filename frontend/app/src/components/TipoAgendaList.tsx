@@ -2,6 +2,7 @@ import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { TipoAgenda } from "../types/tipoAgenda";
 import swal from "sweetalert";
+import authHeader from "../services/auth-header";
 
 function TipoAgendaList() {
   const [tipoAgendas, setTipoAgendas] = useState<TipoAgenda[]>([]);
@@ -9,7 +10,9 @@ function TipoAgendaList() {
   useEffect(() => {
     const url = "/tipoagendas";
 
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -34,6 +37,7 @@ function TipoAgendaList() {
       if (willAnular) {
         fetch(`/tipoagendas/delete/${tipoAgendaId}`, {
           method: "DELETE",
+            headers: authHeader(),
         })
           .then((response) => {
             if (response.ok) {

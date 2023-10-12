@@ -10,6 +10,7 @@ import {
   useNavigate,
 } from "react-router-dom";
 
+import authHeader from "./services/auth-header";
 import Loteslist from "./components/LotesList";
 import EditarLote from "./components/EditarLote";
 import "./App.css";
@@ -289,9 +290,7 @@ function Menu() {
     const notificationId = updatedNotifications[index].id;
     fetch(`/notificaciones/${notificationId}`, {
       method: "PUT",
-      headers: {
-        "Content-Type": "application/json",
-      },
+      headers: authHeader(),
     })
       .then((response) => {
         if (!response.ok) {

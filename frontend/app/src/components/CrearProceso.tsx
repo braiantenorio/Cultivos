@@ -5,6 +5,7 @@ import { Atributo } from "../types/atributo";
 import { Proceso } from "../types/proceso";
 import { Valor } from "../types/valor";
 import { TipoDeProceso } from "../types/tipoDeProceso";
+import authHeader from "../services/auth-header";
 
 function CrearProceso() {
   const { listId } = useParams();
@@ -20,7 +21,9 @@ function CrearProceso() {
 
   useEffect(() => {
     if (listId !== "new") {
-      fetch(`/listaDeAtributos/nombre/${listId}`)
+      fetch(`/listaDeAtributos/nombre/${listId}`, {
+        headers: authHeader(),
+      })
         .then((response) => response.json())
         .then((data) => {
           setTipoDeProceso(data.data);
@@ -40,7 +43,9 @@ function CrearProceso() {
     }
     const url = "/listaDeAtributos";
 
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -150,6 +155,7 @@ function CrearProceso() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": authHeader().Authorization
       },
       body: JSON.stringify(nProceso),
     })
@@ -162,7 +168,9 @@ function CrearProceso() {
       });
 
     fetch(`/procesos/completar/${loteId}/${listId}`, {
-      method: "PUT", // O el método HTTP adecuado
+      method: "PUT",  
+        headers: authHeader(),
+      
     })
       .then((response) => {
         if (!response.ok) {

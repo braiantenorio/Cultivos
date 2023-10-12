@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { Proceso } from "../types/proceso";
 import swal from "sweetalert";
+import authHeader from "../services/auth-header";
 
 function DetalleLote() {
   const { loteId } = useParams();
@@ -13,7 +14,9 @@ function DetalleLote() {
   //const url = `/lotes/id/${loteId}`;
   const url = `/lotes/${loteId}`;
   useEffect(() => {
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -43,6 +46,7 @@ function DetalleLote() {
       if (willAnular) {
         fetch(`/lotes/delete/${lote?.id}`, {
           method: "DELETE",
+            headers: authHeader(),
         })
           .then((response) => {
             if (response.ok) {

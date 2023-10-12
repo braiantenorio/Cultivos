@@ -220,6 +220,10 @@ const Register: React.FC = () => {
               </div>
             )}
           </form>
+          <div className="component-with-margin">
+     
+        <p><small>Si ya tienes una cuenta, <a href="/login">haz clic aquí para ingresar.</a></small></p>
+        </div>
         </div>
       </div>
     </div>

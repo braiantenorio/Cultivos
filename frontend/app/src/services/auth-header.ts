@@ -7,6 +7,6 @@ export default function authHeader() {
   if (user && user.accessToken) {
     return { Authorization: 'Bearer ' + user.accessToken }; 
   } else {
-    return { Authorization: '' }; // for Spring Boot back-end
+    return { Authorization: '' };
   }
 }
