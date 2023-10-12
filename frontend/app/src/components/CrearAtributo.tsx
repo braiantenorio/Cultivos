@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Atributo } from "../types/atributo";
+import authHeader from "../services/auth-header";
 
 function CrearAtributo() {
   const [atributo, setAtributo] = useState<Atributo>({} as Atributo);
@@ -59,6 +60,7 @@ function CrearAtributo() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": authHeader().Authorization,
       },
       body: JSON.stringify(atributo),
     })

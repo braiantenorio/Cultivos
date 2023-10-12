@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import { TipoAgenda } from "../types/tipoAgenda";
 import swal from "sweetalert";
 import { Atributo } from "../types/atributo";
+import authHeader from "../services/auth-header";
 
 function ListarAtributos() {
     const [atributos, setAtributos] = useState<Atributo[]>([]);
@@ -10,7 +11,9 @@ function ListarAtributos() {
     useEffect(() => {
       const url = "/atributos";
   
-      fetch(url)
+      fetch(url, {
+        headers: authHeader(),
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error(`Error al realizar la solicitud: ${response.status}`);

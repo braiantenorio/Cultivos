@@ -6,6 +6,7 @@ import { Cultivar } from "../types/cultivar";
 import { useNotifications } from "../Menu";
 import { TipoAgenda } from "../types/tipoAgenda";
 import { Agenda } from "../types/agenda";
+import authHeader from "../services/auth-header";
 
 const CrearLote: React.FC = () => {
   const [cantidadError, setCantidadError] = useState("");
@@ -35,7 +36,9 @@ const CrearLote: React.FC = () => {
     const url = "/categorias";
     const url1 = "/cultivares";
 
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -48,7 +51,9 @@ const CrearLote: React.FC = () => {
       .catch((error) => {
         console.error(error);
       });
-    fetch(url1)
+    fetch(url1, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -65,7 +70,9 @@ const CrearLote: React.FC = () => {
 
   const buscarLotesActivosPorCategoria = (categoria: Categoria | undefined) => {
     if (categoria) {
-      fetch(`/lotes/activos/${categoria.id}`)
+      fetch(`/lotes/activos/${categoria.id}`, {
+        headers: authHeader(),
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error(
@@ -186,7 +193,11 @@ const CrearLote: React.FC = () => {
   const handleGuardarLote = () => {
     // Envía una solicitud POST para crear un nuevo lote
     const url = "/lotes";
-    fetch(url, requestOptions)
+    fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "application/json",
+    "Authorization": authHeader().Authorization },
+    })
       .then((response) => {
         if (!response.ok) {
           if (response.status === 400) {
@@ -214,6 +225,7 @@ const CrearLote: React.FC = () => {
         updateNotifications(notifications + procesosHoy.length, []);
         setCodigoLoteGenerado(responseData.data.codigo);
         setShowModal(true);
+        navigate("/lotes");
       })
       .catch((error) => {
         console.error("Error al enviar la solicitud POST:", error);

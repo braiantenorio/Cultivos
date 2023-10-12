@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { Proceso } from "../types/proceso";
 import swal from "sweetalert";
+import authHeader from "../services/auth-header";
 
 function DetalleProceso() {
     const { procesoId } = useParams();
@@ -11,7 +12,9 @@ function DetalleProceso() {
 
     const url = `/procesos/id/${procesoId}`;
     useEffect(() => {
-        fetch(url)
+        fetch(url, {
+            headers: authHeader(),
+          })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`Error al realizar la solicitud: ${response.status}`);

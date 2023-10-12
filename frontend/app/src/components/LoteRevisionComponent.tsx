@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useParams } from "react-router-dom";
 import { LoteRevision } from "../types/LoteRevision";
+import authHeader from "../services/auth-header";
 
 function LoteRevisiones() {
   const [lotesRevision, setLotesRevision] = useState<LoteRevision[]>([]);
@@ -10,7 +11,9 @@ function LoteRevisiones() {
   const url = `/lotes/log/${loteId}`;
 
   useEffect(() => {
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => response.json())
       .then((responseData) => {
         setLotesRevision(responseData.data);
