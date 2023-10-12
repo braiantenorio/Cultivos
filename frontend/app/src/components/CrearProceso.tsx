@@ -64,7 +64,6 @@ function CrearProceso() {
     event: React.ChangeEvent<HTMLInputElement>,
     nombreAtributo: string
   ) => {
-    console.log("hola");
     const { value } = event.target;
     setValores(
       valores.map((valor) => {
@@ -155,7 +154,6 @@ function CrearProceso() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": authHeader().Authorization
       },
       body: JSON.stringify(nProceso),
     })
