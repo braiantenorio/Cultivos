@@ -13,9 +13,6 @@ interface FormData {
 }
 
 const Register: React.FC = () => {
-  
-  const [validated, setValidated] = useState(false);
-
 
   const [formData, setFormData] = useState<FormData>({
     nombre: "",
@@ -47,28 +44,10 @@ const Register: React.FC = () => {
     }
 
     form.classList.add('was-validated')
-
-    
-    // Realizar la validación manualmente aquí
-    if (formData.username.length < 3 || formData.username.length > 20) {
-      setMessage("El nombre de usuario debe tener entre 3 y 20 caracteres.");
-      setSuccessful(false);
-      return;
-    }
-    // Validar el formato del correo electrónico
-    const emailPattern = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/;
-    if (!emailPattern.test(formData.email)) {
-      setMessage("El correo electrónico no es válido.");
-      setSuccessful(false);
-      return;
-    }
-
-    if (formData.password.length < 6 || formData.password.length > 40) {
-      setMessage("La contraseña debe tener entre 6 y 40 caracteres.");
-      setSuccessful(false);
-      return;
-    }
-
+    if (!form.checkValidity()) {
+     return;
+    }    
+   
     register(
       formData.username,
       formData.email,
@@ -106,12 +85,14 @@ const Register: React.FC = () => {
                     type="text"
                     className="form-control"
                     name="nombre"
+                    id="nombre"
                     placeholder="Nombre"
                     value={formData.nombre}
                     onChange={handleInputChange}
                     required
+                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ\s]+$"
                   />
-                  <label htmlFor="name">Nombre</label>
+                  <label htmlFor="nombre">Nombre</label>
                   <div
                     className="invalid-feedback"
                     id="nombre-error"
@@ -124,10 +105,12 @@ const Register: React.FC = () => {
                     type="text"
                     className="form-control"
                     name="apellido"
+                    id="apellido"
                     placeholder="Apellido"
                     value={formData.apellido}
                     onChange={handleInputChange}
                     required
+                    pattern="^[A-Za-zÁÉÍÓÚáéíóúÑñüÜ\s]+$"
                   />
                   <label htmlFor="apellido">Apellido</label>
                   <div
@@ -142,9 +125,11 @@ const Register: React.FC = () => {
                     type="text"
                     className="form-control"
                     name="username"
+                    id="username"
                     placeholder="Username"
                     value={formData.username}
                     onChange={handleInputChange}
+                    pattern=".{3,30}"
                     required
                   />
                   <label htmlFor="username">Nombre de usuario</label>
@@ -160,10 +145,12 @@ const Register: React.FC = () => {
                     type="email"
                     className="form-control"
                     name="email"
+                    id="email"
                     placeholder="Email"
                     value={formData.email}
                     onChange={handleInputChange}
                     required
+                    pattern="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
                   />
                   <label htmlFor="email">Email</label>
                   <div
@@ -178,9 +165,11 @@ const Register: React.FC = () => {
                     type="password"
                     className="form-control"
                     name="password"
+                    id="password"
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleInputChange}
+                    pattern=".{6,40}"
                     required
                   />
                   <label htmlFor="password">Contraseña</label>
@@ -199,6 +188,7 @@ const Register: React.FC = () => {
                     id="con-password"
                     placeholder="Password"
                     required
+                    pattern={`^(${formData.password})$`}
                   />
                   <label htmlFor="con-password">Confirmar contraseña</label>
                   <div
@@ -210,7 +200,7 @@ const Register: React.FC = () => {
                 </div>
 
                 <div className="d-grid gap-2">
-                  <button type="submit" className="btn btn-primary button-with-margin">
+                  <button type="submit" className="btn btn-primary component-with-margin">
                     Registrarse
                   </button>
                 </div>
@@ -222,7 +212,7 @@ const Register: React.FC = () => {
                 <div
                   className={
                     successful ? "alert alert-success" : "alert alert-danger"
-                  }
+                   + " component-with-margin"}
                   role="alert"
                 >
                   {message}

@@ -3,8 +3,10 @@ import React, { useEffect, useState } from "react";
 import {
   BrowserRouter,
   Link,
+  Navigate,
   Route,
   Routes,
+  useLocation,
   useNavigate,
 } from "react-router-dom";
 
@@ -43,40 +45,175 @@ import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
 
-
 function App() {
-
-
   return (
     <BrowserRouter>
       <Menu />
       <Routes>
-        <Route path="/lotes/crear-lote" element={<CrearLote />} />
-        <Route path="/lotes" element={<Loteslist />} />
-        <Route path="/lotes/:loteId/edit" element={<EditarLote />} />
-        <Route path="/lotes/:loteId" element={<DetalleLote />} />
-        <Route path="/lotes/log/:loteId" element={<LoteRevisiones />} />
-        <Route path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
+        <Route
+          path="/lotes/crear-lote"
+          element={
+            <RequireAuth>
+              <CrearLote />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/lotes"
+          element={
+            <RequireAuth>
+              <Loteslist />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/lotes/:loteId/edit"
+          element={
+            <RequireAuth>
+              <EditarLote />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/lotes/:loteId"
+          element={
+            <RequireAuth>
+              <DetalleLote />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/lotes/log/:loteId"
+          element={
+            <RequireAuth>
+              <LoteRevisiones />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/lotes/:loteId/historia"
+          element={
+            <RequireAuth>
+              <VerHistoriaLote />
+            </RequireAuth>
+          }
+        />
         <Route
           path="/lotes/:loteId/procesos/:listId"
-          element={<CrearProceso />}
+          element={
+            <RequireAuth>
+              <CrearProceso />
+            </RequireAuth>
+          }
         />
-        <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
-        <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
-        <Route path="/agendas/:id" element={<CrearAgenda />} />
-        <Route path="/agendas" element={<TipoAgendaList />} />
-        <Route path="/atributos/new" element={<CrearAtributo />} />
-        <Route path="/atributos" element={<ListarAtributos />} />
-        <Route path="/tipo-proceso/new" element={<CrearTipoDeProceso />} />
-        <Route path="/tipo-proceso" element={<ListarTiposDeProcesos />} />
+        <Route
+          path="/lotes/:loteId/agenda"
+          element={
+            <RequireAuth>
+              <AgendaDeProcesos />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/procesos/:procesoId"
+          element={
+            <RequireAuth>
+              <DetalleProceso />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/agendas/:id"
+          element={
+            <RequireAuth>
+              <CrearAgenda />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/agendas"
+          element={
+            <RequireAuth>
+              <TipoAgendaList />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/atributos/new"
+          element={
+            <RequireAuth>
+              <CrearAtributo />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/atributos"
+          element={
+            <RequireAuth>
+              <ListarAtributos />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/tipo-proceso/new"
+          element={
+            <RequireAuth>
+              <CrearTipoDeProceso />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/tipo-proceso"
+          element={
+            <RequireAuth>
+              <ListarTiposDeProcesos />
+            </RequireAuth>
+          }
+        />
         <Route path="/" element={<Home />} />
-        <Route path="/home" element={<Home />} />
+        <Route
+          path="/home"
+          element={
+            <RequireAuth>
+              {" "}
+              <Home />
+            </RequireAuth>
+          }
+        />
         <Route path="/login" element={<Login />} />
         <Route path="/register" element={<Register />} />
-        <Route path="/profile" element={<Profile />} />
-        <Route path="/user" element={<BoardUser />} />
-        <Route path="/mod" element={<BoardModerator />} />
-        <Route path="/admin" element={<BoardAdmin />} />
+        <Route
+          path="/profile"
+          element={
+            <RequireAuth>
+              <Profile />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/user"
+          element={
+            <RequireAuth>
+              <BoardUser />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/mod"
+          element={
+            <RequireAuth>
+              <BoardModerator />
+            </RequireAuth>
+          }
+        />
+        <Route
+          path="/admin"
+          element={
+            <RequireAuth>
+              <BoardAdmin />
+            </RequireAuth>
+          }
+        />
       </Routes>
     </BrowserRouter>
   );
@@ -96,12 +233,25 @@ function Home() {
   );
 }
 
+function RequireAuth({ children }: any) {
+  const user = AuthService.getCurrentUser();
+  const location = useLocation();
+
+  return user ? (
+    children
+  ) : (
+    <Navigate to="/login" replace state={{ path: location.pathname }} />
+  );
+}
+
 function Menu() {
-  
+  const location = useLocation();
+  const isLoginPage = location.pathname === '/login' || location.pathname === '/register';
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<Usuario | undefined>(undefined);
 
+  
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
@@ -118,6 +268,8 @@ function Menu() {
     };
   }, []);
 
+
+  
   const logOut = () => {
     AuthService.logout();
     setShowModeratorBoard(false);
@@ -125,9 +277,9 @@ function Menu() {
     setCurrentUser(undefined);
   };
 
-
-
   const [notifications, setNotifications] = useState<Notificacion[]>([]);
+
+  
 
   const markAsRead = (index: number) => {
     const updatedNotifications = [...notifications];
@@ -156,24 +308,10 @@ function Menu() {
     const llink = "/lotes/" + link;
     navigate(llink);
   };
-  
-  useEffect(() => {
-    fetch(`/usuarios/id/1`)
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        const reversedNotifications =
-          responseData.data.notificaciones.reverse();
-        setNotifications(reversedNotifications);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, []);
+
+  if (isLoginPage) {
+    return null; // No renderizar la barra de navegación en /login o /register
+  }
 
   return (
     <div
@@ -284,58 +422,59 @@ function Menu() {
       </div>
 
       {showModeratorBoard && (
-            <li className="nav-item">
-              <Link to={"/mod"} className="nav-link">
-                Moderator Board
-              </Link>
-            </li>
-          )}
+        <li className="nav-item">
+          <Link to={"/mod"} className="nav-link">
+            Moderator Board
+          </Link>
+        </li>
+      )}
 
-          {showAdminBoard && (
-            <li className="nav-item">
-              <Link to={"/admin"} className="nav-link">
-                Admin Board
-              </Link>
-            </li>
-          )}
+      {showAdminBoard && (
+        <li className="nav-item">
+          <Link to={"/admin"} className="nav-link">
+            Admin Board
+          </Link>
+        </li>
+      )}
 
-          {currentUser && (
-            <li className="nav-item">
-              <Link to={"/user"} className="nav-link">
-                User
-              </Link>
-            </li>
-          )}
+      {currentUser && (
+        <li className="nav-item">
+          <Link to={"/user"} className="nav-link">
+            User
+          </Link>
+        </li>
+      )}
 
-        {currentUser ? (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/profile"} className="nav-link">
-                {currentUser.username}
-              </Link>
-            </li>
-            <li className="nav-item">
-              <a href="/login" className="nav-link" onClick={logOut}>
-                LogOut
-              </a>
-            </li>
-          </div>
-        ) : (
-          <div className="navbar-nav ml-auto">
-            <li className="nav-item">
-              <Link to={"/login"} className="nav-link">
-                Login
-              </Link>
-            </li>
+      {currentUser ? (
+        <div className="navbar-nav ml-auto">
+          <li className="nav-item">
+            <Link to={"/profile"} className="nav-link">
+              {currentUser.username}
+            </Link>
+          </li>
+          <li className="nav-item">
+            <a href="/login" className="nav-link" onClick={logOut}>
+              Cerrar sesion
+            </a>
+          </li>
+        </div>
+      ) : (
+        <div className="navbar-nav ml-auto">
+          <li className="nav-item">
+            <Link to={"/login"} className="nav-link">
+              Iniciar sesion
+            </Link>
+          </li>
 
-            <li className="nav-item">
-              <Link to={"/register"} className="nav-link">
-                Sign Up
-              </Link>
-            </li>
-          </div>
-)}
+          <li className="nav-item">
+            <Link to={"/register"} className="nav-link">
+              Registrarse
+            </Link>
+          </li>
+        </div>
+      )}
     </div>
   );
 }
+
 export default App;

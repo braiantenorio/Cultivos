@@ -96,13 +96,21 @@ const Login: React.FC<Props> = () => {
 
             {message && (
               <div className="form-group">
-                <div className="alert alert-danger" role="alert">
+                <div className="alert alert-danger component-with-margin" role="alert">
                   {message}
                 </div>
               </div>
             )}
           </form>
+
+        <div className="component-with-margin">
+     
+        <p><small>Si todavía no tienes una cuenta, <a href="/register">regístrate aquí.</a></small></p>
         </div>
+
+        </div>
+
+
       </div>
     </div>
   );
