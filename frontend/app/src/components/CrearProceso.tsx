@@ -5,12 +5,9 @@ import { Atributo } from "../types/atributo";
 import { Proceso } from "../types/proceso";
 import { Valor } from "../types/valor";
 import { TipoDeProceso } from "../types/tipoDeProceso";
-<<<<<<< HEAD
 import { useNotifications } from "../Menu";
 import { LoteCodigo } from "../types/loteCodigo";
-=======
 import authHeader from "../services/auth-header";
->>>>>>> usuarios
 
 function CrearProceso() {
   const { listId } = useParams();
@@ -168,7 +165,6 @@ function CrearProceso() {
         },
         body: JSON.stringify(nLoteCodigo),
       })
-<<<<<<< HEAD
         .then((response) => response.json())
         .then((data) => {
           console.log("Respuesta del servidor:", data);
@@ -183,22 +179,6 @@ function CrearProceso() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify(nProceso),
-=======
-      .catch((error) => {
-        console.error("Error al crear el proceso:", error);
-      });
-
-    fetch(`/procesos/completar/${loteId}/${listId}`, {
-      method: "PUT",  
-        headers: authHeader(),
-      
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-        return response.json();
->>>>>>> usuarios
       })
         .then((response) => response.json())
         .then((data) => {
