@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Atributo } from "../types/atributo";
+import authHeader from "../services/auth-header";
 
 function CrearTipoDeProceso() {
   const [listaDeAtributos, setListaDeAtributos] = useState({
@@ -18,7 +19,9 @@ function CrearTipoDeProceso() {
 
   useEffect(() => {
     const url = "/atributos";
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -58,6 +61,7 @@ function CrearTipoDeProceso() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": authHeader().Authorization
       },
       body: JSON.stringify(listaDeAtributos),
     })

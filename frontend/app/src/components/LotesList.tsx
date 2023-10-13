@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Lote } from "../types/lote";
+import authHeader from "../services/auth-header";
 
 function Loteslist() {
   const [lotes, setLotes] = useState<Lote[]>([]);
@@ -9,7 +10,9 @@ function Loteslist() {
   const [showDeleted, setShowDeleted] = useState(false); // Estado para mostrar/ocultar elementos eliminados
 
   useEffect(() => {
-    fetch(`/lotes?term=${searchTerm}`)
+    fetch(`/lotes?term=${searchTerm}`, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -37,7 +40,9 @@ function Loteslist() {
   };
 
   const handleBuscarLote = () => {
-    fetch(`/lotes?filtered=${showDeleted}&term=${searchTerm}`)
+    fetch(`/lotes?filtered=${showDeleted}&term=${searchTerm}`, {
+      headers: authHeader(),
+    })
       .then((response) => response.json())
       .then((data) => {
         setLotes(data.data);

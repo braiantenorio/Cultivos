@@ -3,6 +3,7 @@ import { Categoria } from "../types/categoria";
 import { useNavigate, useParams } from "react-router-dom";
 import { ProcesoProgramado } from "../types/procesoProgramado";
 import { TipoDeProceso } from "../types/tipoDeProceso";
+import authHeader from "../services/auth-header";
 
 function CrearAgenda() {
   const navigate = useNavigate();
@@ -63,7 +64,9 @@ function CrearAgenda() {
   useEffect(() => {
     const url = "/categorias";
 
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -80,7 +83,9 @@ function CrearAgenda() {
     if (id != "new") {
       // Realiza una solicitud al servidor para obtener los datos de la agenda por su ID
       setTipo("Editar agenda");
-      fetch(`/tipoagendas/id/${id}`)
+      fetch(`/tipoagendas/id/${id}`, {
+        headers: authHeader(),
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error(
@@ -104,6 +109,7 @@ function CrearAgenda() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
+        "Authorization": authHeader().Authorization,
       },
       body: JSON.stringify(tipoAgenda),
     })

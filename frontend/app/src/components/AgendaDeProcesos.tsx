@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { ProcesoProgramado } from "../types/procesoProgramado";
+import authHeader from "../services/auth-header";
 
 function AgendaDeProcesos() {
   const { loteId } = useParams();
@@ -9,7 +10,9 @@ function AgendaDeProcesos() {
   const url1 = `/lotes/id/${loteId}`;
 
   useEffect(() => {
-    fetch(url1)
+    fetch(url1, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -42,39 +45,6 @@ function AgendaDeProcesos() {
         return fechaA.getTime() - fechaB.getTime();
       }
     });
-
-  const completarProceso = (procesoId: string) => {
-    const url = `/procesos/completar/${loteId}/${procesoId}`;
-    fetch(url, {
-      method: "PUT", // O el método HTTP adecuado
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        fetch(url1)
-          .then((response) => {
-            if (!response.ok) {
-              throw new Error(
-                `Error al realizar la solicitud: ${response.status}`
-              );
-            }
-            return response.json();
-          })
-          .then((responseData) => {
-            setLote(responseData.data);
-          })
-          .catch((error) => {
-            console.error(error);
-          });
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
   return (
     <div className="container">

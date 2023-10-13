@@ -7,6 +7,7 @@ import { Valor } from "../types/valor";
 import { TipoDeProceso } from "../types/tipoDeProceso";
 import { useNotifications } from "../Menu";
 import { LoteCodigo } from "../types/loteCodigo";
+import authHeader from "../services/auth-header";
 
 function CrearProceso() {
   const { listId } = useParams();
@@ -24,7 +25,9 @@ function CrearProceso() {
 
   useEffect(() => {
     if (listId !== "new") {
-      fetch(`/listaDeAtributos/nombre/${listId}`)
+      fetch(`/listaDeAtributos/nombre/${listId}`, {
+        headers: authHeader(),
+      })
         .then((response) => response.json())
         .then((data) => {
           setTipoDeProceso(data.data);
@@ -44,7 +47,9 @@ function CrearProceso() {
     }
     const url = "/listaDeAtributos";
 
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);

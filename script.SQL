@@ -69,3 +69,5 @@ insert into tipo_agenda_procesos_programado (tipo_agenda_id,procesos_programado_
 
 insert into usuarios (id,apellido,nombre,email) values
 (1,'tenorio','braian','tenoriovidalbraian@gmail.com')  
+
+//despues crea un lote de categoria platan madre y otro de clone 

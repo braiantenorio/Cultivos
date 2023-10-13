@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Categoria } from "../types/categoria";
+import authHeader from "../services/auth-header";
 
 const EditarLote: React.FC = () => {
   const { loteId } = useParams();
@@ -15,6 +16,7 @@ const EditarLote: React.FC = () => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
+      "Authorization": authHeader().Authorization
     },
     body: JSON.stringify(lote),
   };
@@ -22,7 +24,9 @@ const EditarLote: React.FC = () => {
   useEffect(() => {
     const url = `/lotes/id/${loteId}`;
 
-    fetch(url)
+    fetch(url, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -37,7 +41,9 @@ const EditarLote: React.FC = () => {
       });
 
     const categoriasUrl = "/categorias";
-    fetch(categoriasUrl)
+    fetch(categoriasUrl, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
