@@ -1,11 +1,11 @@
 
-INSERT INTO categorias (id,codigo,nombre) VALUES
-(1,1,'Planta Madre'),
-(2,2,'Clone'),
-(3,3,'Planta Para Semillas'),
-(4,4,'Planta Para Flores'),
-(5,5,'semillas'),
-(6,6,'Descarte');
+INSERT INTO categorias (id,codigo,nombre,limite) VALUES
+(1,1,'Planta Madre',true),
+(2,2,'Clone',false),
+(3,3,'Planta Para Semillas',true),
+(4,4,'Planta Para Flores',true),
+(5,5,'semillas',false),
+(6,6,'Descarte',true);
 
 INSERT INTO cultivares (id,codigo,nombre) VALUES
 (1,1,'Agila'),
@@ -16,6 +16,7 @@ INSERT INTO cultivares (id,codigo,nombre) VALUES
 INSERT INTO categorias_sub_categorias  (categoria_id,sub_categorias_id) values
 (1,2),
 (1,6),
+(2,1),
 (2,3),
 (2,4),
 (2,6),
@@ -46,10 +47,10 @@ insert into listas_atributos  (lista_id, atributo_id) values
 (2,4);
 
 
-INSERT into tipo_agenda (id,categoria,version,deleted) values 
-(1,'Planta Madre','estandar',false),
-(2,'Clone','estandar',false),
-(3,'Planta Para Flores','estandar',false);
+INSERT into tipo_agenda (id,categoria_id ,version,deleted) values 
+(1,1,'estandar',false),
+(2,2,'estandar',false),
+(3,4,'estandar',false);
 
 insert into proceso_programado (id,cantidad,completado,dia_inicio,fechaarealizar,frecuencia,proceso_id) values
 (1,5,false,2,null,3,1),
@@ -68,5 +69,3 @@ insert into tipo_agenda_procesos_programado (tipo_agenda_id,procesos_programado_
 
 insert into usuarios (id,apellido,nombre,email) values
 (1,'tenorio','braian','tenoriovidalbraian@gmail.com')  
-
-//despues crea un lote de categoria platan madre y otro de clone 

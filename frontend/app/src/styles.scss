@@ -7,8 +7,9 @@
 @import "../node_modules/bootstrap/scss/root";
 
 // Define tus colores personalizados
-$custom-color-1: #802713; // Primer color
+$custom-color-1: #2161b0; // Primer color
 $custom-color-2: #2800c7; // Segundo color
+$custom-color-3: #416700; // Segundo color
 $custom-gradient: linear-gradient(to right, #4c31b8, #aec216);
 
 // Defisne tus colores personalizados en el mapa $custom-colors
@@ -30,6 +31,16 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   border-radius: 5px; // Añade bordes redondeados si lo deseas
   padding: 10px 20px; // Ajusta el espacio interno según tus necesidades
   font-size: 16px; // Ajusta el tamaño de fuente según tus necesidades
+}
+
+.badge-custom-1 {
+  background-color: $custom-color-3;
+  color: #fff; // Puedes ajustar el color del texto según tus necesidades
+}
+
+.badge-custom-2 {
+  background-color: $custom-color-2;
+  color: #fff;
 }
 
 // Para que funcione esto hay que instalar primero una extesion en vscode : Live Sass Compiler
