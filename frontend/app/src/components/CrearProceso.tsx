@@ -162,6 +162,7 @@ function CrearProceso() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: authHeader().Authorization,
         },
         body: JSON.stringify(nLoteCodigo),
       })
@@ -177,6 +178,7 @@ function CrearProceso() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          Authorization: authHeader().Authorization,
         },
         body: JSON.stringify(nProceso),
       })
@@ -188,9 +190,8 @@ function CrearProceso() {
           console.error("Error al crear el proceso:", error);
         });
     }
-
-    navigate(-1);
     updateNotifications(notifications, []);
+    navigate(-1);
   };
 
   return (

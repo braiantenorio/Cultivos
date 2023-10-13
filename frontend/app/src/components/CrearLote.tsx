@@ -19,14 +19,6 @@ const CrearLote: React.FC = () => {
   const [tipoAgendas, setTipoAgendas] = useState<TipoAgenda[]>([]);
   const [showModal, setShowModal] = useState(false);
   const [codigoLoteGenerado, setCodigoLoteGenerado] = useState("");
-
-  const requestOptions = {
-    method: "POST", // Método de la solicitud POST
-    headers: {
-      "Content-Type": "application/json", // Tipo de contenido del cuerpo de la solicitud
-    },
-    body: JSON.stringify(nuevoLote), // Convierte el objeto en formato JSON y lo establece como el cuerpo de la solicitud
-  };
   const [selectsHabilitados, setSelectsHabilitados] = useState({
     cultivar: true,
     // lotePadre: true,
@@ -87,7 +79,9 @@ const CrearLote: React.FC = () => {
         .catch((error) => {
           console.error(error);
         });
-      fetch(`/tipoagendas/${categoria.nombre}`)
+      fetch(`/tipoagendas/${categoria.nombre}`, {
+        headers: authHeader(),
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error(
@@ -195,8 +189,11 @@ const CrearLote: React.FC = () => {
     const url = "/lotes";
     fetch(url, {
       method: "POST",
-      headers: { "Content-Type": "application/json",
-    "Authorization": authHeader().Authorization },
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authHeader().Authorization,
+      },
+      body: JSON.stringify(nuevoLote),
     })
       .then((response) => {
         if (!response.ok) {
@@ -225,7 +222,6 @@ const CrearLote: React.FC = () => {
         updateNotifications(notifications + procesosHoy.length, []);
         setCodigoLoteGenerado(responseData.data.codigo);
         setShowModal(true);
-        navigate("/lotes");
       })
       .catch((error) => {
         console.error("Error al enviar la solicitud POST:", error);
@@ -244,7 +240,7 @@ const CrearLote: React.FC = () => {
   };
   const closeModal = () => {
     setShowModal(false);
-    navigate(-1);
+    navigate("/lotes");
   };
 
   return (

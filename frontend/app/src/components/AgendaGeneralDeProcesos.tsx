@@ -3,6 +3,7 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { ProcesoProgramado } from "../types/procesoProgramado";
 import { useNotifications } from "../Menu";
 import AutoComplete from "./AutoComplete";
+import authHeader from "../services/auth-header";
 
 function AgendaGeneralDeProcesos() {
   const [lotes, setLotes] = useState<ProcesoProgramado[]>([]);
@@ -18,7 +19,9 @@ function AgendaGeneralDeProcesos() {
   const [filterText, setFilterText] = useState(0); // Valor predeterminado: "Todos"
 
   useEffect(() => {
-    fetch(`/lotes/procesosPendientes?term=${searchTerm}&dia=${filterText}`)
+    fetch(`/lotes/procesosPendientes?term=${searchTerm}&dia=${filterText}`, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -34,7 +37,9 @@ function AgendaGeneralDeProcesos() {
   }, [filterText]);
 
   const handleBuscarLote = () => {
-    fetch(`/lotes/procesosPendientes?term=${searchTerm}&dia=${filterText}`)
+    fetch(`/lotes/procesosPendientes?term=${searchTerm}&dia=${filterText}`, {
+      headers: authHeader(),
+    })
       .then((response) => response.json())
       .then((data) => {
         setLotes(data.data);

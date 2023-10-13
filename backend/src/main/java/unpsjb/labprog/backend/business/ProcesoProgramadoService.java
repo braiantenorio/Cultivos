@@ -67,7 +67,6 @@ public class ProcesoProgramadoService {
         LocalDate fecha = LocalDate.now().plusDays(dia);
 
         List<Object[]> resultados = repository.findProcesosProgramadosPendientes(fecha, "%" + codigo + "%");
-
         List<ProcesoProgramadoDTO> procesosPendientes = new ArrayList<>();
 
         for (Object[] resultado : resultados) {

@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
+import authHeader from "../services/auth-header";
 
 interface AutoCompleteProps {
   onOptionSelect: (option: string) => void;
@@ -20,7 +21,9 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ onOptionSelect }) => {
 
   const fetchResults = async (searchTerm: string) => {
     try {
-      const response = await fetch(`/lotes/search?term=${searchTerm}`);
+      const response = await fetch(`/lotes/search?term=${searchTerm}`, {
+        headers: authHeader(),
+      });
 
       if (response.ok) {
         const results = await response.json();

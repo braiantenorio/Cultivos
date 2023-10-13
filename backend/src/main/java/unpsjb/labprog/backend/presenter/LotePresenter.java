@@ -120,7 +120,7 @@ public class LotePresenter {
 
     lote.getAgenda().setProcesosProgramado(procesosCopia);
 
-    lote.setUsuario(serviceUsuario.findById(1));
+    // lote.setUsuario(serviceUsuario.findById(2));
 
     lote.setAgenda(serviceAgenda.add(lote.getAgenda()));
 
