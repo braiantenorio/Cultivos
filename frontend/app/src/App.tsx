@@ -31,7 +31,7 @@ import ListarAtributos from "./components/ListarAtributos";
 import ListarTiposDeProcesos from "./components/ListarTiposDeProcesos";
 import VerHistoriaLote from "./components/VerHistoriaLote";
 import AgendaGeneralDeProcesos from "./components/AgendaGeneralDeProcesos";
-import { NotificationsProvider } from "./Menu"; //falta integrar nuevo menu
+import Menu, { NotificationsProvider } from "./Menu"; //falta integrar nuevo menu
 
 import * as AuthService from "./services/auth.service";
 import Usuario from "./types/usuario";
@@ -244,7 +244,7 @@ function RequireAuth({ children }: any) {
     <Navigate to="/login" replace state={{ path: location.pathname }} />
   );
 }
-
+/*
 function Menu() {
   const location = useLocation();
   const isLoginPage = location.pathname === '/login' || location.pathname === '/register';
@@ -278,29 +278,6 @@ function Menu() {
     setCurrentUser(undefined);
   };
 
-  const [notifications, setNotifications] = useState<Notificacion[]>([]);
-
-  
-
-  const markAsRead = (index: number) => {
-    const updatedNotifications = [...notifications];
-    updatedNotifications[index].read = true;
-    setNotifications(updatedNotifications);
-
-    const notificationId = updatedNotifications[index].id;
-    fetch(`/notificaciones/${notificationId}`, {
-      method: "PUT",
-      headers: authHeader(),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  };
 
   const navigate = useNavigate();
   const navigateToLink = (link: string) => {
@@ -411,15 +388,6 @@ function Menu() {
       </div>
       <ul></ul>
 
-      <ul></ul>
-      <div>
-        <NotificationList
-          notifications={notifications}
-          markAsRead={markAsRead}
-          navigateToLink={navigateToLink}
-        />
-      </div>
-
       {showModeratorBoard && (
         <li className="nav-item">
           <Link to={"/mod"} className="nav-link">
@@ -474,6 +442,6 @@ function Menu() {
       )}
     </div>
   );
-}
+}*/
 
 export default App;
