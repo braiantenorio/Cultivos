@@ -21,6 +21,7 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
+import authHeader from "./services/auth-header";
 
 import EventBus from "./common/EventBus";
 import * as AuthService from "./services/auth.service";
@@ -122,7 +123,9 @@ function Menu() {
   };
 
   useEffect(() => {
-    fetch(`/lotes/procesosPendientes?term=&dia=0`)
+    fetch(`/lotes/procesosPendientes?term=&dia=0`, {
+      headers: authHeader(),
+    })
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);

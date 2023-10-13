@@ -162,6 +162,7 @@ function CrearProceso() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": authHeader().Authorization
         },
         body: JSON.stringify(nLoteCodigo),
       })
@@ -177,6 +178,7 @@ function CrearProceso() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          "Authorization": authHeader().Authorization
         },
         body: JSON.stringify(nProceso),
       })

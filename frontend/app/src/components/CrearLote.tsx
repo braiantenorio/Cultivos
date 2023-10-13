@@ -87,7 +87,9 @@ const CrearLote: React.FC = () => {
         .catch((error) => {
           console.error(error);
         });
-      fetch(`/tipoagendas/${categoria.nombre}`)
+      fetch(`/tipoagendas/${categoria.nombre}`, {
+        headers: authHeader(),
+      })
         .then((response) => {
           if (!response.ok) {
             throw new Error(
