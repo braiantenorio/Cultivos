@@ -162,7 +162,7 @@ function CrearProceso() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": authHeader().Authorization
+          Authorization: authHeader().Authorization,
         },
         body: JSON.stringify(nLoteCodigo),
       })
@@ -178,7 +178,7 @@ function CrearProceso() {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
-          "Authorization": authHeader().Authorization
+          Authorization: authHeader().Authorization,
         },
         body: JSON.stringify(nProceso),
       })
@@ -190,9 +190,8 @@ function CrearProceso() {
           console.error("Error al crear el proceso:", error);
         });
     }
-
-    navigate(-1);
     updateNotifications(notifications, []);
+    navigate(-1);
   };
 
   return (
@@ -207,7 +206,7 @@ function CrearProceso() {
             &nbsp;&nbsp;
             {notificationMessages.map((str, index) => (
               <li key={index} className="list-inline-item">
-                <span className="badge bg-primary text-white me-2 fs-6">
+                <span className="badge badge-custom-1 text-white me-2 fs-6">
                   {str}
                 </span>{" "}
               </li>
@@ -219,7 +218,7 @@ function CrearProceso() {
               Lote:
             </label>
             &nbsp;&nbsp;
-            <span className="badge bg-primary text-white me-2 fs-6">
+            <span className="badge badge-custom-1 text-white me-2 fs-6">
               {loteId}
             </span>{" "}
           </ul>

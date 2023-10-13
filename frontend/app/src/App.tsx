@@ -47,174 +47,182 @@ import EventBus from "./common/EventBus";
 function App() {
   return (
     <BrowserRouter>
-       <NotificationsProvider>
-      <Menu />
-      <Routes>
-        <Route
-          path="/lotes/crear-lote"
-          element={
-            <RequireAuth>
-              <CrearLote />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/lotes"
-          element={
-            <RequireAuth>
-              <Loteslist />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/lotes/:loteId/edit"
-          element={
-            <RequireAuth>
-              <EditarLote />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/lotes/:loteId"
-          element={
-            <RequireAuth>
-              <DetalleLote />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/lotes/log/:loteId"
-          element={
-            <RequireAuth>
-              <LoteRevisiones />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/lotes/:loteId/historia"
-          element={
-            <RequireAuth>
-              <VerHistoriaLote />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/lotes/:loteId/procesos/:listId"
-          element={
-            <RequireAuth>
-              <CrearProceso />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/lotes/:loteId/agenda"
-          element={
-            <RequireAuth>
-              <AgendaDeProcesos />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/procesos/:procesoId"
-          element={
-            <RequireAuth>
-              <DetalleProceso />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/agendas/:id"
-          element={
-            <RequireAuth>
-              <CrearAgenda />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/agendas"
-          element={
-            <RequireAuth>
-              <TipoAgendaList />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/atributos/new"
-          element={
-            <RequireAuth>
-              <CrearAtributo />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/atributos"
-          element={
-            <RequireAuth>
-              <ListarAtributos />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/tipo-proceso/new"
-          element={
-            <RequireAuth>
-              <CrearTipoDeProceso />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/tipo-proceso"
-          element={
-            <RequireAuth>
-              <ListarTiposDeProcesos />
-            </RequireAuth>
-          }
-        />
-        <Route path="/" element={<Home />} />
-        <Route
-          path="/home"
-          element={
-            <RequireAuth>
-              {" "}
-              <Home />
-            </RequireAuth>
-          }
-        />
-        <Route path="/login" element={<Login />} />
-        <Route path="/register" element={<Register />} />
-        <Route
-          path="/profile"
-          element={
-            <RequireAuth>
-              <Profile />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/user"
-          element={
-            <RequireAuth>
-              <BoardUser />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/mod"
-          element={
-            <RequireAuth>
-              <BoardModerator />
-            </RequireAuth>
-          }
-        />
-        <Route
-          path="/admin"
-          element={
-            <RequireAuth>
-              <BoardAdmin />
-            </RequireAuth>
-          }
-        />
-      </Routes>
+      <NotificationsProvider>
+        <Menu />
+        <Routes>
+          <Route
+            path="/lotes/crear-lote"
+            element={
+              <RequireAuth>
+                <CrearLote />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/agenda/general"
+            element={
+              <RequireAuth>
+                <AgendaGeneralDeProcesos />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes"
+            element={
+              <RequireAuth>
+                <Loteslist />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/:loteId/edit"
+            element={
+              <RequireAuth>
+                <EditarLote />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/:loteId"
+            element={
+              <RequireAuth>
+                <DetalleLote />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/log/:loteId"
+            element={
+              <RequireAuth>
+                <LoteRevisiones />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/:loteId/historia"
+            element={
+              <RequireAuth>
+                <VerHistoriaLote />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/:loteId/procesos/:listId"
+            element={
+              <RequireAuth>
+                <CrearProceso />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/:loteId/agenda"
+            element={
+              <RequireAuth>
+                <AgendaDeProcesos />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/procesos/:procesoId"
+            element={
+              <RequireAuth>
+                <DetalleProceso />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/agendas/:id"
+            element={
+              <RequireAuth>
+                <CrearAgenda />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/agendas"
+            element={
+              <RequireAuth>
+                <TipoAgendaList />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/atributos/new"
+            element={
+              <RequireAuth>
+                <CrearAtributo />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/atributos"
+            element={
+              <RequireAuth>
+                <ListarAtributos />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tipo-proceso/new"
+            element={
+              <RequireAuth>
+                <CrearTipoDeProceso />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/tipo-proceso"
+            element={
+              <RequireAuth>
+                <ListarTiposDeProcesos />
+              </RequireAuth>
+            }
+          />
+          <Route path="/" element={<Home />} />
+          <Route
+            path="/home"
+            element={
+              <RequireAuth>
+                {" "}
+                <Home />
+              </RequireAuth>
+            }
+          />
+          <Route path="/login" element={<Login />} />
+          <Route path="/register" element={<Register />} />
+          <Route
+            path="/profile"
+            element={
+              <RequireAuth>
+                <Profile />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/user"
+            element={
+              <RequireAuth>
+                <BoardUser />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/mod"
+            element={
+              <RequireAuth>
+                <BoardModerator />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/admin"
+            element={
+              <RequireAuth>
+                <BoardAdmin />
+              </RequireAuth>
+            }
+          />
+        </Routes>
       </NotificationsProvider>
     </BrowserRouter>
   );

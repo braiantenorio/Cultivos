@@ -32,7 +32,7 @@ public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgr
                         "FROM Lote l " +
                         "JOIN l.agenda a " +
                         "JOIN a.procesosProgramado pp " +
-                        "JOIN l.usuario u " +
+                        // "JOIN l.usuario u " +
                         "WHERE pp.fechaARealizar <= :fecha AND pp.completado = false " +
                         "AND (UPPER(l.codigo) LIKE CONCAT('%', UPPER(:term), '%') " +
                         "OR UPPER(pp.proceso.nombre)  LIKE CONCAT('%', UPPER(:term), '%')) " +

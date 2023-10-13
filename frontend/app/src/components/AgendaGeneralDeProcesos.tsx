@@ -157,7 +157,7 @@ function AgendaGeneralDeProcesos() {
           {showCheckbox ? (
             <button
               type="button"
-              className="btn btn-primary"
+              className="btn btn-custom-color-1 "
               onClick={handleLoteChange2}
               disabled={codigos.length === 0 || erroresc !== 0}
             >
@@ -210,7 +210,12 @@ function AgendaGeneralDeProcesos() {
                   ).toLocaleDateString()}
                 </td>
                 <td>{lote.proceso.nombre}</td>
-                <td>{lote.lote}</td>
+                <td>
+                  {" "}
+                  <span className="badge badge-custom-1 text-white me-2 fs-6">
+                    {lote.lote}
+                  </span>
+                </td>
                 <td>
                   {isPastDate && showCheckbox ? (
                     <input
@@ -233,7 +238,7 @@ function AgendaGeneralDeProcesos() {
                       to={`/lotes/${lote!.lote}/procesos/${
                         lote.proceso.nombre
                       }`}
-                      className="btn btn-primary btn-sm ms-2"
+                      className="btn btn-custom-color-1 btn-sm ms-2"
                     >
                       Completar
                     </Link>

@@ -111,7 +111,7 @@ function Loteslist() {
               <td>{index + 1}</td>
               <td>
                 {" "}
-                <span className="badge bg-primary text-white me-2 fs-6">
+                <span className="badge badge-custom-1 text-white me-2 fs-6">
                   {lote.codigo}
                 </span>
               </td>

@@ -21,11 +21,10 @@ import Profile from "./components/Profile";
 import BoardUser from "./components/BoardUser";
 import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
-import authHeader from "./services/auth-header";
 
 import EventBus from "./common/EventBus";
 import * as AuthService from "./services/auth.service";
-
+import authHeader from "./services/auth-header";
 
 type NotificationsContextType = {
   notifications: number;
@@ -78,12 +77,14 @@ export const useNotifications = () => {
 
 function Menu() {
   const location = useLocation();
-  const isLoginPage = location.pathname === '/login' || location.pathname === '/register';
+  const isLoginPage =
+    location.pathname === "/login" || location.pathname === "/register";
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
-  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(undefined);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
 
-  
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
@@ -100,8 +101,6 @@ function Menu() {
     };
   }, []);
 
-
-  
   const logOut = () => {
     AuthService.logout();
     setShowModeratorBoard(false);
@@ -109,7 +108,6 @@ function Menu() {
     setCurrentUser(undefined);
   };
 
-  
   const navigate = useNavigate();
   const navigateToLink = (link: string) => {
     const llink = "/lotes/" + link;
@@ -135,6 +133,7 @@ function Menu() {
       .then((responseData) => {
         //  setNotifications(responseData.data.length);
         updateNotifications(responseData.data.length, []);
+        console.log(responseData);
       })
       .catch((error) => {
         console.error(error);
@@ -302,7 +301,7 @@ function Menu() {
         className="btn btn-custom-color-2 position-relative rounded-circle"
         onClick={toggleNotifications}
       >
-        <i className="bi bi-bell-fill custom-icon bi-lg"></i>
+        <i className="bi bi-journal custom-icon bi-lg"></i>
 
         {notifications > 0 && (
           <span
