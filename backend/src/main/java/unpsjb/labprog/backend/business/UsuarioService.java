@@ -38,4 +38,8 @@ public class UsuarioService {
 		return repository.findById(id).orElse(null);
 	}
 
+	public Usuario findByUsername(String username) {
+		return repository.findByUsername(username).orElse(null);
+	}
+
 }

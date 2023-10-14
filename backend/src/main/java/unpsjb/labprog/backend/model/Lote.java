@@ -14,7 +14,15 @@ import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.annotation.CreatedBy;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+
 import jakarta.persistence.Entity;
+import jakarta.persistence.EntityListeners;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
@@ -26,6 +34,7 @@ import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.PrePersist;
+import jakarta.persistence.PreUpdate;
 import jakarta.persistence.PostPersist;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
@@ -33,6 +42,9 @@ import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import unpsjb.labprog.backend.business.UsuarioRepository;
+import unpsjb.labprog.backend.business.UsuarioService;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -41,13 +53,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @NoArgsConstructor
 @Table(name = "Lotes")
 @SQLDelete(sql = "UPDATE Lotes SET deleted = true, lote_padre_id = null  WHERE id=?")
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @FilterDef(name = "deletedLoteFilter", parameters = {
 		@ParamDef(name = "isDeleted", type = boolean.class),
 		@ParamDef(name = "codigo", type = String.class)
 })
 @Filter(name = "deletedLoteFilter", condition = "deleted = :isDeleted AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
 @JsonIgnoreProperties(value = { "lotePadre" }, allowSetters = true)
+@EntityListeners(AuditingEntityListener.class)
 public class Lote {
 
 	@Id
@@ -75,9 +88,9 @@ public class Lote {
 	@JoinColumn(name = "agenda_id")
 	private Agenda agenda;
 
-	@NotAudited
+	@CreatedBy
 	@ManyToOne
-	private Usuario usuario;
+	private Usuario usuario; //sino usemos la propia logica, usando un find by id digo pero sacando el id de security context
 
 	private boolean deleted = Boolean.FALSE;
 
@@ -109,12 +122,16 @@ public class Lote {
 
 	@PrePersist
 	public void prePersist() {
+
 		fecha = LocalDate.now();
-	}
 
-	@PostPersist
-	public void afterInsert() {
+		
 
 	}
 
+	@PreUpdate
+	public void prePersistUser() {
+
+	}
+/* */
 }

@@ -8,11 +8,14 @@ import org.hibernate.Session;
 import org.hibernate.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import jakarta.persistence.EntityManager;
 import unpsjb.labprog.backend.model.Lote;
+import unpsjb.labprog.backend.model.Usuario;
 import unpsjb.labprog.backend.model.Categoria;
 import java.util.Date;
 import unpsjb.labprog.backend.DTOs.LoteRevisionDTO;
@@ -28,6 +31,9 @@ public class LoteService {
 
 	@Autowired
 	private EntityManager entityManager;
+
+	@Autowired
+	UsuarioService usuarioService;
 
 	// TODO: Mejorar
 	public List<Lote> findAll() {
@@ -103,11 +109,14 @@ public class LoteService {
 
 	@Transactional
 	public Lote update(Lote lote) {
+		lote.setUsuario(obtenerUsuario());
+
 		return repository.save(lote);
 	}
 
 	@Transactional
 	public Lote add(Lote lote) {
+		lote.setUsuario(obtenerUsuario());
 
 		return repository.save(lote);
 	}
@@ -139,6 +148,13 @@ public class LoteService {
 		String codigo = lote.getCultivar().getCodigo() + "-" + lote.getCategoria().getCodigo() +
 				"-" + count + "-" + year;
 		return codigo;
+	}
+
+	private Usuario obtenerUsuario() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		Usuario usuario = usuarioService.findByUsername(username);
+		return usuario;
 	}
 
 }
