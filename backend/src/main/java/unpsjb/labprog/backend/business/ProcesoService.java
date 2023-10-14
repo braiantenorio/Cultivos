@@ -3,12 +3,15 @@ package unpsjb.labprog.backend.business;
 import java.util.ArrayList;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.model.Agenda;
 import unpsjb.labprog.backend.model.Proceso;
 import unpsjb.labprog.backend.model.ProcesoProgramado;
+import unpsjb.labprog.backend.model.Usuario;
 
 @Service
 public class ProcesoService {
@@ -25,6 +28,9 @@ public class ProcesoService {
 	@Autowired
 	AgendaService agendaService;
 
+	@Autowired
+	UsuarioService usuarioService;
+
 	// TODO: Mejorar
 	public List<Proceso> findAll() {
 		List<Proceso> result = new ArrayList<>();
@@ -38,6 +44,8 @@ public class ProcesoService {
 
 	@Transactional
 	public Proceso update(Proceso proceso) {
+		proceso.setUsuario(obtenerUsuario());
+
 		return repository.save(proceso);
 	}
 
@@ -45,10 +53,11 @@ public class ProcesoService {
 	public Proceso add(Proceso proceso, String id) {
 		Lote lote = loteService.findByCode(id);
 		lote.addProceso(proceso);
+		proceso.setUsuario(obtenerUsuario());
 
 		try {
 			loteService.update(lote);
-			completarProcesoProgramado(id,proceso.getListaDeAtributos().getNombre());
+			completarProcesoProgramado(id, proceso.getListaDeAtributos().getNombre());
 		} catch (Exception e) {
 			// TODO: handle exception error de recursion
 		}
@@ -61,13 +70,20 @@ public class ProcesoService {
 
 	private ProcesoProgramado completarProcesoProgramado(String id, String proceso) {
 
-	    List<ProcesoProgramado> pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
+		List<ProcesoProgramado> pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
 		if (pp != null) {
 			pp.get(0).setCompletado(true);
 			procesoProgramadoService.update(pp.get(0));
 
 		}
 		return null;
+	}
+
+	private Usuario obtenerUsuario() {
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		String username = authentication.getName();
+		Usuario usuario = usuarioService.findByUsername(username);
+		return usuario;
 	}
 
 }
