@@ -91,7 +91,7 @@ function Loteslist() {
               checked={showDeleted}
               onChange={handleShowDeletedChange}
             />
-            Mostrar Eliminados
+              Mostrar Eliminados
           </label>
         </div>
       </div>

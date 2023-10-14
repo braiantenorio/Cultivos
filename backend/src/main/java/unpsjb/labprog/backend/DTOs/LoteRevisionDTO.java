@@ -5,6 +5,7 @@ import unpsjb.labprog.backend.model.Lote;
 
 public class LoteRevisionDTO {
     private Lote entidad;
+    
     private Date revisionDate;
 
     public Lote getEntidad() {

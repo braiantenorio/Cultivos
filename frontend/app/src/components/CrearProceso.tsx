@@ -79,6 +79,7 @@ function CrearProceso() {
       })
     );
   };
+  
   const handleTiposDeProcesosChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -146,6 +147,7 @@ function CrearProceso() {
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
     e.preventDefault();
+
     const nProceso: Proceso = {
       id: 0,
       usuario: null,
@@ -153,11 +155,13 @@ function CrearProceso() {
       valores: valores,
       listaDeAtributos: tipoDeProceso,
     };
+
     if (notificationMessages.length > 0) {
       const nLoteCodigo: LoteCodigo = {
         lotesCodigos: notificationMessages,
         proceso: nProceso,
       };
+      
       fetch(`/procesos/lotes`, {
         method: "POST",
         headers: {

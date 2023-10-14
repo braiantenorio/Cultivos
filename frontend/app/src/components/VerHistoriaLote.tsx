@@ -75,7 +75,7 @@ function VerHistoriaLote() {
                       {lote.procesos.map((proceso) => (
                         <tr key={proceso.id}>
                           <td>{proceso.id}</td>
-                          <td>{proceso.usuario}</td>
+                          <td>{proceso.usuario?.username}</td>
                           <td>
                             {proceso.fecha
                               ? new Date(proceso.fecha).toLocaleDateString()

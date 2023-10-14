@@ -34,10 +34,10 @@ public class ProcesoPresenter {
 		return Response.ok(service.findAll());
 	}
 
-	@PostMapping(value = "/lote/{id}")
-	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("id") String id) {
+	@PostMapping(value = "/lote/{codigo}")
+	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("codigo") String codigo) {
         
-		return Response.ok(service.add(Proceso, id), "Proceso creado correctamente");
+		return Response.ok(service.add(Proceso, codigo), "Proceso creado correctamente");
 	}
 
 	@PostMapping(value = "/lotes")

@@ -44,17 +44,4 @@ public class Atributo {
 
 	private boolean obligatorio;
 
-	/* anterior modelo, ahora es many-to-many unidireccional
-	@JsonIgnore
-	@ManyToOne
-	@JoinColumn(name = "Lista_de_atributos")
-	private ListaDeAtributos listaDeAtributos;
-*/
-	/* @ManyToMany incompleto pero creo que innecesario
-	@JoinTable(name = "course_like",
-		joinColumns = @JoinColumn(name = "student_id"),
-		inverseJoinColumns = @JoinColumn(name = "course_id"))
-	private List<> likedCourses;
-*/
-
 }

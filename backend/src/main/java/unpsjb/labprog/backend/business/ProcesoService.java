@@ -23,6 +23,9 @@ public class ProcesoService {
 	LoteService loteService;
 
 	@Autowired
+	LoteRepository loteRepository;
+
+	@Autowired
 	ProcesoProgramadoService procesoProgramadoService;
 
 	@Autowired
@@ -44,26 +47,26 @@ public class ProcesoService {
 
 	@Transactional
 	public Proceso update(Proceso proceso) {
-		proceso.setUsuario(obtenerUsuario());
+		proceso.setUsuario(obtenerUsuario()); // no lo probe pero deberia funcionar, cualquier cosa lo comentas y vez si sigue dando error xd
 
 		return repository.save(proceso);
 	}
 
 	@Transactional
-	public Proceso add(Proceso proceso, String id) {
-		Lote lote = loteService.findByCode(id);
-		lote.addProceso(proceso);
+	public Proceso add(Proceso proceso, String codigo) {
+		Lote lote = loteService.findByCode(codigo);
 		proceso.setUsuario(obtenerUsuario());
+		lote.addProceso(proceso);
 
 		try {
-			loteService.update(lote);
-			completarProcesoProgramado(id, proceso.getListaDeAtributos().getNombre());
+			//loteService.update(lote);
+			loteRepository.save(lote); // ahora este para que no actualice el usuario del lote
+			completarProcesoProgramado(codigo, proceso.getListaDeAtributos().getNombre());
 		} catch (Exception e) {
-			// TODO: handle exception error de recursion
 		}
 		return null; // bueno esto no viene con el id xd
 	}
-
+	
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}

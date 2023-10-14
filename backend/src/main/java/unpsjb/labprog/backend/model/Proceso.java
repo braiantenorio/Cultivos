@@ -6,10 +6,13 @@ import java.util.List;
 
 import org.hibernate.envers.Audited;
 import org.hibernate.envers.NotAudited;
+import org.hibernate.envers.RelationTargetAuditMode;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.ManyToOne;
@@ -26,7 +29,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Setter
 @NoArgsConstructor
 @Table(name = "Procesos")
-@Audited
+@Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 public class Proceso {
 
 	@Id
@@ -35,7 +38,7 @@ public class Proceso {
 
 	@NotAudited
 	@ManyToOne
-	// @JoinColumn(name = "usuario_id", nullable = false) //TODO: como todavia no
+	@JoinColumn(name = "usuario_id", nullable = true) //TODO: como todavia no
 	// implementamos usuarios, lo dejamos como opcional xd
 	Usuario usuario;
 

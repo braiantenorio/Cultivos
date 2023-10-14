@@ -42,13 +42,13 @@ function DetalleProceso() {
             </div>
             <dl className="row">
                 <dt className="col-sm-3">Usuario</dt>
-                <dd className="col-sm-9">{proceso.usuario? proceso.usuario : 'prueba'} </dd>
+                <dd className="col-sm-9">{proceso.usuario?.nombre} {proceso.usuario?.apellido} </dd>
 
                 <dt className="col-sm-3">Fecha</dt>
                 <dd className="col-sm-9">{proceso.fecha?.toLocaleString('en-US')}</dd>
 
                 <dt className="col-sm-3">Tipo</dt>
-                <dd className="col-sm-9">{proceso.usuario? proceso.usuario : 'aca va el tipo del proceso'} </dd>
+                <dd className="col-sm-9">{proceso.listaDeAtributos?.nombre} </dd>
 
             </dl>
 

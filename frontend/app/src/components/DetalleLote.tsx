@@ -132,7 +132,7 @@ function DetalleLote() {
           {lote.procesos.map((proceso) => (
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
-              <td>{proceso.usuario}</td>
+              <td>{proceso.usuario?.nombre} {proceso.usuario?.apellido}</td>
               <td>
                 {proceso.fecha ? new Date(proceso.fecha).toISOString() : ""}
               </td>

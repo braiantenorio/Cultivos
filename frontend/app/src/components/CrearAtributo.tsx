@@ -4,8 +4,27 @@ import { Atributo } from "../types/atributo";
 import authHeader from "../services/auth-header";
 
 function CrearAtributo() {
-  const [atributo, setAtributo] = useState<Atributo>({} as Atributo);
+  const [atributo, setAtributo] = useState<Atributo>({
+    id: 0,
+    nombre: "",
+    tipo: "",
+    obligatorio: false,
+    caracteres: 50, // Valor predeterminado de 50 caracteres
+    minimo: 0,
+    maximo: 0,
+    decimales: 0,
+  });
+
   const navigate = useNavigate();
+
+  // Función para determinar si se debe ocultar el campo de caracteres
+  const hideCaracteres = atributo.tipo === "number";
+
+  // Función para determinar si se deben ocultar los campos de rango
+  const hideRangos = atributo.tipo === "string";
+
+  // Función para determinar si se debe ocultar todo excepto nombre, checkbox y select
+  const hideAllExceptName = atributo.tipo === "date";
 
   function handleNombreChange(e: React.ChangeEvent<HTMLInputElement>) {
     setAtributo({
@@ -78,7 +97,7 @@ function CrearAtributo() {
     <div className="container">
       <h2>Nuevo atributo</h2>
       <form className="row g-3" onSubmit={handleSubmit}>
-        <div className="col-md-4">
+        <div className="col-md-4" >
           <label htmlFor="validationCustom01" className="form-label">
             Nombre
           </label>
@@ -90,6 +109,7 @@ function CrearAtributo() {
             onChange={handleNombreChange}
             required
           />
+          
         </div>
         <div className="col-md-2">
           <label htmlFor="validationCustom04" className="form-label">
@@ -110,7 +130,7 @@ function CrearAtributo() {
             <option value="fecha">fecha</option>
           </select>
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2" hidden={atributo.tipo !== "number"}>
           <label htmlFor="validationCustomUsername" className="form-label">
             Rango minimo
           </label>
@@ -122,7 +142,7 @@ function CrearAtributo() {
             onChange={handleRangoMinimoChange}
           />
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2"  hidden={atributo.tipo !== "string"}>
           <label htmlFor="validationCustom02" className="form-label">
             Limite de carateres
           </label>
@@ -134,7 +154,7 @@ function CrearAtributo() {
             onChange={handleLimiteCaracteresChange}
           />
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2"  hidden={atributo.tipo !== "number"}>
           <label htmlFor="validationCustom03" className="form-label">
             Rango maximo
           </label>
@@ -146,7 +166,7 @@ function CrearAtributo() {
             onChange={handleRangoMaximoChange}
           />
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2"  hidden={atributo.tipo !== "number"}>
           <label htmlFor="validationCustom05" className="form-label">
             Limite de decimales
           </label>

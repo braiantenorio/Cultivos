@@ -38,16 +38,22 @@ public class LotePresenter {
 
   @Autowired
   LoteService service;
+
   @Autowired
   AgendaService serviceAgenda;
+  
   @Autowired
   TipoAgendaService serviceTipoAgenda;
+  
   @Autowired
   ProcesoProgramadoService serviceProcesoProgramado;
+  
   @Autowired
   CategoriaService serviceCategoria;
+  
   @Autowired
   UsuarioService serviceUsuario;
+  
   @Autowired
   ListaDeAtributosService serviceListaDeAtributos;
 

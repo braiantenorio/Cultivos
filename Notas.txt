@@ -13,3 +13,15 @@ los informes para el inase van solo en un excel
 ver que luego un lote puede pasar a lote padre
 procesos independientes
 
+Creo que falta:
+
+- Agregar usuario al eliminar. Osea el soft delete. A lote y procesos
+- Tiempos de carga al guardar 
+- Ocultar con un - en detalle de atributos, cuando no tiene que ver con el atributo, ejemplo, ocultar decimales en tipo texto
+
+
+Puede llegar a entrar:
+
+- Vista de procesos anulados en detalle de lote. y capacidad de anular procesos xddd
+- versiones de atributos
+- detalle de atributos al crear tipo de proceso.
