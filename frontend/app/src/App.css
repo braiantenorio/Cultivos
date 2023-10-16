@@ -76,6 +76,10 @@
 .list-group-item:hover {
   background-color: #f0f0f0;
 }
+.descargar-button-container {
+  text-align: right;
+  margin-top: 10px; /* Ajusta el margen superior según tus necesidades */
+}
 
 /* Codigo de Braian, para login y otras cosas. Deberiamos poder organizarlo mejor */
 body {
@@ -94,14 +98,11 @@ body {
 .form-signin input[type="text"] {
   margin-top: 20px;
   margin-bottom: 20px;
-
 }
 
 .form-signin input[type="password"] {
   margin-bottom: 20px;
-
 }
-
 
 .form-signup {
   max-width: 400px;
@@ -114,17 +115,14 @@ body {
 
 .form-signup input[type="text"] {
   margin-top: 20px;
-
 }
 
 .form-signup input[type="password"] {
   margin-top: 20px;
-
 }
 
 .form-signup input[type="email"] {
   margin-top: 20px;
-
 }
 
 .component-with-margin {

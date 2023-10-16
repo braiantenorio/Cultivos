@@ -241,7 +241,13 @@ function Menu() {
         </ul>
       </div>
       <ul></ul>
-
+      <div>
+        {" "}
+        <Link to="/generar/informe" className="btn btn-custom-color-2">
+          Informes
+        </Link>
+      </div>
+      <ul></ul>
       {showModeratorBoard && (
         <li className="nav-item">
           <Link to={"/mod"} className="nav-link">

@@ -157,4 +157,15 @@ public class LoteService {
 		return usuario;
 	}
 
+	public List<Object[]> findLotesAndValoresByAtributos(List<Long> list) {
+		return repository.findLotesAndValoresByAtributos(list);
+	}
+
+	public List<Lote> findLotesByCategoria(Categoria categoria) {
+		return repository.findLotesByCategoria(categoria);
+	}
+
+	public List<Object[]> findLotesAndValoresByAtributosAndCategoria(List<Long> listaAtributos, Categoria categoria) {
+		return repository.findLotesAndValoresByAtributosAndCategoria(listaAtributos, categoria);
+	}
 }

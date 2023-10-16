@@ -41,19 +41,19 @@ public class LotePresenter {
 
   @Autowired
   AgendaService serviceAgenda;
-  
+
   @Autowired
   TipoAgendaService serviceTipoAgenda;
-  
+
   @Autowired
   ProcesoProgramadoService serviceProcesoProgramado;
-  
+
   @Autowired
   CategoriaService serviceCategoria;
-  
+
   @Autowired
   UsuarioService serviceUsuario;
-  
+
   @Autowired
   ListaDeAtributosService serviceListaDeAtributos;
 
@@ -110,24 +110,23 @@ public class LotePresenter {
 
     List<ProcesoProgramado> procesosCopia = new ArrayList<>();
     LocalDate fechaActual = LocalDate.now();
-    for (ProcesoProgramado procesoOriginal : lote.getAgenda().getTipoAgenda().getProcesosProgramado()) {
-      for (int i = 0; i < procesoOriginal.getCantidad(); i++) {
-        ProcesoProgramado procesoCopia = new ProcesoProgramado();
-        procesoCopia.setCompletado(false);
-        procesoCopia.setProceso(procesoOriginal.getProceso());
+    if (lote.getAgenda().getTipoAgenda() != null) {
+      for (ProcesoProgramado procesoOriginal : lote.getAgenda().getTipoAgenda().getProcesosProgramado()) {
+        for (int i = 0; i < procesoOriginal.getCantidad(); i++) {
+          ProcesoProgramado procesoCopia = new ProcesoProgramado();
+          procesoCopia.setCompletado(false);
+          procesoCopia.setProceso(procesoOriginal.getProceso());
 
-        LocalDate fechaARealizar = fechaActual
-            .plusDays((procesoOriginal.getDiaInicio() - 1) + (procesoOriginal.getFrecuencia() * i));
-        procesoCopia.setFechaARealizar(fechaARealizar);
-        procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+          LocalDate fechaARealizar = fechaActual
+              .plusDays((procesoOriginal.getDiaInicio() - 1) + (procesoOriginal.getFrecuencia() * i));
+          procesoCopia.setFechaARealizar(fechaARealizar);
+          procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+        }
+
       }
+      lote.getAgenda().setProcesosProgramado(procesosCopia);
 
     }
-
-    lote.getAgenda().setProcesosProgramado(procesosCopia);
-
-    // lote.setUsuario(serviceUsuario.findById(2));
-
     lote.setAgenda(serviceAgenda.add(lote.getAgenda()));
 
     lote.setCodigo(service.generarCodigo(lote));

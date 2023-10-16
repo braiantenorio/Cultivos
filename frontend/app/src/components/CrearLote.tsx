@@ -268,24 +268,26 @@ const CrearLote: React.FC = () => {
             </select>
           </div>
           &nbsp; &nbsp;
-          <div className="col-3">
-            <label htmlFor="agenda" className="form-label">
-              Agenda version:
-            </label>
-            <select
-              className="form-select"
-              id="agenda"
-              name="agenda"
-              value={nuevoLote.agenda?.tipoAgenda.id}
-              onChange={handleAgendaChange}
-            >
-              {tipoAgendas.map((categoria) => (
-                <option key={categoria.id} value={categoria.id}>
-                  {categoria.version}
-                </option>
-              ))}
-            </select>
-          </div>
+          {tipoAgendas.length > 0 && (
+            <div className="col-3">
+              <label htmlFor="agenda" className="form-label">
+                Agenda version:
+              </label>
+              <select
+                className="form-select"
+                id="agenda"
+                name="agenda"
+                value={nuevoLote.agenda?.tipoAgenda.id}
+                onChange={handleAgendaChange}
+              >
+                {tipoAgendas.map((categoria) => (
+                  <option key={categoria.id} value={categoria.id}>
+                    {categoria.version}
+                  </option>
+                ))}
+              </select>
+            </div>
+          )}
         </div>
         <div className="mb-3 col-5">
           <label htmlFor="lotePadre" className="form-label">

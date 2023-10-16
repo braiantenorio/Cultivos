@@ -77,7 +77,7 @@ public class Lote {
 	@ManyToOne
 	@JoinColumn(name = "categoria_id", nullable = false)
 	private Categoria categoria;
-	
+
 	@NotAudited
 	@ManyToOne
 	@JoinColumn(name = "cultivar_id", nullable = false)
@@ -90,7 +90,8 @@ public class Lote {
 
 	@CreatedBy
 	@ManyToOne
-	private Usuario usuario; //sino usemos la propia logica, usando un find by id digo pero sacando el id de security context
+	private Usuario usuario; // sino usemos la propia logica, usando un find by id digo pero sacando el id de
+								// security context
 
 	private boolean deleted = Boolean.FALSE;
 
@@ -98,13 +99,13 @@ public class Lote {
 
 	private LocalDate fecha; // cuando se cree poner la fecha del dia
 
-	@ManyToOne //(fetch = FetchType.LAZY) // (fetch = FetchType.EAGER)
+	@ManyToOne // (fetch = FetchType.LAZY) // (fetch = FetchType.EAGER)
 	private Lote lotePadre;
 
 	@JsonIgnore
 	@NotAudited
 	@OneToMany(mappedBy = "lotePadre")
-	private List<Lote> subLotes;
+	private List<Lote> subLotes = new ArrayList<>();
 
 	@ManyToMany(cascade = { CascadeType.PERSIST, CascadeType.MERGE })
 	@JoinTable(name = "Registro_de_procesos", joinColumns = @JoinColumn(name = "lote_id"), inverseJoinColumns = @JoinColumn(name = "proceso_id"))
@@ -125,13 +126,11 @@ public class Lote {
 
 		fecha = LocalDate.now();
 
-		
-
 	}
 
 	@PreUpdate
 	public void prePersistUser() {
 
 	}
-/* */
+	/* */
 }

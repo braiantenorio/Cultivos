@@ -43,6 +43,7 @@ import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
+import ExcelTable from "./components/ExcelTable";
 
 function App() {
   return (
@@ -55,6 +56,14 @@ function App() {
             element={
               <RequireAuth>
                 <CrearLote />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/generar/informe"
+            element={
+              <RequireAuth>
+                <ExcelTable />
               </RequireAuth>
             }
           />

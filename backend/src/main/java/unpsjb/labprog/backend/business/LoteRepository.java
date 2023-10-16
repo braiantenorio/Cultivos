@@ -37,4 +37,14 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
         @Query("SELECT l.codigo FROM Lote l WHERE UPPER(l.codigo) LIKE CONCAT('%', UPPER(?1), '%') ")
         List<String> searchLote(String term);
 
+        @Query("SELECT l.id,l, v FROM Lote l JOIN l.procesos p JOIN p.valores v WHERE v.atributo.id IN :listaAtributos")
+        List<Object[]> findLotesAndValoresByAtributos(@Param("listaAtributos") List<Long> listaAtributos);
+
+        @Query("SELECT l FROM Lote l WHERE l.categoria = :categoria")
+        List<Lote> findLotesByCategoria(@Param("categoria") Categoria categoria);
+
+        @Query("SELECT l.id, l, v FROM Lote l JOIN l.procesos p JOIN p.valores v WHERE v.atributo.id IN :listaAtributos AND l.categoria = :categoria")
+        List<Object[]> findLotesAndValoresByAtributosAndCategoria(
+                        @Param("listaAtributos") List<Long> listaAtributos,
+                        @Param("categoria") Categoria categoria);
 }
