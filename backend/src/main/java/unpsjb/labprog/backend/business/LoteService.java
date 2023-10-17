@@ -57,13 +57,15 @@ public class LoteService {
 
 		for (Number revisionNumber : revisionNumbers) {
 			Lote entidad = reader.find(Lote.class, id, revisionNumber);
-			Date revisionDate = reader.getRevisionDate(revisionNumber);
 
+			Date revisionDate = reader.getRevisionDate(revisionNumber);
 			if (entidad == null) {
 				entidad = findById(id);
 			}
 			// Verificar si la revisión es una eliminación (revtype = 2)
 			LoteRevisionDTO revisionDTO = new LoteRevisionDTO();
+			revisionDTO.setUsuario(usuarioService.findById(entidad.getUsuario().getId()));
+			entidad.setUsuario(null);
 			revisionDTO.setEntidad(entidad);
 			revisionDTO.setRevisionDate(revisionDate);
 

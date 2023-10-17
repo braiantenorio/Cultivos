@@ -50,7 +50,7 @@ function LoteRevisiones() {
                   {new Date(revision?.revisionDate).toLocaleDateString()}{" "}
                 </td>
                 <td>{new Date(revision?.revisionDate).toLocaleTimeString()}</td>
-                <td></td>
+                <td>{revision.usuario?.username}</td>
               </tr>
             ))}
           </tbody>

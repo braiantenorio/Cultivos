@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.business.ProcesoService;
@@ -35,16 +36,17 @@ public class ProcesoPresenter {
 	}
 
 	@PostMapping(value = "/lote/{codigo}")
-	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("codigo") String codigo) {
-        
-		return Response.ok(service.add(Proceso, codigo), "Proceso creado correctamente");
+	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("codigo") String codigo,
+			@RequestParam(value = "indep", required = false) boolean indep) {
+
+		return Response.ok(service.add(Proceso, codigo, indep), "Proceso creado correctamente");
 	}
 
 	@PostMapping(value = "/lotes")
 	public ResponseEntity<Object> crear(@RequestBody LoteCodigoDTO loteCodigo) {
-        
-        for(String lote:loteCodigo.getLotesCodigos()){
-			service.add(loteCodigo.getProceso(), lote);
+
+		for (String lote : loteCodigo.getLotesCodigos()) {
+			service.add(loteCodigo.getProceso(), lote, false);
 		}
 
 		return Response.ok(loteCodigo, "Proceso creado correctamente");

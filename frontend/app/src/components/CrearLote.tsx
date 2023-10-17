@@ -353,6 +353,7 @@ const CrearLote: React.FC = () => {
             disabled={
               nuevoLote.codigo === "" ||
               nuevoLote.cantidad < 1 ||
+              nuevoLote.cantidad == null ||
               nuevoLote.categoria === undefined ||
               nuevoLote.cultivar === undefined
             }

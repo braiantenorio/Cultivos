@@ -29,14 +29,14 @@ function Loteslist() {
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
-    const isValidInput = /^[a-zA-Z0-9]*$/.test(inputValue);
+    //   const isValidInput = /^[a-zA-Z0-9]*$/.test(inputValue);
 
-    if (isValidInput) {
-      setSearchTerm(inputValue);
-      setRegla(false);
-    } else {
-      setRegla(true);
-    }
+    // if (isValidInput) {
+    setSearchTerm(inputValue);
+    //  setRegla(false);
+    //} else {
+    //   setRegla(true);
+    // }
   };
 
   const handleBuscarLote = () => {
@@ -91,7 +91,7 @@ function Loteslist() {
               checked={showDeleted}
               onChange={handleShowDeletedChange}
             />
-              Mostrar Eliminados
+            Mostrar Eliminados
           </label>
         </div>
       </div>
