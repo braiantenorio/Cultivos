@@ -25,3 +25,9 @@ Puede llegar a entrar:
 - Vista de procesos anulados en detalle de lote. y capacidad de anular procesos xddd
 - versiones de atributos
 - detalle de atributos al crear tipo de proceso.
+
+
+-desapecer el lote , fecha ,es vez de boolean ,fecha de rango para informes , p
+
+agregar filtros en pantallas
+agregar atributo de fecha de baja en lotes, luego generar informes a la fecha (Osea activos en esa fecha)
