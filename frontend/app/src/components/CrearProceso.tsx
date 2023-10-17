@@ -241,9 +241,7 @@ function CrearProceso() {
           console.error("Error al crear el proceso:", error);
         });
     } else {
-
-      console.log(nProceso)
-      fetch(`/procesos/lote/${loteId}`, {
+      fetch(`/procesos/lote/${loteId}?indep=${!selectsHabilitados}`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -259,6 +257,10 @@ function CrearProceso() {
           console.error("Error al crear el proceso:", error);
         });
     }
+    updateNotifications(notifications, []);
+    navigate(-1);
+  };
+  const handleCancelar = () => {
     updateNotifications(notifications, []);
     navigate(-1);
   };
@@ -329,6 +331,13 @@ function CrearProceso() {
               disabled={tipoDeProceso.atributos == null}
             >
               Enviar
+            </button>
+            <button
+              type="button"
+              className="btn btn-danger ms-2"
+              onClick={handleCancelar}
+            >
+              Cancelar
             </button>
           </div>
         </form>

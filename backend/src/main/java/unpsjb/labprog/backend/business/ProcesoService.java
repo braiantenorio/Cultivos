@@ -47,34 +47,35 @@ public class ProcesoService {
 
 	@Transactional
 	public Proceso update(Proceso proceso) {
-		proceso.setUsuario(obtenerUsuario()); // no lo probe pero deberia funcionar, cualquier cosa lo comentas y vez si sigue dando error xd
+		proceso.setUsuario(obtenerUsuario()); // no lo probe pero deberia funcionar, cualquier cosa lo comentas y vez si
+												// sigue dando error xd
 
 		return repository.save(proceso);
 	}
 
 	@Transactional
-	public Proceso add(Proceso proceso, String codigo) {
+	public Proceso add(Proceso proceso, String codigo, Boolean indep) {
 		Lote lote = loteService.findByCode(codigo);
 		proceso.setUsuario(obtenerUsuario());
 		lote.addProceso(proceso);
 
 		try {
-			//loteService.update(lote);
+			// loteService.update(lote);
 			loteRepository.save(lote); // ahora este para que no actualice el usuario del lote
-			completarProcesoProgramado(codigo, proceso.getListaDeAtributos().getNombre());
+			completarProcesoProgramado(codigo, proceso.getListaDeAtributos().getNombre(), indep);
 		} catch (Exception e) {
 		}
 		return null; // bueno esto no viene con el id xd
 	}
-	
+
 	public void delete(Long id) {
 		repository.deleteById(id);
 	}
 
-	private ProcesoProgramado completarProcesoProgramado(String id, String proceso) {
+	private ProcesoProgramado completarProcesoProgramado(String id, String proceso, Boolean indep) {
 
 		List<ProcesoProgramado> pp = procesoProgramadoService.findProcesoProgramado(id, proceso);
-		if (pp != null) {
+		if (pp != null && !(indep)) {
 			pp.get(0).setCompletado(true);
 			procesoProgramadoService.update(pp.get(0));
 
