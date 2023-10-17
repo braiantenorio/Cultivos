@@ -31,3 +31,20 @@ Puede llegar a entrar:
 
 agregar filtros en pantallas
 agregar atributo de fecha de baja en lotes, luego generar informes a la fecha (Osea activos en esa fecha)
+
+Cambiar choose y directivas en ingles. 
+
+Agregar botones para ir a lote detalle en historia, y boton para ir al padre desde el detalle del lote
+
+Poner cultivar en tabla de lotes
+
+Desactivar lotes correctamente, cuando pasan a desechos y eso
+
+Hacer que el usuario minimo pueda solo leer, Que el admin pueda dar privilegios
+
+Informe de usuarios? Pantalla para ver que hizo cada usuario
+
+Procesos independientes a varios lotes. 
+
+Agregar procesos programados: IMPORTANTE
+
