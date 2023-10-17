@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 import { Atributo } from "../types/atributo";
 import { Proceso } from "../types/proceso";
@@ -36,6 +37,7 @@ function CrearProceso() {
               id: null,
               atributo: atributo,
               valor: null,
+              imagen: null, //nuevo xd
             })
           );
 
@@ -79,7 +81,25 @@ function CrearProceso() {
       })
     );
   };
-  
+
+  const handleAgregarImagen = (
+    event: React.ChangeEvent<HTMLInputElement>,
+    nombreAtributo: string
+  ) => {
+    if (event.target.files && event.target.files.length > 0) {
+      const file = event.target.files[0]; // Obtener el archivo de imagen
+      setValores((prevValores) => {
+        return prevValores.map((valor) => {
+          if (valor.atributo.nombre === nombreAtributo) {
+            return { ...valor, imagen: file };
+          } else {
+            return valor;
+          }
+        });
+      });
+    }
+  };
+
   const handleTiposDeProcesosChange = (
     event: React.ChangeEvent<HTMLSelectElement>
   ) => {
@@ -94,6 +114,7 @@ function CrearProceso() {
         id: null,
         atributo: atributo,
         valor: null,
+        imagen: null
       })) || []
     );
   };
@@ -140,14 +161,56 @@ function CrearProceso() {
             onChange={(event) => handleAgregarValor(event, atributo.nombre)}
           />
         );
+      case "imagen":
+        return (
+          <input
+            id={atributo.id.toString()}
+            className="form-control"
+            type="file"
+            accept="image/*" // Esto limita la selección a archivos de imagen
+            name={atributo.nombre}
+            required={atributo.obligatorio}
+            onChange={(event) => handleAgregarImagen(event, atributo.nombre)}
+          />
+        );
       default:
         return <input className="form-control" key={atributo.id} type="text" />;
     }
   };
 
-  const handleSubmit = (e: { preventDefault: () => void }) => {
+  const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-
+  
+    const uploadPromises: Promise<void>[] = [];
+  
+    valores.forEach((valor) => {
+      if (valor.imagen) {
+        const formData = new FormData();
+        formData.append("file", valor.imagen);
+        const uploadPromise = axios
+          .post("/upload", formData, {
+            headers: {
+              "Content-Type": "multipart/form-data",
+              Authorization: authHeader().Authorization,
+            },
+          })
+          .then((response) => {
+            console.log("File upload response:", response.data);
+            valor.imagen = null;
+            valor.valor = response.data.data.id;
+            console.log(valores);
+          })
+          .catch((error) => {
+            console.error("Error uploading image:", error);
+          });
+  
+        uploadPromises.push(uploadPromise);
+      }
+    });
+  
+    // Espera a que todas las promesas de carga se completen antes de continuar
+    await Promise.all(uploadPromises);
+  
     const nProceso: Proceso = {
       id: 0,
       usuario: null,
@@ -155,13 +218,13 @@ function CrearProceso() {
       valores: valores,
       listaDeAtributos: tipoDeProceso,
     };
-
+  
     if (notificationMessages.length > 0) {
       const nLoteCodigo: LoteCodigo = {
         lotesCodigos: notificationMessages,
         proceso: nProceso,
       };
-      
+
       fetch(`/procesos/lotes`, {
         method: "POST",
         headers: {
@@ -178,6 +241,8 @@ function CrearProceso() {
           console.error("Error al crear el proceso:", error);
         });
     } else {
+
+      console.log(nProceso)
       fetch(`/procesos/lote/${loteId}`, {
         method: "POST",
         headers: {

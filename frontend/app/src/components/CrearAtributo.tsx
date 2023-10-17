@@ -17,14 +17,6 @@ function CrearAtributo() {
 
   const navigate = useNavigate();
 
-  // Función para determinar si se debe ocultar el campo de caracteres
-  const hideCaracteres = atributo.tipo === "number";
-
-  // Función para determinar si se deben ocultar los campos de rango
-  const hideRangos = atributo.tipo === "string";
-
-  // Función para determinar si se debe ocultar todo excepto nombre, checkbox y select
-  const hideAllExceptName = atributo.tipo === "date";
 
   function handleNombreChange(e: React.ChangeEvent<HTMLInputElement>) {
     setAtributo({
@@ -128,6 +120,7 @@ function CrearAtributo() {
             <option value="string">texto</option>
             <option value="number">numerico</option>
             <option value="fecha">fecha</option>
+            <option value="imagen">imagen</option>
           </select>
         </div>
         <div className="col-md-2" hidden={atributo.tipo !== "number"}>

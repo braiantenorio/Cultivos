@@ -27,7 +27,7 @@ import unpsjb.labprog.backend.business.UserDetailsServiceImpl;
 // (securedEnabled = true,
 // jsr250Enabled = true,
 // prePostEnabled = true) // by default
-public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
+public class SecurityConfiguration {
 
   @Autowired
   UserDetailsServiceImpl userDetailsService;
@@ -91,6 +91,9 @@ public class SecurityConfiguration { // extends WebSecurityConfigurerAdapter {
         .authorizeHttpRequests(auth -> 
           auth.requestMatchers("/api/auth/**").permitAll()
               .requestMatchers("/api/test/**").permitAll()
+              .requestMatchers("/upload").permitAll() //TODO: este y el /files deberiamos sacarlos por seguridad xd
+              .requestMatchers("/files/**").permitAll()
+              .requestMatchers("/procesos/**").permitAll()
               .anyRequest().authenticated()
         );
     

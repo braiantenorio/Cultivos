@@ -19,22 +19,15 @@ import lombok.Setter;
 @Table(name = "Valores")
 public class Valor {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    /*
-     * @JsonIgnore
-     * 
-     * @ManyToOne
-     * 
-     * @JoinColumn(name = "Proceso_id")
-     * private Proceso proceso;
-     */
-    @ManyToOne
-    @JoinColumn(name = "Atributo_id")
-    private Atributo atributo;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
 
-    @Column(name = "Valor")
-    private String valor; // You can change the data type to match your needs
+	@ManyToOne
+	@JoinColumn(name = "Atributo_id")
+	private Atributo atributo;
+
+	@Column(name = "Valor")
+	private String valor;
 
 }

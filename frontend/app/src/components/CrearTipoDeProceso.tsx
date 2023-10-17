@@ -14,6 +14,7 @@ function CrearTipoDeProceso() {
   const [atributosSelect, setAtributos] = useState<Atributo[]>(
     [] as Atributo[]
   );
+  const [showAlert, setShowAlert] = useState(false);
 
   const navigate = useNavigate();
 
@@ -44,15 +45,18 @@ function CrearTipoDeProceso() {
   }
 
   function handleAtributosChange() {
-    setListaDeAtributos({
-      ...listaDeAtributos,
-      atributos: [
-        ...listaDeAtributos.atributos,
-        atributosSelect.find(
-          (atributo) => atributo.id === parseInt(atributoId)
-        )!,
-      ],
-    });
+    const selectedAtributo = atributosSelect.find(
+      (atributo) => atributo.id === parseInt(atributoId)
+    )!;
+
+    if (!listaDeAtributos.atributos.some((a) => a.id === selectedAtributo.id)) {
+      setListaDeAtributos({
+        ...listaDeAtributos,
+        atributos: [...listaDeAtributos.atributos, selectedAtributo],
+      });
+    } else {
+      setShowAlert(true);
+    }
   }
 
   const handleSubmit = (e: { preventDefault: () => void }) => {
@@ -61,7 +65,7 @@ function CrearTipoDeProceso() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": authHeader().Authorization
+        Authorization: authHeader().Authorization,
       },
       body: JSON.stringify(listaDeAtributos),
     })
@@ -85,6 +89,7 @@ function CrearTipoDeProceso() {
   return (
     <div className="container">
       <h2>Nuevo tipo de proceso</h2>
+
       <form className="row g-3" onSubmit={handleSubmit}>
         <div className="col-md-4">
           <label htmlFor="validationCustom01" className="form-label">
@@ -131,10 +136,29 @@ function CrearTipoDeProceso() {
           </button>
         </div>
 
+        {/* Alerta Bootstrap */}
+        {showAlert && (
+          <div
+            className="alert alert-warning alert-dismissible fade show"
+            role="alert"
+          >
+            <strong>¡Advertencia!</strong> Este atributo ya está en la lista.
+            <button
+              type="button"
+              className="btn-close"
+              onClick={() => setShowAlert(false)}
+              aria-label="Close"
+            ></button>
+          </div>
+        )}
+
         <div className="">
           <ul className="list-group list-group-flush">
             {listaDeAtributos.atributos.map((atributo) => (
-              <li key={atributo.id} className="list-group-item">
+              <li
+                key={atributo.id}
+                className="list-group-item d-flex justify-content-between align-items-center"
+              >
                 {atributo.nombre}
                 <button
                   type="button"

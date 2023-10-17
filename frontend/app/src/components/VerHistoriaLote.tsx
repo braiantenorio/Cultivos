@@ -53,7 +53,7 @@ function VerHistoriaLote() {
                   aria-expanded="true"
                   aria-controls={`collapse-${lote.id}`}
                 >
-                  {lote.codigo}
+                  Codigo: {lote.codigo}
                 </button>
               </h2>
               <div
@@ -66,8 +66,9 @@ function VerHistoriaLote() {
                     <thead>
                       <tr>
                         <th>ID</th>
-                        <th>Nombre</th>
-                        <th>Descripción</th>
+                        <th>Usuario</th>
+                        <th>Tipo</th>
+                        <th>Fecha</th>
                         <th></th>
                       </tr>
                     </thead>
@@ -75,7 +76,8 @@ function VerHistoriaLote() {
                       {lote.procesos.map((proceso) => (
                         <tr key={proceso.id}>
                           <td>{proceso.id}</td>
-                          <td>{proceso.usuario?.username}</td>
+                          <td>{proceso.usuario?.nombre} {proceso.usuario?.apellido}</td>
+                          <td>{proceso.listaDeAtributos.nombre}</td>
                           <td>
                             {proceso.fecha
                               ? new Date(proceso.fecha).toLocaleDateString()
@@ -83,7 +85,7 @@ function VerHistoriaLote() {
                           </td>
                           <td>
                             <Link
-                              to={`/lotes/${lote.id}`}
+                              to={`/procesos/${proceso.id}`}
                               className="btn btn-sm btn-info me-2"
                             >
                               Ver Detalle

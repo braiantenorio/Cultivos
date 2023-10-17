@@ -46,7 +46,7 @@ function DetalleLote() {
       if (willAnular) {
         fetch(`/lotes/delete/${lote?.id}`, {
           method: "DELETE",
-            headers: authHeader(),
+          headers: authHeader(),
         })
           .then((response) => {
             if (response.ok) {
@@ -124,6 +124,7 @@ function DetalleLote() {
           <tr>
             <th>ID</th>
             <th>Usuario</th>
+            <th>Tipo</th>
             <th>Fecha</th>
             <th></th>
           </tr>
@@ -133,8 +134,11 @@ function DetalleLote() {
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
               <td>{proceso.usuario?.nombre} {proceso.usuario?.apellido}</td>
+              <td>{proceso.listaDeAtributos?.nombre}</td>
               <td>
-                {proceso.fecha ? new Date(proceso.fecha).toISOString() : ""}
+                {proceso.fecha
+                  ? new Date(proceso.fecha).toLocaleDateString()
+                  : ""}
               </td>
               {/*}<td>{proceso.tipoDeProceso.nombre}</td> a hay que hacer coincidir los nombres del backend con los del front / igual los procesos no tienen tipo ahora*/}
               {/* aca lo mismo, iba el nombre del proceso y la descripcion, ahora cambiamos el modelo de datos */}

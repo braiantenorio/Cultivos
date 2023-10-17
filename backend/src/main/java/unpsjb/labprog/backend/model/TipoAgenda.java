@@ -22,17 +22,17 @@ import jakarta.persistence.CascadeType;
 
 public class TipoAgenda {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Long id;
-    @ManyToOne
-    private Categoria categoria;
+	@Id
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	@ManyToOne
+	private Categoria categoria;
 
-    private String version;
+	private String version;
 
-    @OneToMany(cascade = CascadeType.ALL)
-    private Collection<ProcesoProgramado> procesosProgramado;
+	@OneToMany(cascade = CascadeType.ALL)
+	private Collection<ProcesoProgramado> procesosProgramado;
 
-    private boolean deleted = Boolean.FALSE;
+	private boolean deleted = Boolean.FALSE;
 
 }

@@ -4,17 +4,19 @@ import { Lote } from "../types/lote";
 import { Proceso } from "../types/proceso";
 import swal from "sweetalert";
 import authHeader from "../services/auth-header";
+import axios from "axios";
 
 function DetalleProceso() {
     const { procesoId } = useParams();
     const [proceso, setProceso] = useState<Proceso | null>(null);
+    const [fileLinks, setFileLinks] = useState<(JSX.Element | null)[]>([]); // State to store file links
     const navigate = useNavigate();
 
     const url = `/procesos/id/${procesoId}`;
     useEffect(() => {
         fetch(url, {
             headers: authHeader(),
-          })
+        })
             .then((response) => {
                 if (!response.ok) {
                     throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -31,9 +33,39 @@ function DetalleProceso() {
 
     }, []);
 
+    useEffect(() => {
+        if (proceso) {
+            const fileLinkPromises = proceso.valores.map(async (valor, index) => {
+                if (valor.atributo.tipo === "imagen") {
+                    const response = await axios.get(`/files/info/${valor.valor}`);
+                    const fileInfo = response.data;
+                    console.log(fileInfo)
+                    return (
+                        <a key={valor.id} href={"http://localhost:8080/files/view/" + valor.valor} target="_blank" rel="noreferrer">
+                            {fileInfo.name}
+                        </a>
+                    );
+                }
+                return null;
+            });
+            Promise.all(fileLinkPromises).then((links) => setFileLinks(links));
+        }
+    }, [proceso]);
+
     if (!proceso) {
         return <div>Cargando...</div>;
     }
+
+
+    async function getFileInfoAsLink(id: string) {
+          const response = await axios.get(`/files/info/${id}`);
+          const fileInfo = response.data;
+      
+          return (
+            <a href={fileInfo.fileDownloadUri} download={fileInfo.name}>
+              {fileInfo.name}
+            </a>
+      )}
 
     return (
         <div className="container">
@@ -63,14 +95,14 @@ function DetalleProceso() {
                     </tr>
                 </thead>
                 <tbody>
-                    {proceso.valores.map((valor, index) => (
-                        <tr key={valor.id}>
-                            <td>{index + 1}</td>
-                            <td>{valor.atributo.nombre}</td>
-                            <td>{valor.valor}</td>
-                        </tr>
-                    ))}
-                </tbody>
+                {proceso.valores.map((valor, index) => (
+                    <tr key={valor.id}>
+                        <td>{index + 1}</td>
+                        <td>{valor.atributo.nombre}</td>
+                        <td>{valor.atributo.tipo === "imagen" ? fileLinks[index] : valor.valor}</td>
+                    </tr>
+                ))}
+            </tbody>
             </table>
         </div>
     );

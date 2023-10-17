@@ -3,6 +3,7 @@ package unpsjb.labprog.backend.payload.request;
 import jakarta.validation.constraints.NotBlank;
 
 public class LoginRequest {
+	
 	@NotBlank
 	private String username;
 
