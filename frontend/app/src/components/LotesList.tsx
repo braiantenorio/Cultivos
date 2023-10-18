@@ -21,6 +21,7 @@ function Loteslist() {
       })
       .then((responseData) => {
         setLotes(responseData.data);
+        console.log(responseData.data);
       })
       .catch((error) => {
         console.error(error);

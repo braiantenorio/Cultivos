@@ -44,6 +44,8 @@ import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
 import ExcelTable from "./components/ExcelTable";
+import CrearCategoria from "./components/CrearCategoria";
+import CategoriasList from "./components/CategoriasList";
 
 function App() {
   return (
@@ -56,6 +58,22 @@ function App() {
             element={
               <RequireAuth>
                 <CrearLote />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/categorias/:id"
+            element={
+              <RequireAuth>
+                <CrearCategoria />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/categorias"
+            element={
+              <RequireAuth>
+                <CategoriasList />
               </RequireAuth>
             }
           />
