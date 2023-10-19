@@ -81,7 +81,11 @@ public class FilePresenter {
   public ResponseEntity<ResponseFile> getFileInfo(@PathVariable String id) {
     FileDB dbFile = storageService.getFile(id);
 
-    String fileDownloadUri = dbFile.getId();
+    String fileDownloadUri = ServletUriComponentsBuilder
+          .fromCurrentContextPath()
+          .path("/files/")
+          .path(dbFile.getId())
+          .toUriString();
 
     return ResponseEntity.status(HttpStatus.OK).body(new ResponseFile(
         dbFile.getName(),

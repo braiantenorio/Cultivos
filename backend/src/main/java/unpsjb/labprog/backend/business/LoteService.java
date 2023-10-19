@@ -5,9 +5,7 @@ import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
 import org.hibernate.Session;
-import org.hibernate.Filter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -21,7 +19,6 @@ import java.util.Date;
 import unpsjb.labprog.backend.DTOs.LoteRevisionDTO;
 import org.hibernate.envers.AuditReader;
 import org.hibernate.envers.AuditReaderFactory;
-import org.hibernate.envers.RevisionType;
 
 @Service
 public class LoteService {

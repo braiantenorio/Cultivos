@@ -8,7 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 import unpsjb.labprog.backend.model.ProcesoProgramado;
 import java.time.LocalDate;
 import unpsjb.labprog.backend.DTOs.ProcesoProgramadoDTO;
-import java.util.stream.Collectors;
 import java.util.Map;
 import java.util.HashMap;
 

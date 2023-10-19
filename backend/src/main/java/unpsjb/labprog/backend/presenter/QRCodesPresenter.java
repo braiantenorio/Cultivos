@@ -1,0 +1,36 @@
+package unpsjb.labprog.backend.presenter;
+
+import unpsjb.labprog.backend.Response;
+import unpsjb.labprog.backend.business.CategoriaService;
+import unpsjb.labprog.backend.util.QRCodeGenerator;
+import java.awt.image.BufferedImage;
+
+import org.aspectj.internal.lang.annotation.ajcDeclareAnnotation;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import lombok.extern.slf4j.Slf4j;
+import unpsjb.labprog.backend.util.QRCodeGenerator;
+
+@RestController
+@RequestMapping("qrcodes")
+public class QRCodesPresenter {
+
+    @Autowired
+    private QRCodeGenerator qrGenerator;
+
+    @GetMapping(value = "/{qrcode}", produces = MediaType.IMAGE_PNG_VALUE)
+    public ResponseEntity<BufferedImage> QRcode(@PathVariable("qrcode") String qrcode) throws Exception {
+        BufferedImage image = qrGenerator.createQRImage(qrcode, 225, "png");
+        return new ResponseEntity<>(image, HttpStatus.OK);
+
+    }
+
+}

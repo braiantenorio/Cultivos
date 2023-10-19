@@ -71,7 +71,7 @@ function DetalleLote() {
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
-        <h2>Detalle del Lote </h2>
+        <h2>Detalle del Lote </h2> 
         <button
           className="btn btn-danger d-flex justify-content-end"
           onClick={handleAnular}
@@ -106,6 +106,9 @@ function DetalleLote() {
         {lote.esHoja ? "Activo" : "Inactivo"}
       </p>
 
+      <p>
+        <a href={"http://localhost:8080/qrcodes/" + lote.codigo} target="_blank" rel="noreferrer">Ver codigo QR</a>
+      </p>
       <h3>
         Procesos &nbsp;&nbsp; &nbsp;&nbsp;
         <Link to={`/lotes/${loteId}/procesos/new`} className="btn btn-primary ">

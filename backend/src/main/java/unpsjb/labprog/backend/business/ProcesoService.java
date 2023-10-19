@@ -8,7 +8,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import unpsjb.labprog.backend.model.Lote;
-import unpsjb.labprog.backend.model.Agenda;
 import unpsjb.labprog.backend.model.Proceso;
 import unpsjb.labprog.backend.model.ProcesoProgramado;
 import unpsjb.labprog.backend.model.Usuario;

@@ -10,11 +10,9 @@ function DetalleProceso() {
     const { procesoId } = useParams();
     const [proceso, setProceso] = useState<Proceso | null>(null);
     const [fileLinks, setFileLinks] = useState<(JSX.Element | null)[]>([]); // State to store file links
-    const navigate = useNavigate();
 
-    const url = `/procesos/id/${procesoId}`;
     useEffect(() => {
-        fetch(url, {
+        fetch(`/procesos/id/${procesoId}`, {
             headers: authHeader(),
         })
             .then((response) => {
@@ -25,7 +23,6 @@ function DetalleProceso() {
             })
             .then((responseData) => {
                 setProceso(responseData.data);
-                console.log(proceso);
             })
             .catch((error) => {
                 console.error(error);
@@ -55,17 +52,6 @@ function DetalleProceso() {
     if (!proceso) {
         return <div>Cargando...</div>;
     }
-
-
-    async function getFileInfoAsLink(id: string) {
-          const response = await axios.get(`/files/info/${id}`);
-          const fileInfo = response.data;
-      
-          return (
-            <a href={fileInfo.fileDownloadUri} download={fileInfo.name}>
-              {fileInfo.name}
-            </a>
-      )}
 
     return (
         <div className="container">

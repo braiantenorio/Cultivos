@@ -7,7 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 import unpsjb.labprog.backend.model.ListaDeAtributos;
-import unpsjb.labprog.backend.model.Lote;
 
 import org.springframework.data.repository.PagingAndSortingRepository;
 

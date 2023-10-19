@@ -1,16 +1,23 @@
 package unpsjb.labprog.backend.presenter;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import unpsjb.labprog.backend.Response;
-import unpsjb.labprog.backend.DTOs.LoteCodigoDTO;
 import unpsjb.labprog.backend.DTOs.informe.DDJJDTO;
 import unpsjb.labprog.backend.DTOs.informe.InformeDTO;
 import unpsjb.labprog.backend.DTOs.informe.LoteDDJJDTO;
@@ -20,18 +27,6 @@ import unpsjb.labprog.backend.business.LoteService;
 import unpsjb.labprog.backend.model.Atributo;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.model.Valor;
-
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.time.LocalDate;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.http.HttpHeaders;
-import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 
 @RestController
 @RequestMapping("/export")
