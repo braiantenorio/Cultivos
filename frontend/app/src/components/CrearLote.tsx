@@ -129,7 +129,13 @@ const CrearLote: React.FC = () => {
 
     setNuevoLote((prevLote) => ({
       ...prevLote,
-      categoria: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
+      categoria: selectedCategoria || {
+        id: 0,
+        nombre: "",
+        codigo: 0,
+        subCategorias: [],
+        limite: false,
+      },
     }));
 
     buscarLotesActivosPorCategoria(selectedCategoria);
@@ -185,7 +191,6 @@ const CrearLote: React.FC = () => {
   };
 
   const handleGuardarLote = () => {
-    // Envía una solicitud POST para crear un nuevo lote
     const url = "/lotes";
     fetch(url, {
       method: "POST",

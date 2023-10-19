@@ -133,7 +133,6 @@ function Menu() {
       .then((responseData) => {
         //  setNotifications(responseData.data.length);
         updateNotifications(responseData.data.length, []);
-        console.log(responseData);
       })
       .catch((error) => {
         console.error(error);
@@ -235,6 +234,30 @@ function Menu() {
           </li>
           <li>
             <Link className="dropdown-item" to="/agendas/new">
+              Nuevo
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <ul></ul>
+      <div className="dropdown">
+        <button
+          className="btn btn-custom-color-2 dropdown-toggle "
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Categorias
+        </button>
+
+        <ul className="dropdown-menu border border-dark border-2 ">
+          <li>
+            <Link className="dropdown-item" to="/categorias">
+              Listar
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/categorias/new">
               Nuevo
             </Link>
           </li>

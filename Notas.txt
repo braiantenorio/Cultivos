@@ -23,7 +23,7 @@ Creo que falta:
 Puede llegar a entrar:
 
 - Vista de procesos anulados en detalle de lote. y capacidad de anular procesos xddd
-- versiones de atributos
+- versiones de tipo de procesos
 - detalle de atributos al crear tipo de proceso.
 
 

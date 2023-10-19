@@ -46,7 +46,6 @@ function CrearAgenda() {
   }, []);
 
   const agregarProcesoProgramado = () => {
-    console.log(tipoAgenda);
     const nuevoProceso = {
       fechaARealizar: new Date(),
       frecuencia: 0,
@@ -106,7 +105,6 @@ function CrearAgenda() {
   }, []);
 
   const guardarAgenda = () => {
-    console.log(tipoAgenda);
     fetch(`/tipoagendas`, {
       method: "POST",
       headers: {
@@ -167,7 +165,12 @@ function CrearAgenda() {
 
     setTipoAgenda((prevLote) => ({
       ...prevLote,
-      categoria: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
+      categoria: selectedCategoria || {
+        id: 0,
+        nombre: "",
+        codigo: 0,
+        subCategorias: [],
+      },
     }));
   };
 
@@ -240,9 +243,6 @@ function CrearAgenda() {
             <div className="alert alert-danger">{cantidadError}</div>
           )}
         </div>
-      </form>
-
-      <form>
         <h3>
           Procesos Programados &nbsp;&nbsp; &nbsp;&nbsp;
           <button
@@ -254,6 +254,7 @@ function CrearAgenda() {
           </button>
         </h3>
       </form>
+
       <table className="table table-condensed">
         <thead>
           <tr>
