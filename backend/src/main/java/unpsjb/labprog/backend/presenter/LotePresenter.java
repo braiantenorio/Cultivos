@@ -1,6 +1,7 @@
 package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
+import unpsjb.labprog.backend.model.Agenda;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.business.LoteService;
 import unpsjb.labprog.backend.business.AgendaService;
@@ -168,6 +169,16 @@ public class LotePresenter {
     List<String> resul = service.search(term);
     resul.addAll(serviceListaDeAtributos.search(term));
     return Response.ok(resul);
+  }
+
+  @RequestMapping(value = "/{id}/procesoprogramado", method = RequestMethod.PUT)
+  public ResponseEntity<Object> findById(@PathVariable("id") long id,
+      @RequestBody ProcesoProgramado procesoProgramado) {
+    Lote loteOrNull = service.findById(id);
+    Agenda agenda = loteOrNull.getAgenda();
+    agenda.addprocesoProgramado(serviceProcesoProgramado.add(procesoProgramado));
+    serviceAgenda.add(agenda);
+    return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
 
 }

@@ -48,6 +48,7 @@ import CrearCategoria from "./components/CrearCategoria";
 import CategoriasList from "./components/CategoriasList";
 import CrearCultivar from "./components/CrearCultivar";
 import ListarCultivares from "./components/ListarCultivares";
+import CrearProcesoProgramado from "./components/CrearProcesoProgramado";
 
 function App() {
   return (
@@ -164,6 +165,14 @@ function App() {
             element={
               <RequireAuth>
                 <AgendaDeProcesos />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/:loteId/agenda/new"
+            element={
+              <RequireAuth>
+                <CrearProcesoProgramado />
               </RequireAuth>
             }
           />

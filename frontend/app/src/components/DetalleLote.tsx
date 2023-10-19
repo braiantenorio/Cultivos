@@ -71,7 +71,7 @@ function DetalleLote() {
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
-        <h2>Detalle del Lote </h2> 
+        <h2>Detalle del Lote </h2>
         <button
           className="btn btn-danger d-flex justify-content-end"
           onClick={handleAnular}
@@ -107,12 +107,18 @@ function DetalleLote() {
       </p>
 
       <p>
-        <a href={"http://localhost:8080/qrcodes/" + lote.codigo} target="_blank" rel="noreferrer">Ver codigo QR</a>
+        <a
+          href={"http://localhost:8080/qrcodes/" + lote.codigo}
+          target="_blank"
+          rel="noreferrer"
+        >
+          Ver codigo QR
+        </a>
       </p>
       <h3>
-        Procesos &nbsp;&nbsp; &nbsp;&nbsp;
+        Procesos &nbsp;&nbsp;
         <Link to={`/lotes/${loteId}/procesos/new`} className="btn btn-primary ">
-          Agregar
+          Cargar
         </Link>
         <Link
           to={`/lotes/${lote.id}/agenda`}
@@ -136,7 +142,9 @@ function DetalleLote() {
           {lote.procesos.map((proceso) => (
             <tr key={proceso.id}>
               <td>{proceso.id}</td>
-              <td>{proceso.usuario?.nombre} {proceso.usuario?.apellido}</td>
+              <td>
+                {proceso.usuario?.nombre} {proceso.usuario?.apellido}
+              </td>
               <td>{proceso.listaDeAtributos?.nombre}</td>
               <td>
                 {proceso.fecha

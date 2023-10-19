@@ -48,7 +48,12 @@ function AgendaDeProcesos() {
 
   return (
     <div className="container">
-      <h3>Agenda de Procesos :</h3>
+      <h3>
+        Agenda de Procesos &nbsp;&nbsp; &nbsp;&nbsp;
+        <Link to={`/lotes/${loteId}/agenda/new`} className="btn btn-primary ">
+          Agregar
+        </Link>
+      </h3>
       <table className="table">
         <thead>
           <tr>
