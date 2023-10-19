@@ -1,6 +1,7 @@
 package unpsjb.labprog.backend.model;
 
-import java.util.Collection;
+import java.util.List;
+
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
@@ -27,7 +28,7 @@ public class Agenda {
 	private TipoAgenda tipoAgenda;
 
 	@OneToMany
-	private Collection<ProcesoProgramado> procesosProgramado = new ArrayList();
+	private List<ProcesoProgramado> procesosProgramado = new ArrayList<>();
 
 	public void addprocesoProgramado(ProcesoProgramado procesoProgramado) {
 		procesosProgramado.add(procesoProgramado);

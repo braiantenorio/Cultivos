@@ -1,17 +1,17 @@
 
-INSERT INTO categorias (id,codigo,nombre,limite) VALUES
-(1,1,'Planta Madre',true),
-(2,2,'Clone',false),
-(3,3,'Planta Para Semillas',true),
-(4,4,'Planta Para Flores',true),
-(5,5,'semillas',false),
-(6,6,'Descarte',true),
-(7,7,'Cosecha de Flores',true);
+INSERT INTO categorias (id,codigo,nombre,limite,deleted) VALUES
+(1,1,'Planta Madre',true,false),
+(2,2,'Clone',false,false),
+(3,3,'Planta Para Semillas',true,false),
+(4,4,'Planta Para Flores',true,false),
+(5,5,'semillas',false,false),
+(6,6,'Descarte',true,false),
+(7,7,'Cosecha de Flores',true,false);
 
-INSERT INTO cultivares (id,codigo,nombre) VALUES
-(1,1,'Agila'),
-(2,2,'Amarilla De Lyon'),
-(3,3,'Magna');
+INSERT INTO cultivares (id,codigo,nombre,deleted) VALUES
+(1,1,'Agila',false),
+(2,2,'Amarilla De Lyon',false),
+(3,3,'Magna',false);
 
 
 INSERT INTO categorias_sub_categorias  (categoria_id,sub_categorias_id) values

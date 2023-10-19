@@ -3,4 +3,5 @@ export type Categoria = {
   codigo: number;
   nombre: string;
   subCategorias: Categoria[];
+  deleted: boolean;
 };

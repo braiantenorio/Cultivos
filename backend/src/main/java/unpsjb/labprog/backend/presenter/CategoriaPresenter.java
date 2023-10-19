@@ -3,11 +3,8 @@ package unpsjb.labprog.backend.presenter;
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.DTOs.CategoriaDTO;
 import unpsjb.labprog.backend.business.CategoriaService;
-import unpsjb.labprog.backend.model.Atributo;
 import unpsjb.labprog.backend.model.Categoria;
-import unpsjb.labprog.backend.model.Lote;
 import java.util.List;
-import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -16,9 +13,11 @@ import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -31,8 +30,8 @@ public class CategoriaPresenter {
 
   @GetMapping
   @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-  public ResponseEntity<Object> findAll() {
-    return Response.ok(service.findAllCategorias());
+  public ResponseEntity<Object> findAll(@RequestParam(value = "filtered", required = false) boolean filtered) {
+    return Response.ok(service.findAllCategorias(filtered));
   }
 
   @RequestMapping(value = "/id/{id}", method = RequestMethod.GET)
@@ -46,6 +45,15 @@ public class CategoriaPresenter {
 
     return Response.ok(
         service.add(tipoAgenda),
+        "Agenda creada correctamente");
+  }
+
+  @PutMapping(value = "/{id}")
+  public ResponseEntity<Object> update(@PathVariable("id") long id) {
+    Categoria loteOrNull = service.findById(id);
+    loteOrNull.setDeleted(false);
+    return Response.ok(
+        service.add(loteOrNull),
         "Agenda creada correctamente");
   }
 

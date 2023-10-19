@@ -48,7 +48,7 @@ public class ProcesoProgramadoService {
 
         for (Object[] resultado : resultados) {
             String email = (String) resultado[0];
-            String nombreUsuario = (String) resultado[1];
+            // String nombreUsuario = (String) resultado[1];
             String codigoLote = (String) resultado[2];
             ProcesoProgramado proceso = (ProcesoProgramado) resultado[3];
 

@@ -16,6 +16,6 @@ public interface CategoriaRepository extends CrudRepository<Categoria, Long>,
     @Query("SELECT c FROM Lote l JOIN l.categoria c WHERE l.esHoja=true AND l.categoria.id=:id ")
     List<Categoria> findLotesActivosByCategoria(long id);
 
-    @Query("SELECT c FROM Categoria c WHERE c.deleted=false ")
-    List<Categoria> findAllCategorias();
+    @Query("SELECT c FROM Categoria c WHERE c.deleted=?1 ")
+    List<Categoria> findAllCategorias(boolean filtered);
 }

@@ -264,6 +264,30 @@ function Menu() {
         </ul>
       </div>
       <ul></ul>
+      <div className="dropdown">
+        <button
+          className="btn btn-custom-color-2 dropdown-toggle "
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Cultivares
+        </button>
+
+        <ul className="dropdown-menu border border-dark border-2 ">
+          <li>
+            <Link className="dropdown-item" to="/cultivares">
+              Listar
+            </Link>
+          </li>
+          <li>
+            <Link className="dropdown-item" to="/cultivares/new">
+              Nuevo
+            </Link>
+          </li>
+        </ul>
+      </div>
+      <ul></ul>
       <div>
         {" "}
         <Link to="/generar/informe" className="btn btn-custom-color-2">
@@ -323,7 +347,6 @@ function Menu() {
           </li>
         </div>
       )}
-      <ul></ul>
 
       <Link
         to="/agenda/general"

@@ -2,10 +2,7 @@ package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.model.Lote;
-import unpsjb.labprog.backend.model.Categoria;
 import unpsjb.labprog.backend.business.LoteService;
-import unpsjb.labprog.backend.model.Agenda;
-import unpsjb.labprog.backend.model.TipoAgenda;
 import unpsjb.labprog.backend.business.AgendaService;
 import unpsjb.labprog.backend.business.TipoAgendaService;
 import unpsjb.labprog.backend.business.CategoriaService;
@@ -17,7 +14,6 @@ import java.util.List;
 import java.util.ArrayList;
 import unpsjb.labprog.backend.model.ProcesoProgramado;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -29,7 +25,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

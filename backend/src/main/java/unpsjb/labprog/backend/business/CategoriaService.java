@@ -2,14 +2,11 @@ package unpsjb.labprog.backend.business;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import unpsjb.labprog.backend.DTOs.CategoriaDTO;
-import unpsjb.labprog.backend.model.Atributo;
 import unpsjb.labprog.backend.model.Categoria;
 
 @Service
@@ -25,8 +22,8 @@ public class CategoriaService {
 		return result;
 	}
 
-	public List<Categoria> findAllCategorias() {
-		return repository.findAllCategorias();
+	public List<Categoria> findAllCategorias(boolean filtered) {
+		return repository.findAllCategorias(filtered);
 	}
 
 	public Categoria findById(long id) {

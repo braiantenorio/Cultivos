@@ -1,12 +1,9 @@
 package unpsjb.labprog.backend.presenter;
 
-import java.util.ArrayList;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,16 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
-import java.util.List;
 
 import unpsjb.labprog.backend.Response;
-import unpsjb.labprog.backend.business.FileStorageService;
 import unpsjb.labprog.backend.business.ProcesoService;
 import unpsjb.labprog.backend.model.Proceso;
-import unpsjb.labprog.backend.model.Valor;
-import unpsjb.labprog.backend.payload.request.ProcesoRequest;
-import unpsjb.labprog.backend.payload.request.ValorRequest;
 import unpsjb.labprog.backend.DTOs.LoteCodigoDTO;
 
 @RestController

@@ -46,6 +46,8 @@ import EventBus from "./common/EventBus";
 import ExcelTable from "./components/ExcelTable";
 import CrearCategoria from "./components/CrearCategoria";
 import CategoriasList from "./components/CategoriasList";
+import CrearCultivar from "./components/CrearCultivar";
+import ListarCultivares from "./components/ListarCultivares";
 
 function App() {
   return (
@@ -74,6 +76,22 @@ function App() {
             element={
               <RequireAuth>
                 <CategoriasList />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/cultivares/:id"
+            element={
+              <RequireAuth>
+                <CrearCultivar />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/cultivares"
+            element={
+              <RequireAuth>
+                <ListarCultivares />
               </RequireAuth>
             }
           />

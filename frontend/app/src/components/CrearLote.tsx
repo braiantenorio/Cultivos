@@ -135,6 +135,7 @@ const CrearLote: React.FC = () => {
         codigo: 0,
         subCategorias: [],
         limite: false,
+        deleted: false,
       },
     }));
 
@@ -150,7 +151,12 @@ const CrearLote: React.FC = () => {
 
     setNuevoLote((prevLote) => ({
       ...prevLote,
-      cultivar: selectedCategoria || { id: 0, nombre: "", codigo: 0 },
+      cultivar: selectedCategoria || {
+        id: 0,
+        nombre: "",
+        codigo: 0,
+        deleted: false,
+      },
     }));
   };
   const handleAgendaChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -186,7 +192,12 @@ const CrearLote: React.FC = () => {
     }));
     setNuevoLote((prevLote) => ({
       ...prevLote,
-      cultivar: selectdlote?.cultivar || { id: 0, nombre: "", codigo: 0 },
+      cultivar: selectdlote?.cultivar || {
+        id: 0,
+        nombre: "",
+        codigo: 0,
+        deleted: false,
+      },
     }));
   };
 

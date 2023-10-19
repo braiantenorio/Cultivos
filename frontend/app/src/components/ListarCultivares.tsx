@@ -1,14 +1,14 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import authHeader from "../services/auth-header";
-import { Categoria } from "../types/categoria";
 import swal from "sweetalert";
-function CategoriasList() {
-  const [categorias, setCategorias] = useState<Categoria[]>([]);
+import { Cultivar } from "../types/cultivar";
+function ListarCultivares() {
+  const [cultivares, setCultivares] = useState<Cultivar[]>([]);
   const [showDeleted, setShowDeleted] = useState(false);
 
   useEffect(() => {
-    fetch(`/categorias?filtered=${showDeleted}`, {
+    fetch(`/cultivares?filtered=${showDeleted}`, {
       headers: authHeader(),
     })
       .then((response) => {
@@ -18,7 +18,7 @@ function CategoriasList() {
         return response.json();
       })
       .then((responseData) => {
-        setCategorias(responseData.data);
+        setCultivares(responseData.data);
       })
       .catch((error) => {
         console.error(error);
@@ -27,24 +27,24 @@ function CategoriasList() {
   const handleEliminarTipoAgenda = (tipoAgendaId: number) => {
     swal({
       title: "¿Estás seguro?",
-      text: "Una vez borrado, no podrás utilizar esta categoria.",
+      text: "Una vez borrado, no podrás utilizar este cultivar.",
       icon: "warning",
       buttons: ["Cancelar", "Anular"],
       dangerMode: true,
     }).then((willAnular) => {
       if (willAnular) {
-        fetch(`/categorias/delete/${tipoAgendaId}`, {
+        fetch(`/cultivares/delete/${tipoAgendaId}`, {
           method: "DELETE",
           headers: authHeader(),
         })
           .then((response) => {
             if (response.ok) {
               // Si la respuesta es exitosa, puedes realizar acciones adicionales aquí
-              swal("La categoria ha sido anulada.", {
+              swal("El cultivar ha sido anulado.", {
                 icon: "success",
               }).then(() => {
                 // Eliminar el tipoAgenda de la lista
-                setCategorias((prevTipoAgendas) =>
+                setCultivares((prevTipoAgendas) =>
                   prevTipoAgendas.filter(
                     (tipoAgenda) => tipoAgenda.id !== tipoAgendaId
                   )
@@ -52,7 +52,7 @@ function CategoriasList() {
               });
             } else {
               // Si la respuesta no es exitosa, maneja el error aquí
-              swal("Hay lotes activos con esa Categoria.", {
+              swal("Hay Lotes activos con ese Cultivar.", {
                 icon: "error",
               }).then(() => {
                 // Eliminar el tipoAgenda de la lista
@@ -66,17 +66,14 @@ function CategoriasList() {
       }
     });
   };
-  const handleShowDeletedChange = () => {
-    setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
-  };
   const handleEliminarTipoAgenda1 = (tipoAgendaId: number) => {
-    fetch(`/categorias/${tipoAgendaId}`, {
+    fetch(`/cultivares/${tipoAgendaId}`, {
       method: "PUT",
       headers: authHeader(),
     })
       .then((response) => {
         if (response.ok) {
-          setCategorias((prevTipoAgendas) =>
+          setCultivares((prevTipoAgendas) =>
             prevTipoAgendas.filter(
               (tipoAgenda) => tipoAgenda.id !== tipoAgendaId
             )
@@ -89,9 +86,15 @@ function CategoriasList() {
         console.error("Error al anular el lote", error);
       });
   };
+
+  const handleShowDeletedChange = () => {
+    setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
+  };
+
   return (
     <div className="container">
-      <h2>Categorias </h2>
+      <h2>Cultivares </h2>
+
       <div className="col-auto">
         <label className="form-check-label">
           <input
@@ -114,24 +117,13 @@ function CategoriasList() {
           </tr>
         </thead>
         <tbody>
-          {categorias.map((tipoAgenda, index) => (
+          {cultivares.map((tipoAgenda, index) => (
             <tr key={tipoAgenda.id}>
               <td>{index + 1}</td>
               <td>{tipoAgenda.nombre}</td>
               <td>{tipoAgenda.codigo}</td>
-              {!tipoAgenda.deleted ? (
-                <td>
-                  <Link
-                    to={`/categorias/${tipoAgenda.id}`}
-                    className="text-primary me-2"
-                    title="Editar"
-                  >
-                    <i
-                      className="bi bi-eye-fill"
-                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                    ></i>
-                  </Link>
-                  &nbsp;&nbsp;
+              <td>
+                {!tipoAgenda.deleted ? (
                   <button
                     className="text-danger border-0 bg-transparent me-2"
                     onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
@@ -142,9 +134,7 @@ function CategoriasList() {
                       style={{ fontSize: "1.5rem", cursor: "pointer" }}
                     ></i>
                   </button>
-                </td>
-              ) : (
-                <td>
+                ) : (
                   <button
                     className="text-info border-0 bg-transparent me-2"
                     onClick={() => handleEliminarTipoAgenda1(tipoAgenda.id)}
@@ -155,8 +145,8 @@ function CategoriasList() {
                       style={{ fontSize: "1.5rem", cursor: "pointer" }}
                     ></i>
                   </button>
-                </td>
-              )}
+                )}
+              </td>
             </tr>
           ))}
         </tbody>
@@ -165,4 +155,4 @@ function CategoriasList() {
   );
 }
 
-export default CategoriasList;
+export default ListarCultivares;

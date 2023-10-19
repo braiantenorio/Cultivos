@@ -2,7 +2,6 @@ package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.business.ValorService;
-import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.model.Valor;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,8 +13,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController

@@ -86,17 +86,34 @@ function CrearCategoria() {
     })
       .then((response) => {
         if (!response.ok) {
-          throw new Error("Error de solicitud incorrecta ");
+          if (response.status === 400) {
+            // Es un error BadRequest
+            throw new Error("Error de solicitud incorrecta (BadRequest)");
+          } else {
+            // Otro tipo de error
+            throw new Error(
+              `Error al realizar la solicitud: ${response.status}`
+            );
+          }
         }
-
-        response.json();
+        return response.json();
       })
       .then((data) => {
         console.log("Respuesta del servidor:", data);
         navigate(-1);
       })
       .catch((error) => {
-        console.error("Error al crear la categoria:", error);
+        console.error("Error al enviar la solicitud POST:", error);
+
+        if (error.message === "Error de solicitud incorrecta (BadRequest)") {
+          setCantidadError(
+            "Ya existe categoria con este codigo. Verifique los valores."
+          );
+        } else {
+          setCantidadError(
+            "Ya existe categoria con este codigo. Verifique los valores."
+          );
+        }
       });
   };
 

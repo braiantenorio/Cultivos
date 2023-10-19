@@ -170,6 +170,7 @@ function CrearAgenda() {
         nombre: "",
         codigo: 0,
         subCategorias: [],
+        deleted: false,
       },
     }));
   };
