@@ -8,16 +8,11 @@ import DescargarExcelButton from "./DescargarExcelButton";
 const InformeComponent = () => {
   const [activeTab, setActiveTab] = useState("Stock");
   const [generado, setGenerado] = useState(false);
-  const [informe, setInforme] = useState<Informe | null>({
-    stock: {
-      atributos: [],
-      lotesStock: [],
-    },
-    ddjjs: [],
-  });
+  const [informe, setInforme] = useState<Informe>({} as Informe);
 
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [atributos, setAtributos] = useState<Atributo[]>([]);
+  const fechaHoy = new Date().toISOString().split("T")[0];
 
   // Nuevo estado para el atributo seleccionado
   const [selectedAtributo, setSelectedAtributo] = useState<
@@ -57,6 +52,7 @@ const InformeComponent = () => {
             lotesStock: [],
           },
           ddjjs: nuevosDDJJ,
+          fecha: fechaHoy,
         });
       })
       .catch((error) => {
@@ -152,15 +148,37 @@ const InformeComponent = () => {
         console.error(error);
       });
   };
+  const handlefecha = (e: any) => {
+    setInforme((prevInforme) => ({
+      ...prevInforme,
+      fecha: e,
+    }));
+  };
 
   return (
     <div className="container">
-      <h2>
-        Nuevo Informe{"      "}&nbsp;&nbsp;
-        <button className="btn btn-success" onClick={handleGenerarInforme}>
+      <div className="d-flex align-items-center ">
+        <h2>Nuevo Informe</h2>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+        <button
+          className="btn btn-success me-2 "
+          onClick={handleGenerarInforme}
+        >
           Generar Informe
         </button>
-      </h2>
+        &nbsp;&nbsp; &nbsp;&nbsp;
+        <div className="col-auto">
+          <input
+            type="date"
+            className="form-control "
+            id="codigo"
+            name="codigo"
+            value={informe?.fecha}
+            onChange={(event) => handlefecha(event.target.value)}
+          />
+        </div>
+      </div>
+
       {generado && (
         <div className="descargar-button-container">
           <DescargarExcelButton informe={informe!} />

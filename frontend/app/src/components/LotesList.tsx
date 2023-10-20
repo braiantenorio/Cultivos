@@ -10,7 +10,7 @@ function Loteslist() {
   const [showDeleted, setShowDeleted] = useState(false); // Estado para mostrar/ocultar elementos eliminados
 
   useEffect(() => {
-    fetch(`/lotes?term=${searchTerm}`, {
+    fetch(`/lotes?filtered=${showDeleted}&term=${searchTerm}`, {
       headers: authHeader(),
     })
       .then((response) => {
@@ -26,7 +26,7 @@ function Loteslist() {
       .catch((error) => {
         console.error(error);
       });
-  }, []); // Agrega showDeleted como dependencia para que se actualice al cambiar el estado
+  }, [showDeleted]); // Agrega showDeleted como dependencia para que se actualice al cambiar el estado
 
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
@@ -47,6 +47,7 @@ function Loteslist() {
       .then((response) => response.json())
       .then((data) => {
         setLotes(data.data);
+        console.log(data);
       })
       .catch((error) => {
         console.error(error);
@@ -92,7 +93,7 @@ function Loteslist() {
               checked={showDeleted}
               onChange={handleShowDeletedChange}
             />
-            Mostrar Eliminados
+            Mostrar Inactivos
           </label>
         </div>
       </div>
@@ -103,6 +104,8 @@ function Loteslist() {
             <th>Código</th>
             <th>Cantidad</th>
             <th>Categoría</th>
+            <th>Cultivar</th>
+            <th>{showDeleted ? "Fecha de baja" : ""} </th>
             <th></th>
           </tr>
         </thead>
@@ -118,6 +121,12 @@ function Loteslist() {
               </td>
               <td>{lote.cantidad}</td>
               <td>{lote.categoria.nombre}</td>
+              <td>{lote.cultivar.nombre}</td>
+              <td>
+                {showDeleted
+                  ? new Date(lote.fechaDeBaja).toLocaleDateString()
+                  : ""}
+              </td>
               <td>
                 <Link
                   to={`/lotes/${lote.codigo}`}

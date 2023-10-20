@@ -101,10 +101,16 @@ function DetalleLote() {
         </span>{" "}
         {lote.cultivar.nombre}
       </p>
-      <p>
-        <span className="badge bg-secondary text-white me-2 fs-6">Estado:</span>{" "}
-        {lote.esHoja ? "Activo" : "Inactivo"}
-      </p>
+      {lote.fechaDeBaja ? (
+        <p>
+          <span className="badge bg-secondary text-white me-2 fs-6">
+            Fecha de Baja:
+          </span>{" "}
+          {new Date(lote.fechaDeBaja).toLocaleDateString()}
+        </p>
+      ) : (
+        ""
+      )}
 
       <p>
         <a

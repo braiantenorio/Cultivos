@@ -45,13 +45,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 		@ParamDef(name = "isDeleted", type = boolean.class),
 		@ParamDef(name = "codigo", type = String.class)
 })
-@Filter(name = "deletedLoteFilter", condition = "deleted = :isDeleted AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
+@Filter(name = "deletedLoteFilter", condition = "((:isDeleted = true AND fecha_De_Baja IS NOT NULL) OR (:isDeleted = false AND fecha_De_Baja IS NULL)) AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
+
 @JsonIgnoreProperties(value = { "lotePadre" }, allowSetters = true)
 @EntityListeners(AuditingEntityListener.class)
 public class Lote {
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.SEQUENCE)
 	private Long id;
 
 	@Column(nullable = false, unique = true)
@@ -82,7 +83,7 @@ public class Lote {
 
 	private boolean deleted = Boolean.FALSE;
 
-	private boolean esHoja = Boolean.TRUE; // Cuando lo creamos es activo no?
+	private LocalDate fechaDeBaja; // Cuando lo creamos es activo no?
 
 	private LocalDate fecha; // cuando se cree poner la fecha del dia
 

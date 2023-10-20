@@ -80,18 +80,22 @@ function AgendaDeProcesos() {
                 <td>
                   {proceso.completado ? (
                     <span className="badge bg-success ms-2">Realizado</span>
-                  ) : fechaARealizar1 >= fechaARealizar ? (
+                  ) : fechaARealizar1 >= fechaARealizar || lote?.fechaDeBaja ? (
                     <>
                       <span className="badge bg-danger ms-2">No Realizado</span>
                       &nbsp;&nbsp;&nbsp;&nbsp;
-                      <Link
-                        to={`/lotes/${lote!.codigo}/procesos/${
-                          proceso.proceso.nombre
-                        }`} // Agregar proceso.id a la URL /lotes/:loteId/procesos/:listId/new
-                        className="btn btn-primary btn-sm ms-2"
-                      >
-                        Completar
-                      </Link>
+                      {lote?.fechaDeBaja ? (
+                        ""
+                      ) : (
+                        <Link
+                          to={`/lotes/${lote!.codigo}/procesos/${
+                            proceso.proceso.nombre
+                          }`} // Agregar proceso.id a la URL /lotes/:loteId/procesos/:listId/new
+                          className="btn btn-primary btn-sm ms-2"
+                        >
+                          Completar
+                        </Link>
+                      )}
                     </>
                   ) : (
                     <>

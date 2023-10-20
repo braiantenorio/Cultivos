@@ -94,7 +94,7 @@ public class LotePresenter {
 
       if (totalCantidadSublotes + lote.getCantidad() == lotePadre.getCantidad()) {
 
-        lotePadre.setEsHoja(false);
+        lotePadre.setFechaDeBaja(LocalDate.now());
 
         service.update(lotePadre);
       }
@@ -143,7 +143,7 @@ public class LotePresenter {
     service.delete(id);
     if (lote.getLotePadre() != null) {
       Lote lotePadre = service.findById(lote.getLotePadre().getId());
-      lotePadre.setEsHoja(true);
+      lotePadre.setFechaDeBaja(null);
       service.update(lotePadre);
     }
     // service.delete(id);

@@ -59,7 +59,6 @@ public class LoteService {
 			if (entidad == null) {
 				entidad = findById(id);
 			}
-			// Verificar si la revisión es una eliminación (revtype = 2)
 			LoteRevisionDTO revisionDTO = new LoteRevisionDTO();
 			revisionDTO.setUsuario(usuarioService.findById(entidad.getUsuario().getId()));
 			entidad.setUsuario(null);
@@ -156,15 +155,20 @@ public class LoteService {
 		return usuario;
 	}
 
-	public List<Object[]> findLotesAndValoresByAtributos(List<Long> list) {
-		return repository.findLotesAndValoresByAtributos(list);
+	public List<Object[]> findLotesAndValoresByAtributos(List<Long> list, LocalDate localDate) {
+		return repository.findLotesAndValoresByAtributos(list, localDate);
 	}
 
-	public List<Lote> findLotesByCategoria(Categoria categoria) {
-		return repository.findLotesByCategoria(categoria);
+	public List<Lote> findLotesByCategoria(Categoria categoria, LocalDate localDate) {
+		return repository.findLotesByCategoria(categoria, localDate);
 	}
 
-	public List<Object[]> findLotesAndValoresByAtributosAndCategoria(List<Long> listaAtributos, Categoria categoria) {
-		return repository.findLotesAndValoresByAtributosAndCategoria(listaAtributos, categoria);
+	public List<Lote> findAllFecha(LocalDate date) {
+		return repository.findAllFecha(date);
+	}
+
+	public List<Object[]> findLotesAndValoresByAtributosAndCategoria(List<Long> listaAtributos, Categoria categoria,
+			LocalDate localDate) {
+		return repository.findLotesAndValoresByAtributosAndCategoria(listaAtributos, categoria, localDate);
 	}
 }

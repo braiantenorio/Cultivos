@@ -32,7 +32,7 @@ function LoteRevisiones() {
             <tr>
               <th>Lote</th>
               <th>Cantidad</th>
-              <th>Es Hoja</th>
+              <th>Activo</th>
               <th>Eliminado</th>
               <th>Fecha </th>
               <th>hora </th>
@@ -44,7 +44,7 @@ function LoteRevisiones() {
               <tr key={index}>
                 <td>{revision.entidad.codigo}</td>
                 <td>{revision.entidad.cantidad}</td>
-                <td>{revision.entidad.esHoja ? "Sí" : "No"}</td>
+                <td>{revision.entidad.fechaDeBaja ? "No" : "Si"}</td>
                 <td>{revision.entidad.deleted ? "Sí" : "No"}</td>
                 <td>
                   {new Date(revision?.revisionDate).toLocaleDateString()}{" "}
