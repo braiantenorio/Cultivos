@@ -69,8 +69,10 @@ public class LotePresenter {
   @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> findAll(
       @RequestParam(value = "filtered", required = false) boolean filtered,
-      @RequestParam(value = "term", required = false) String term) {
-    return Response.ok(service.findAll(filtered, term));
+      @RequestParam(value = "term", required = false) String term,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    return Response.ok(service.findByPage(service.findAll(filtered, term), page, size));
   }
 
   @RequestMapping(value = "/activos/{id}", method = RequestMethod.GET)

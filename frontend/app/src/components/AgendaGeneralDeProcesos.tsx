@@ -244,6 +244,13 @@ function AgendaGeneralDeProcesos() {
                     </Link>
                   ) : null}
                 </td>
+                <td>
+                  {errores[index] && (
+                    <div className="alert alert-danger alert-sm">
+                      {errores[index]}
+                    </div>
+                  )}
+                </td>
               </tr>
             );
           })}

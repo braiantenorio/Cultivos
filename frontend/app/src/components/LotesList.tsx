@@ -2,17 +2,31 @@ import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 import { Lote } from "../types/lote";
 import authHeader from "../services/auth-header";
+import { ResultsPage } from "../types/ResultsPage";
 
 function Loteslist() {
-  const [lotes, setLotes] = useState<Lote[]>([]);
+  const [resultsPage, setResultsPage] = useState<ResultsPage<Lote>>({
+    content: [],
+    totalPages: 0,
+    last: false,
+    first: true,
+    size: 7,
+    number: 0,
+  });
   const [searchTerm, setSearchTerm] = useState("");
-  const [regla, setRegla] = useState(false);
-  const [showDeleted, setShowDeleted] = useState(false); // Estado para mostrar/ocultar elementos eliminados
+  const [showDeleted, setShowDeleted] = useState(false);
 
   useEffect(() => {
-    fetch(`/lotes?filtered=${showDeleted}&term=${searchTerm}`, {
-      headers: authHeader(),
-    })
+    fetchLotes();
+  }, [showDeleted, resultsPage.number, resultsPage.size]);
+
+  const fetchLotes = () => {
+    fetch(
+      `/lotes?filtered=${showDeleted}&term=${searchTerm}&page=${resultsPage.number}&size=${resultsPage.size}`,
+      {
+        headers: authHeader(),
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -20,14 +34,16 @@ function Loteslist() {
         return response.json();
       })
       .then((responseData) => {
-        setLotes(responseData.data);
-        console.log(responseData.data);
+        setResultsPage(responseData.data);
+        console.log(responseData);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [showDeleted]); // Agrega showDeleted como dependencia para que se actualice al cambiar el estado
-
+  };
+  const handleShowDeletedChange = () => {
+    setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
+  };
   const handleSearchInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const inputValue = e.target.value;
     //   const isValidInput = /^[a-zA-Z0-9]*$/.test(inputValue);
@@ -39,24 +55,21 @@ function Loteslist() {
     //   setRegla(true);
     // }
   };
-
   const handleBuscarLote = () => {
-    fetch(`/lotes?filtered=${showDeleted}&term=${searchTerm}`, {
-      headers: authHeader(),
-    })
-      .then((response) => response.json())
-      .then((data) => {
-        setLotes(data.data);
-        console.log(data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
+    fetchLotes();
   };
 
-  const handleShowDeletedChange = () => {
-    setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
+  // Resto del código del componente
+
+  const handlePageChange = (newPage: number) => {
+    setResultsPage({
+      ...resultsPage,
+      number: newPage,
+    });
   };
+  const pageNumbers = Array.from(Array(resultsPage.totalPages).keys()).map(
+    (n) => n + 1
+  );
 
   return (
     <div className="container">
@@ -77,13 +90,6 @@ function Loteslist() {
           onClick={handleBuscarLote}
         >
           <i className="bi bi-search bi-lg text-primary"></i>
-        </div>
-        <div className="col-auto">
-          {regla && (
-            <div className="alert alert-danger alert-sm">
-              Solo Letras o Números
-            </div>
-          )}
         </div>
         <div className="col-auto">
           <label className="form-check-label">
@@ -110,7 +116,7 @@ function Loteslist() {
           </tr>
         </thead>
         <tbody>
-          {lotes.map((lote, index) => (
+          {resultsPage.content.map((lote, index) => (
             <tr key={lote.id}>
               <td>{index + 1}</td>
               <td>
@@ -179,9 +185,69 @@ function Loteslist() {
           ))}
         </tbody>
       </table>
-      {!lotes.length && (
+      {!resultsPage.content.length && (
         <div className="alert alert-warning">No se encontraron lotes</div>
       )}
+      <nav aria-label="Page navigation example">
+        <div className="d-flex justify-content-between align-items-center">
+          <div>
+            <ul className="pagination">
+              <li
+                className={`page-item ${resultsPage.first ? "disabled" : ""}`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(resultsPage.number - 1)}
+                  disabled={resultsPage.first}
+                >
+                  Anterior
+                </button>
+              </li>
+              {pageNumbers.map((pageNumber) => (
+                <li
+                  key={pageNumber}
+                  className={`page-item ${
+                    pageNumber === resultsPage.number + 1 ? "active" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(pageNumber - 1)}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              ))}
+              <li className={`page-item ${resultsPage.last ? "disabled" : ""}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(resultsPage.number + 1)}
+                  disabled={resultsPage.last}
+                >
+                  Siguiente
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className="col-auto d-flex align-items-center">
+            <label htmlFor="pageSizeInput" className="form-label mb-3">
+              Tamaño de Página:
+            </label>
+            &nbsp;&nbsp;
+            <div className="col-3">
+              <input
+                type="number"
+                id="pageSizeInput"
+                value={resultsPage.size}
+                onChange={(e) =>
+                  setResultsPage({ ...resultsPage, size: +e.target.value })
+                }
+                className="form-control mb-3"
+              />
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
   );
 }

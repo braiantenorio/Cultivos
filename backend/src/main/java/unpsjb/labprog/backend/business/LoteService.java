@@ -6,6 +6,9 @@ import java.util.Collections;
 import java.util.Comparator;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -43,6 +46,14 @@ public class LoteService {
 		return repository.findAllActivos();
 	}
 
+	public Page<Lote> findByPage(List<Lote> clientes, int page, int size) {
+		int start = page * size;
+		int end = Math.min(start + size, clientes.size());
+		Page<Lote> clientesPage = new PageImpl<>(clientes.subList(start, end), PageRequest.of(page, size),
+				clientes.size());
+		return clientesPage;
+	}
+
 	public List<Lote> findAllActivosByCategoria(Categoria categoria) {
 		return repository.findAllActivosByCategoria(categoria);
 	}
@@ -76,14 +87,14 @@ public class LoteService {
 	}
 
 	// find all con filtro de lotes con softdelete
-	public Iterable<Lote> findAll(boolean isDeleted, String term) {
+	public List<Lote> findAll(boolean isDeleted, String term) {
 		Session session = entityManager.unwrap(Session.class);
 
 		session.enableFilter("deletedLoteFilter")
 				.setParameter("isDeleted", isDeleted)
 				.setParameter("codigo", "%" + term + "%");
 
-		Iterable<Lote> products = repository.findAll();
+		List<Lote> products = (List<Lote>) repository.findAll();
 		session.disableFilter("deletedLoteFilter");
 
 		return products;

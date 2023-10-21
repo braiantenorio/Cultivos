@@ -6,7 +6,6 @@ import java.time.LocalDate;
 import java.util.List;
 import unpsjb.labprog.backend.model.Categoria;
 
-import org.springframework.cglib.core.Local;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
