@@ -229,12 +229,10 @@ function Loteslist() {
               </li>
             </ul>
           </div>
-          <div className="col-auto d-flex align-items-center">
-            <label htmlFor="pageSizeInput" className="form-label mb-3">
-              Tamaño de Página:
-            </label>
+          <div className="input-group col-auto d-flex align-items-center">
+            <div className="input-group-text mb-3">Elementos por página</div>
             &nbsp;&nbsp;
-            <div className="col-3">
+            <div className="col-1">
               <input
                 type="number"
                 id="pageSizeInput"
