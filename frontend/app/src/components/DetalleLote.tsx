@@ -90,63 +90,49 @@ function DetalleLote() {
   return (
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
-        <h2>Detalle del Lote </h2>
+        <h2>Detalle del Lote</h2>
         <button className="btn btn-danger" onClick={handleAnular}>
           Anular
         </button>
       </div>
 
-      <div className="detail-info">
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div style={{ marginRight: "30px" }}>
-            <p>
-              <span className="badge bg-secondary text-white me-2 fs-6">
-                Código:
-              </span>{" "}
-              {lote.codigo}
-            </p>
-          </div>
-          <div style={{ marginRight: "30px" }}>
-            <p>
-              <span className="badge bg-secondary text-white me-2 fs-6">
-                Cantidad:
-              </span>{" "}
-              {lote.cantidad}
-            </p>
-          </div>
+      <div className="detail-info row">
+        <div className="col-12 col-md-6 col-lg-4">
+          <p>
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Código:
+            </span>{" "}
+            {lote.codigo}
+          </p>
+          <p>
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Cantidad:
+            </span>{" "}
+            {lote.cantidad}
+          </p>
+          <p>
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Categoría:
+            </span>{" "}
+            {lote.categoria.nombre}
+          </p>
         </div>
-
-        <div style={{ display: "flex", flexDirection: "row" }}>
-          <div style={{ marginRight: "30px" }}>
+        <div className="col-12 col-md-6 col-lg-4">
+          <p className="align-self-start">
+            <span className="badge bg-secondary text-white me-2 fs-6">
+              Cultivar:
+            </span>{" "}
+            {lote.cultivar.nombre}
+          </p>
+          {lote.fechaDeBaja && (
             <p>
               <span className="badge bg-secondary text-white me-2 fs-6">
-                Categoría:
+                Fecha de Baja:
               </span>{" "}
-              {lote.categoria.nombre}
+              {new Date(lote.fechaDeBaja).toLocaleDateString()}
             </p>
-          </div>
-          <div style={{ marginRight: "30px" }}>
-            <p>
-              <span className="badge bg-secondary text-white me-2 fs-6">
-                Cultivar:
-              </span>{" "}
-              {lote.cultivar.nombre}
-            </p>
-          </div>
+          )}
         </div>
-
-        {lote.fechaDeBaja && (
-          <div style={{ display: "flex", flexDirection: "row" }}>
-            <div style={{ marginRight: "30px" }}>
-              <p>
-                <span className="badge bg-secondary text-white me-2 fs-6">
-                  Fecha de Baja:
-                </span>{" "}
-                {new Date(lote.fechaDeBaja).toLocaleDateString()}
-              </p>
-            </div>
-          </div>
-        )}
       </div>
 
       <div className="qr-code">
@@ -177,42 +163,42 @@ function DetalleLote() {
             Ver Agenda
           </Link>
         </h3>
-
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Usuario</th>
-              <th>Tipo</th>
-              <th>Fecha</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentProcesos.map((proceso) => (
-              <tr key={proceso.id}>
-                <td>{proceso.id}</td>
-                <td>
-                  {proceso.usuario?.nombre} {proceso.usuario?.apellido}
-                </td>
-                <td>{proceso.listaDeAtributos?.nombre}</td>
-                <td>
-                  {proceso.fecha
-                    ? new Date(proceso.fecha).toLocaleDateString()
-                    : ""}
-                </td>
-                <td>
-                  <Link
-                    to={`/procesos/${proceso.id}`}
-                    className="btn btn-sm btn-info me-2"
-                  >
-                    Ver Detalle
-                  </Link>
-                </td>
+        <div className="table-responsive">
+          <table className="table">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>Usuario</th>
+                <th>Tipo</th>
+                <th>Fecha</th>
+                <th></th>
               </tr>
-            ))}
-          </tbody>
-        </table>
+            </thead>
+            <tbody>
+              {currentProcesos.map((proceso) => (
+                <Link
+                  to={`/procesos/${proceso.id}`}
+                  key={proceso.id}
+                  className="table-row"
+                >
+                  <td>{proceso.id}</td>
+                  <td>
+                    {proceso.usuario?.nombre} {proceso.usuario?.apellido}
+                  </td>
+                  <td>{proceso.listaDeAtributos?.nombre}</td>
+                  <td>
+                    {proceso.fecha
+                      ? new Date(proceso.fecha).toLocaleDateString()
+                      : ""}
+                  </td>
+                </Link>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        {!currentProcesos.length && (
+          <div className="alert alert-warning">No se encontraron procesos</div>
+        )}
         <nav aria-label="Page navigation example">
           <div className="d-flex justify-content-between align-items-center">
             <div>
@@ -227,7 +213,7 @@ function DetalleLote() {
                       }
                     }}
                   >
-                    Anterior
+                    &lsaquo;
                   </button>
                 </li>
                 {pageNumbers.map((pageNumber) => (
@@ -264,12 +250,12 @@ function DetalleLote() {
                       }
                     }}
                   >
-                    Siguiente
+                    &rsaquo;
                   </button>
                 </li>
               </ul>
             </div>
-            <div className="input-group col-auto d-flex align-items-center">
+            <div className="input-group col-auto d-none d-md-flex align-items-center">
               <div className="input-group-text mb-3">Elementos por página</div>
               <div className="col-1">
                 <input

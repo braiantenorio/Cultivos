@@ -22,7 +22,7 @@ function CrearProcesoProgramado() {
 
   const [tiposDeProcesos, setTipoDeProceso] = useState<TipoDeProceso[]>([]);
   useEffect(() => {
-    const url = "/listaDeAtributos";
+    const url = "/listaDeAtributos/search";
 
     fetch(url, {
       headers: authHeader(),

@@ -26,7 +26,7 @@ function CrearAgenda() {
 
   const [tiposDeProcesos, setTipoDeProceso] = useState<TipoDeProceso[]>([]);
   useEffect(() => {
-    const url = "/listaDeAtributos";
+    const url = "/listaDeAtributos/search";
 
     fetch(url, {
       headers: authHeader(),
@@ -63,7 +63,7 @@ function CrearAgenda() {
 
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   useEffect(() => {
-    const url = "/categorias";
+    const url = "/categorias/search";
 
     fetch(url, {
       headers: authHeader(),
@@ -190,25 +190,30 @@ function CrearAgenda() {
     <div className="container">
       <form>
         <h2>
-          {tipo} &nbsp;&nbsp; &nbsp;&nbsp;
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={guardarAgenda}
-          >
-            Guardar
-          </button>
-          &nbsp;&nbsp;
-          <button
-            type="button"
-            className="btn btn-danger ms-2"
-            onClick={handleCancelar}
-          >
-            Cancelar
-          </button>
+          <div className="mb-3 row align-items-center">
+            <div className="mb-2 col-12 col-md-6 col-lg-3">{tipo} &nbsp;</div>
+            {"  "}
+            <div className="col-12 col-md-6 col-lg-3">
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={guardarAgenda}
+              >
+                Guardar
+              </button>
+              &nbsp;&nbsp;
+              <button
+                type="button"
+                className="btn btn-danger ms-2"
+                onClick={handleCancelar}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
         </h2>
 
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-md-6 col-sm-12">
           <label htmlFor="categoria" className="form-label">
             Para La Categoría:
           </label>
@@ -227,7 +232,7 @@ function CrearAgenda() {
             ))}
           </select>
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-md-6 col-sm-12">
           <label htmlFor="fechaInicio" className="form-label">
             Version:
           </label>
@@ -245,98 +250,117 @@ function CrearAgenda() {
           )}
         </div>
         <h3>
-          Procesos Programados &nbsp;&nbsp; &nbsp;&nbsp;
-          <button
-            type="button"
-            className="btn btn-primary"
-            onClick={agregarProcesoProgramado}
-          >
-            Agregar
-          </button>
+          <div className="row">
+            <div className="col-6 col-md-4 col-lg-4">Procesos Programados</div>
+            <div className="col-6">
+              <button
+                type="button"
+                className="btn btn-primary"
+                onClick={agregarProcesoProgramado}
+              >
+                Agregar
+              </button>
+            </div>
+          </div>
         </h3>
       </form>
 
-      <table className="table table-condensed">
-        <thead>
-          <tr>
-            <th style={{ width: "25%" }}>Proceso</th>
-            <th style={{ width: "15%" }}>Día de Inicio</th>
-            <th style={{ width: "15%" }}>Repetir</th>
-            <th style={{ width: "15%" }}>Intervalo de dias</th>
-            <th style={{ width: "30%" }}></th>
-          </tr>
-        </thead>
-        <tbody>
-          {tipoAgenda.procesosProgramado.map((proceso, index) => (
-            <tr key={index}>
-              <td>
-                <select
-                  className="form-select"
-                  id={`validationCustom04-${index}`}
-                  required
-                  value={proceso.proceso.id || ""}
-                  onChange={(e) => {
-                    handleInputChange(index, "proceso", e.target.value);
-                  }}
-                >
-                  <option value="" disabled hidden>
-                    Choose...
-                  </option>
-                  {tiposDeProcesos.map((proceso) => (
-                    <option key={proceso.id} value={proceso.id}>
-                      {proceso.nombre}
-                    </option>
-                  ))}
-                </select>
-              </td>
-              <td>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="diaInicio"
-                  value={proceso.diaInicio}
-                  onChange={(e) =>
-                    handleInputChange(index, "diaInicio", e.target.value)
-                  }
-                />
-              </td>
-              <td>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="cantidad"
-                  value={proceso.cantidad}
-                  onChange={(e) =>
-                    handleInputChange(index, "cantidad", e.target.value)
-                  }
-                />
-              </td>
-              <td>
-                <input
-                  type="number"
-                  className="form-control"
-                  name="frecuencia"
-                  value={proceso.frecuencia}
-                  onChange={(e) =>
-                    handleInputChange(index, "frecuencia", e.target.value)
-                  }
-                  disabled={proceso.cantidad <= 1}
-                />
-              </td>
-              <td>
-                <button
-                  type="button"
-                  className="btn btn-danger"
-                  onClick={() => eliminarProcesoProgramado(index)}
-                  title="Eliminar"
-                >
-                  <i className="bi bi-trash" style={{ cursor: "pointer" }}></i>
-                </button>
-              </td>
+      <div className="table-responsive">
+        <table className="table">
+          <thead>
+            <tr>
+              <th>
+                Proceso
+                <span className="invisible-text">
+                  .....................................
+                </span>
+              </th>
+              <th>
+                Día de Inicio
+                <span className="invisible-text">................</span>
+              </th>
+              <th>
+                Repetir <span className="invisible-text">...............</span>
+              </th>
+              <th>Intervalo de días</th>
+              <th></th>
             </tr>
-          ))}
-        </tbody>
-      </table>
+          </thead>
+          <tbody>
+            {tipoAgenda.procesosProgramado.map((proceso, index) => (
+              <tr key={index}>
+                <td>
+                  <select
+                    className="form-select"
+                    id={`validationCustom04-${index}`}
+                    required
+                    value={proceso.proceso.id || ""}
+                    onChange={(e) => {
+                      handleInputChange(index, "proceso", e.target.value);
+                    }}
+                  >
+                    <option value="" disabled hidden>
+                      Choose...
+                    </option>
+                    {tiposDeProcesos.map((proceso) => (
+                      <option key={proceso.id} value={proceso.id}>
+                        {proceso.nombre}
+                      </option>
+                    ))}
+                  </select>
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="diaInicio"
+                    value={proceso.diaInicio}
+                    onChange={(e) =>
+                      handleInputChange(index, "diaInicio", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="cantidad"
+                    value={proceso.cantidad}
+                    onChange={(e) =>
+                      handleInputChange(index, "cantidad", e.target.value)
+                    }
+                  />
+                </td>
+                <td>
+                  <input
+                    type="number"
+                    className="form-control"
+                    name="frecuencia"
+                    value={proceso.frecuencia}
+                    onChange={(e) =>
+                      handleInputChange(index, "frecuencia", e.target.value)
+                    }
+                    disabled={proceso.cantidad <= 1}
+                  />
+                </td>
+                <td>
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    onClick={() => eliminarProcesoProgramado(index)}
+                    title="Eliminar"
+                  >
+                    <i
+                      className="bi bi-trash"
+                      style={{ cursor: "pointer" }}
+                    ></i>
+                  </button>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 }

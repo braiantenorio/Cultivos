@@ -47,7 +47,7 @@ function CrearProceso() {
         })
         .catch((error) => console.error("Error fetching attributes:", error));
     }
-    const url = "/listaDeAtributos";
+    const url = "/listaDeAtributos/search";
 
     fetch(url, {
       headers: authHeader(),
@@ -114,7 +114,7 @@ function CrearProceso() {
         id: null,
         atributo: atributo,
         valor: null,
-        imagen: null
+        imagen: null,
       })) || []
     );
   };
@@ -180,9 +180,9 @@ function CrearProceso() {
 
   const handleSubmit = async (e: { preventDefault: () => void }) => {
     e.preventDefault();
-  
+
     const uploadPromises: Promise<void>[] = [];
-  
+
     valores.forEach((valor) => {
       if (valor.imagen) {
         const formData = new FormData();
@@ -203,14 +203,14 @@ function CrearProceso() {
           .catch((error) => {
             console.error("Error uploading image:", error);
           });
-  
+
         uploadPromises.push(uploadPromise);
       }
     });
-  
+
     // Espera a que todas las promesas de carga se completen antes de continuar
     await Promise.all(uploadPromises);
-  
+
     const nProceso: Proceso = {
       id: 0,
       usuario: null,
@@ -218,7 +218,7 @@ function CrearProceso() {
       valores: valores,
       listaDeAtributos: tipoDeProceso,
     };
-  
+
     if (notificationMessages.length > 0) {
       const nLoteCodigo: LoteCodigo = {
         lotesCodigos: notificationMessages,

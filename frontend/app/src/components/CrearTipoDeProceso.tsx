@@ -19,7 +19,7 @@ function CrearTipoDeProceso() {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const url = "/atributos";
+    const url = "/atributos/search";
     fetch(url, {
       headers: authHeader(),
     })

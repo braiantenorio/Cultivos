@@ -121,7 +121,7 @@ function Menu() {
   };
 
   useEffect(() => {
-    fetch(`/lotes/procesosPendientes?term=&dia=0`, {
+    fetch(`/lotes/procesosPendientes?term=&dia=0&page=&size=99`, {
       headers: authHeader(),
     })
       .then((response) => {
@@ -132,7 +132,7 @@ function Menu() {
       })
       .then((responseData) => {
         //  setNotifications(responseData.data.length);
-        updateNotifications(responseData.data.length, []);
+        updateNotifications(responseData.data.content.length, []);
       })
       .catch((error) => {
         console.error(error);
@@ -143,228 +143,289 @@ function Menu() {
     return null; // No renderizar la barra de navegación en /login o /register
   }
   return (
-    <div
-      className="d-flex flex-column flex-md-row align-items-center p-1 px-md-4 mb-3 
-    custom text-black border-bottom shadow-sm border border-dark border-1 "
-    >
-      <div>
-        <img src={icono} alt="" width="60" height="60" />
-      </div>
-      <ul></ul>
-      <div>
-        {" "}
-        <Link to="/" className="btn btn-custom-color-2">
-          Home
+    <nav className="navbar navbar-expand-lg  custom-navbar mb-3">
+      <div className="container-fluid">
+        <Link to="/" className="navbar-brand">
+          <img src={icono} alt="" width="50" height="50" />
         </Link>
-      </div>
-      <ul></ul>
-      <div className="dropdown ">
+        &nbsp; &nbsp;
         <button
-          className="btn btn-custom-color-2 dropdown-toggle "
+          className="navbar-toggler"
           type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
+          data-bs-toggle="offcanvas"
+          data-bs-target="#offcanvasNavbar"
+          aria-controls="offcanvasNavbar"
+          aria-label="Toggle navigation"
         >
-          Lotes
+          <span className="navbar-toggler-icon"></span>
         </button>
-
-        <ul className="dropdown-menu border  border-dark border-2 ">
-          <li>
-            <Link className="dropdown-item" to="/lotes">
-              Listar
-            </Link>
-          </li>
-          <li>
-            <Link className="dropdown-item" to="/lotes/crear-lote">
-              Nuevo
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <ul></ul>
-      <div className="dropdown">
-        <button
-          className="btn btn-custom-color-2 dropdown-toggle "
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
+        <div
+          className="offcanvas offcanvas-end custom-navbar"
+          id="offcanvasNavbar"
+          aria-labelledby="offcanvasNavbarLabel"
+          tabIndex={-1}
         >
-          Procesos
-        </button>
+          <div className="offcanvas-header">
+            <h5 className="offcanvas-title" id="offcanvasNavbarLabel">
+              Menú
+            </h5>
+            <button
+              type="button"
+              className="btn-close"
+              data-bs-dismiss="offcanvas"
+              aria-label="Close"
+            ></button>
+          </div>
 
-        <ul className="dropdown-menu  border border-dark border-2 ">
-          <li>
-            <Link className="dropdown-item" to="/atributos">
-              Atributos
-            </Link>
-          </li>
-          <li>
-            <Link className="dropdown-item" to="/atributos/new">
-              Nuevo atributo
-            </Link>
-          </li>
-          <li>
-            <Link className="dropdown-item" to="/tipo-proceso">
-              Tipos de procesos
-            </Link>
-          </li>
-          <li>
-            <Link className="dropdown-item" to="/tipo-proceso/new">
-              Nuevo tipo de proceso
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <ul></ul>
-      <div className="dropdown">
-        <button
-          className="btn btn-custom-color-2 dropdown-toggle "
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Agendas
-        </button>
+          <div className="offcanvas-body">
+            <ul className="navbar-nav">
+              <div className="dropdown mt-1 ">
+                <button
+                  className="btn btn-custom-color-2 dropdown-toggle "
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Lotes
+                </button>
 
-        <ul className="dropdown-menu border border-dark border-2 ">
-          <li>
-            <Link className="dropdown-item" to="/agendas">
-              Listar
-            </Link>
-          </li>
-          <li>
-            <Link className="dropdown-item" to="/agendas/new">
-              Nuevo
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <ul></ul>
-      <div className="dropdown">
-        <button
-          className="btn btn-custom-color-2 dropdown-toggle "
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Categorias
-        </button>
+                <ul
+                  className="dropdown-menu border  border-dark border-2  w-50 "
+                  data-bs-dismiss="offcanvas"
+                >
+                  <li>
+                    <Link className="dropdown-item" to="/lotes">
+                      Listar
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/lotes/crear-lote">
+                      Nuevo
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              &nbsp;
+              <ul></ul>
+              <div className="dropdown mt-1 ">
+                <button
+                  className="btn btn-custom-color-2 dropdown-toggle "
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Procesos
+                </button>
 
-        <ul className="dropdown-menu border border-dark border-2 ">
-          <li>
-            <Link className="dropdown-item" to="/categorias">
-              Listar
-            </Link>
-          </li>
-          <li>
-            <Link className="dropdown-item" to="/categorias/new">
-              Nuevo
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <ul></ul>
-      <div className="dropdown">
-        <button
-          className="btn btn-custom-color-2 dropdown-toggle "
-          type="button"
-          data-bs-toggle="dropdown"
-          aria-expanded="false"
-        >
-          Cultivares
-        </button>
+                <ul
+                  className="dropdown-menu  border border-dark border-2  w-125s"
+                  data-bs-dismiss="offcanvas"
+                >
+                  <li>
+                    <Link className="dropdown-item" to="/atributos">
+                      Atributos
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/atributos/new">
+                      Nuevo atributo
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/tipo-proceso">
+                      Tipos de procesos
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/tipo-proceso/new">
+                      Nuevo tipo de proceso
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              &nbsp;
+              <ul></ul>
+              <div className="dropdown mt-1 ">
+                <button
+                  className="btn btn-custom-color-2 dropdown-toggle "
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Agendas
+                </button>
 
-        <ul className="dropdown-menu border border-dark border-2 ">
-          <li>
-            <Link className="dropdown-item" to="/cultivares">
-              Listar
-            </Link>
-          </li>
-          <li>
-            <Link className="dropdown-item" to="/cultivares/new">
-              Nuevo
-            </Link>
-          </li>
-        </ul>
-      </div>
-      <ul></ul>
-      <div>
-        {" "}
-        <Link to="/generar/informe" className="btn btn-custom-color-2">
-          Informes
-        </Link>
-      </div>
-      <ul></ul>
-      {showModeratorBoard && (
-        <li className="nav-item">
-          <Link to={"/mod"} className="nav-link">
-            Moderator Board
-          </Link>
-        </li>
-      )}
+                <ul
+                  className="dropdown-menu border border-dark border-2  w-50"
+                  data-bs-dismiss="offcanvas"
+                >
+                  <li>
+                    <Link className="dropdown-item" to="/agendas">
+                      Listar
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/agendas/new">
+                      Nuevo
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              &nbsp;
+              <ul></ul>
+              <div className="dropdown mt-1 ">
+                <button
+                  className="btn btn-custom-color-2 dropdown-toggle "
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Categorias
+                </button>
 
-      {showAdminBoard && (
-        <li className="nav-item">
-          <Link to={"/admin"} className="nav-link">
-            Admin Board
-          </Link>
-        </li>
-      )}
+                <ul
+                  className="dropdown-menu border border-dark border-2  w-50"
+                  data-bs-dismiss="offcanvas"
+                >
+                  <li>
+                    <Link className="dropdown-item" to="/categorias">
+                      Listar
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/categorias/new">
+                      Nuevo
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              &nbsp;
+              <ul></ul>
+              <div className="dropdown mt-1 ">
+                <button
+                  className="btn btn-custom-color-2 dropdown-toggle "
+                  type="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false"
+                >
+                  Cultivares
+                </button>
 
-      {currentUser && (
-        <li className="nav-item">
-          <Link to={"/user"} className="nav-link">
-            User
-          </Link>
-        </li>
-      )}
-
-      {currentUser ? (
-        <div className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <Link to={"/profile"} className="nav-link">
-              {currentUser.username}
+                <ul
+                  className="dropdown-menu border border-dark border-2  w-50"
+                  data-bs-dismiss="offcanvas"
+                >
+                  <li>
+                    <Link className="dropdown-item" to="/cultivares">
+                      Listar
+                    </Link>
+                  </li>
+                  <li>
+                    <Link className="dropdown-item" to="/cultivares/new">
+                      Nuevo
+                    </Link>
+                  </li>
+                </ul>
+              </div>
+              &nbsp;
+              <ul></ul>
+              <div className="nav-item mt-1" data-bs-dismiss="offcanvas">
+                {" "}
+                <Link to="/generar/informe" className="btn btn-custom-color-2">
+                  Informes
+                </Link>
+              </div>
+            </ul>
+            <ul></ul>
+            <Link
+              to="/agenda/general"
+              className="btn btn-custom-color-2 position-relative rounded-circle "
+              onClick={toggleNotifications}
+            >
+              <i
+                className="bi bi-journal custom-icon bi-lg"
+                data-bs-dismiss="offcanvas"
+              ></i>
+              {notifications > 0 && (
+                <span
+                  className="position-absolute translate-middle badge rounded-pill bg-danger"
+                  style={{ left: "35px", top: "6px" }}
+                >
+                  {notifications}
+                </span>
+              )}
             </Link>
-          </li>
-          <li className="nav-item">
-            <a href="/login" className="nav-link" onClick={logOut}>
-              Cerrar sesion
-            </a>
-          </li>
+            <ul></ul>
+            <ul className="navbar-nav ms-auto">
+              {showModeratorBoard && (
+                <li className="nav-item">
+                  <Link to="/mod" className="nav-link">
+                    Moderator Board
+                  </Link>
+                </li>
+              )}
+              {showAdminBoard && (
+                <li className="nav-item">
+                  <Link to="/admin" className="nav-link">
+                    Admin Board
+                  </Link>
+                </li>
+              )}
+              {currentUser ? (
+                <>
+                  <li className="nav-item mt-1" data-bs-dismiss="offcanvas">
+                    <Link
+                      to="/profile"
+                      className="btn btn-custom-color-5 rounded-pill "
+                    >
+                      <i className="bi bi-person "></i> {currentUser.username}
+                      {/* Icono de perfil */}
+                    </Link>
+                  </li>
+                  &nbsp;
+                  <li className="nav-item mt-1">
+                    <a
+                      href="/login"
+                      className="btn btn-custom-color-5 rounded-pill"
+                      onClick={logOut}
+                    >
+                      <i className="bi bi-box-arrow-right"></i>{" "}
+                      {/* Icono de cerrar sesión */}
+                      Cerrar sesión
+                    </a>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="nav-item mt-1">
+                    <Link
+                      to="/login"
+                      className="btn btn-custom-color-5 rounded-pill "
+                    >
+                      <i className="bi bi-box-arrow-in-right"></i>{" "}
+                      {/* Icono de iniciar sesión */}
+                      Iniciar sesión
+                    </Link>
+                  </li>
+                  &nbsp;
+                  <li className="nav-item mt-1">
+                    <Link
+                      to="/register"
+                      className="btn btn-custom-color-5 rounded-pill "
+                    >
+                      <i className="bi bi-person-plus"></i>{" "}
+                      {/* Icono de registrarse */}
+                      Registrarse
+                    </Link>
+                  </li>
+                </>
+              )}
+            </ul>
+          </div>
         </div>
-      ) : (
-        <div className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <Link to={"/login"} className="nav-link">
-              Iniciar sesion
-            </Link>
-          </li>
-
-          <li className="nav-item">
-            <Link to={"/register"} className="nav-link">
-              Registrarse
-            </Link>
-          </li>
-        </div>
-      )}
-
-      <Link
-        to="/agenda/general"
-        className="btn btn-custom-color-2 position-relative rounded-circle"
-        onClick={toggleNotifications}
-      >
-        <i className="bi bi-journal custom-icon bi-lg"></i>
-
-        {notifications > 0 && (
-          <span
-            className="position-absolute  translate-middle badge rounded-pill bg-danger"
-            style={{ left: "35px", top: "6px" }}
-          >
-            {notifications}
-          </span>
-        )}
-      </Link>
-    </div>
+      </div>
+    </nav>
   );
 }
+
 export default Menu;

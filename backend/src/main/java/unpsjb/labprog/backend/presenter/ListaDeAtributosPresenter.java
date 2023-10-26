@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -29,7 +30,13 @@ public class ListaDeAtributosPresenter {
 	}
 
 	@GetMapping
-	public ResponseEntity<Object> findAll() {
+	public ResponseEntity<Object> findAll(@RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size) {
+		return Response.ok(service.findByPage(service.findAll(), page, size));
+	}
+
+	@RequestMapping(value = "/search", method = RequestMethod.GET)
+	public ResponseEntity<Object> search() {
 		return Response.ok(service.findAll());
 	}
 

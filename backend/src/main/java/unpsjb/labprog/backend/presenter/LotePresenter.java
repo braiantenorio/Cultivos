@@ -159,8 +159,12 @@ public class LotePresenter {
   @GetMapping("/procesosPendientes")
   public ResponseEntity<Object> obtenerLotesPadres(@RequestParam(value = "term", required = false) String lote
 
-      , @RequestParam(value = "dia", required = false) int dia) {
-    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote, dia));
+      , @RequestParam(value = "dia", required = false) int dia,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    return Response
+        .ok(serviceProcesoProgramado
+            .findByPage(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote, dia), page, size));
   }
 
   @GetMapping("/search")

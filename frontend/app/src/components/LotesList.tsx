@@ -35,7 +35,6 @@ function Loteslist() {
       })
       .then((responseData) => {
         setResultsPage(responseData.data);
-        console.log(responseData);
       })
       .catch((error) => {
         console.error(error);
@@ -75,7 +74,7 @@ function Loteslist() {
     <div className="container">
       <h2>Lotes</h2>
       <div className="row g-3 align-items-center">
-        <div className="col-auto">
+        <div className="col-12 col-md-4">
           <input
             type="search"
             placeholder="Buscar Lote por código"
@@ -85,13 +84,15 @@ function Loteslist() {
           />
         </div>
         <div
-          className="col-auto"
+          className="col-6 col-md-2"
           style={{ fontSize: "1.5rem", cursor: "pointer" }}
-          onClick={handleBuscarLote}
         >
-          <i className="bi bi-search bi-lg text-primary"></i>
+          <i
+            className="bi bi-search bi-lg text-primary"
+            onClick={handleBuscarLote}
+          ></i>
         </div>
-        <div className="col-auto">
+        <div className="col-6 col-md-3">
           <label className="form-check-label">
             <input
               className="form-check-input"
@@ -103,88 +104,91 @@ function Loteslist() {
           </label>
         </div>
       </div>
-      <table className="table">
-        <thead>
-          <tr>
-            <th>#</th>
-            <th>Código</th>
-            <th>Cantidad</th>
-            <th>Categoría</th>
-            <th>Cultivar</th>
-            <th>{showDeleted ? "Fecha de baja" : ""} </th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {resultsPage.content.map((lote, index) => (
-            <tr key={lote.id}>
-              <td>{index + 1}</td>
-              <td>
-                {" "}
-                <span className="badge badge-custom-1 text-white me-2 fs-6">
-                  {lote.codigo}
-                </span>
-              </td>
-              <td>{lote.cantidad}</td>
-              <td>{lote.categoria.nombre}</td>
-              <td>{lote.cultivar.nombre}</td>
-              <td>
-                {showDeleted
-                  ? new Date(lote.fechaDeBaja).toLocaleDateString()
-                  : ""}
-              </td>
-              <td>
-                <Link
-                  to={`/lotes/${lote.codigo}`}
-                  className="text-info me-2"
-                  title="Detalle"
-                >
-                  <i
-                    className="bi bi-eye"
-                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  ></i>
-                </Link>
-                &nbsp;&nbsp;
-                {lote.deleted ? (
-                  <i
-                    className="bi bi-pencil-slash text-warning me-2"
-                    style={{ fontSize: "1.5rem", cursor: "not-allowed" }}
-                    title="Editar"
-                  ></i>
-                ) : (
+      <div className="table-responsive">
+        <table className="table">
+          {" "}
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>Código</th>
+              <th>Cantidad</th>
+              <th>Categoría</th>
+              <th>Cultivar</th>
+              <th>{showDeleted ? "Fecha de baja" : ""} </th>
+              <th></th>
+            </tr>
+          </thead>
+          <tbody>
+            {resultsPage.content.map((lote, index) => (
+              <tr key={lote.id}>
+                <td>{index + 1}</td>
+                <td>
+                  {" "}
+                  <span className="badge badge-custom-1 text-white me-2 fs-6">
+                    {lote.codigo}
+                  </span>
+                </td>
+                <td>{lote.cantidad}</td>
+                <td>{lote.categoria.nombre}</td>
+                <td>{lote.cultivar.nombre}</td>
+                <td>
+                  {showDeleted
+                    ? new Date(lote.fechaDeBaja).toLocaleDateString()
+                    : ""}
+                </td>
+                <td>
                   <Link
-                    to={`/lotes/${lote.id}/edit`}
-                    className="text-warning me-2"
-                    title="Editar"
+                    to={`/lotes/${lote.codigo}`}
+                    className="text-info me-2"
+                    title="Detalle"
                   >
                     <i
-                      className="bi bi-pencil"
+                      className="bi bi-eye"
                       style={{ fontSize: "1.5rem", cursor: "pointer" }}
                     ></i>
                   </Link>
-                )}
-                &nbsp;&nbsp;
-                <Link
-                  to={`/lotes/log/${lote.id}`}
-                  className="text-secondary me-2"
-                  title="Logs"
-                >
-                  <i
-                    className="bi bi-journal"
-                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  ></i>
-                </Link>
-                <Link
-                  to={`/lotes/${lote.id}/historia`}
-                  className="btn btn-sm btn-success me-2"
-                >
-                  Historia
-                </Link>
-              </td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+                  &nbsp;&nbsp;
+                  {lote.deleted ? (
+                    <i
+                      className="bi bi-pencil-slash text-warning me-2"
+                      style={{ fontSize: "1.5rem", cursor: "not-allowed" }}
+                      title="Editar"
+                    ></i>
+                  ) : (
+                    <Link
+                      to={`/lotes/${lote.id}/edit`}
+                      className="text-warning me-2"
+                      title="Editar"
+                    >
+                      <i
+                        className="bi bi-pencil"
+                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      ></i>
+                    </Link>
+                  )}
+                  &nbsp;&nbsp;
+                  <Link
+                    to={`/lotes/log/${lote.id}`}
+                    className="text-secondary me-2"
+                    title="Logs"
+                  >
+                    <i
+                      className="bi bi-journal"
+                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                    ></i>
+                  </Link>
+                  <Link
+                    to={`/lotes/${lote.id}/historia`}
+                    className="btn btn-sm btn-success me-2"
+                  >
+                    Historia
+                  </Link>
+                </td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
       {!resultsPage.content.length && (
         <div className="alert alert-warning">No se encontraron lotes</div>
       )}
@@ -200,7 +204,7 @@ function Loteslist() {
                   onClick={() => handlePageChange(resultsPage.number - 1)}
                   disabled={resultsPage.first}
                 >
-                  Anterior
+                  &lsaquo;
                 </button>
               </li>
               {pageNumbers.map((pageNumber) => (
@@ -224,12 +228,12 @@ function Loteslist() {
                   onClick={() => handlePageChange(resultsPage.number + 1)}
                   disabled={resultsPage.last}
                 >
-                  Siguiente
+                  &rsaquo;
                 </button>
               </li>
             </ul>
           </div>
-          <div className="input-group col-auto d-flex align-items-center">
+          <div className="input-group col-auto d-none d-md-flex align-items-center">
             <div className="input-group-text mb-3">Elementos por página</div>
             &nbsp;&nbsp;
             <div className="col-1">
