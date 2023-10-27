@@ -120,7 +120,7 @@ function CrearProcesoProgramado() {
     <div className="container">
       <form>
         <h2>Crear Proceso Programado</h2>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="fechaInicio" className="form-label">
             Fecha:
           </label>
@@ -136,7 +136,7 @@ function CrearProcesoProgramado() {
             <div className="alert alert-danger">{cantidadError}</div>
           )}
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="proceso" className="form-label">
             Tipo de Proceso
           </label>

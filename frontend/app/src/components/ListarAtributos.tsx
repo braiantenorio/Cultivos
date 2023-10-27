@@ -7,6 +7,8 @@ import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
 
 function ListarAtributos() {
+  const [showDeleted, setShowDeleted] = useState(false);
+  const [categorias, setCategorias] = useState<Atributo[]>([]);
   const [resultsPage, setResultsPage] = useState<ResultsPage<Atributo>>({
     content: [],
     totalPages: 0,
@@ -17,12 +19,15 @@ function ListarAtributos() {
   });
   useEffect(() => {
     fetchAtributos();
-  }, [resultsPage.number, resultsPage.size]);
+  }, [resultsPage.number, resultsPage.size, showDeleted, categorias]);
 
   const fetchAtributos = () => {
-    fetch(`/atributos?page=${resultsPage.number}&size=${resultsPage.size}`, {
-      headers: authHeader(),
-    })
+    fetch(
+      `/atributos?filtered=${showDeleted}&page=${resultsPage.number}&size=${resultsPage.size}`,
+      {
+        headers: authHeader(),
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -46,10 +51,84 @@ function ListarAtributos() {
   const pageNumbers = Array.from(Array(resultsPage.totalPages).keys()).map(
     (n) => n + 1
   );
+  const handleEliminarTipoAgenda = (tipoAgendaId: number) => {
+    swal({
+      title: "¿Estás seguro?",
+      text: "Una vez borrado, no podrás utilizar este atributo.",
+      icon: "warning",
+      buttons: ["Cancelar", "Anular"],
+      dangerMode: true,
+    }).then((willAnular) => {
+      if (willAnular) {
+        fetch(`/atributos/delete/${tipoAgendaId}`, {
+          method: "DELETE",
+          headers: authHeader(),
+        })
+          .then((response) => {
+            if (response.ok) {
+              // Si la respuesta es exitosa, puedes realizar acciones adicionales aquí
+              swal("El atributo ha sido anulado.", {
+                icon: "success",
+              }).then(() => {
+                // Eliminar el tipoAgenda de la lista
+                setCategorias((prevTipoAgendas) =>
+                  prevTipoAgendas.filter(
+                    (tipoAgenda) => tipoAgenda.id !== tipoAgendaId
+                  )
+                );
+              });
+            } else {
+              // Si la respuesta no es exitosa, maneja el error aquí
+              swal("Hay tipos de procesos activos con ese atributo.", {
+                icon: "error",
+              }).then(() => {
+                // Eliminar el tipoAgenda de la lista
+              });
+              console.error("Error al anular el lote");
+            }
+          })
+          .catch((error) => {
+            console.error("Error al anular el lote", error);
+          });
+      }
+    });
+  };
+  const handleShowDeletedChange = () => {
+    setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
+  };
+  const handleEliminarTipoAgenda1 = (tipoAgendaId: number) => {
+    fetch(`/atributos/${tipoAgendaId}`, {
+      method: "PUT",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setCategorias((prevTipoAgendas) =>
+            prevTipoAgendas.filter(
+              (tipoAgenda) => tipoAgenda.id !== tipoAgendaId
+            )
+          );
+        } else {
+          console.error("Error al anular el lote");
+        }
+      })
+      .catch((error) => {
+        console.error("Error al anular el lote", error);
+      });
+  };
 
   return (
     <div className="container">
       <h2>Atributos </h2>
+      <div className="mb-3 form-check form-switch">
+        <input
+          className="form-check-input"
+          type="checkbox"
+          checked={showDeleted}
+          onChange={handleShowDeletedChange}
+        />
+        <label className="form-check-label">Mostrar Eliminados</label>
+      </div>
       <div className="table-responsive">
         <table className="table">
           <thead>
@@ -76,6 +155,33 @@ function ListarAtributos() {
                 <td>{tipoAgenda.caracteres}</td>
                 <td>{tipoAgenda.maximo}</td>
                 <td>{tipoAgenda.minimo}</td>
+                <td>
+                  {!tipoAgenda.deleted ? (
+                    <>
+                      <button
+                        className="text-danger border-0 bg-transparent me-2"
+                        onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
+                        title="Eliminar"
+                      >
+                        <i
+                          className="bi bi-trash"
+                          style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                        ></i>
+                      </button>
+                    </>
+                  ) : (
+                    <button
+                      className="text-info border-0 bg-transparent me-2"
+                      onClick={() => handleEliminarTipoAgenda1(tipoAgenda.id)}
+                      title="Eliminar"
+                    >
+                      <i
+                        className="bi bi-arrow-clockwise"
+                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      ></i>
+                    </button>
+                  )}
+                </td>
               </tr>
             ))}
           </tbody>

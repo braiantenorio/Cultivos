@@ -74,36 +74,38 @@ function Loteslist() {
     <div className="container">
       <h2>Lotes</h2>
       <div className="row g-3 align-items-center">
-        <div className="col-12 col-md-4">
-          <input
-            type="search"
-            placeholder="Buscar Lote por código"
-            value={searchTerm}
-            onChange={handleSearchInputChange}
-            className="form-control"
-          />
-        </div>
-        <div
-          className="col-6 col-md-2"
-          style={{ fontSize: "1.5rem", cursor: "pointer" }}
-        >
-          <i
-            className="bi bi-search bi-lg text-primary"
-            onClick={handleBuscarLote}
-          ></i>
-        </div>
-        <div className="col-6 col-md-3">
-          <label className="form-check-label">
+        <div className="col-12 col-md-6 col-lg-3  mb-sm-1">
+          <div className="d-flex align-items-center">
             <input
-              className="form-check-input"
-              type="checkbox"
-              checked={showDeleted}
-              onChange={handleShowDeletedChange}
+              type="search"
+              placeholder="Buscar Lote por código"
+              value={searchTerm}
+              onChange={handleSearchInputChange}
+              className="form-control"
             />
-            Mostrar Inactivos
-          </label>
+            <button
+              type="button"
+              className="btn btn-primary"
+              onClick={handleBuscarLote}
+            >
+              <i
+                className="bi bi-search bi-lg"
+                style={{ fontSize: "1rem", cursor: "pointer" }}
+              ></i>
+            </button>
+          </div>
+        </div>
+        <div className=" col-md-6 mb-3 form-check form-switch">
+          <input
+            className="form-check-input ms-3 mt-2 "
+            type="checkbox"
+            checked={showDeleted}
+            onChange={handleShowDeletedChange}
+          />
+          <label className="form-check-label mt-1">Mostrar Eliminados</label>
         </div>
       </div>
+
       <div className="table-responsive">
         <table className="table">
           {" "}

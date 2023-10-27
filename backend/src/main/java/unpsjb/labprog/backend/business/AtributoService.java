@@ -41,6 +41,14 @@ public class AtributoService {
 		repository.deleteById(id);
 	}
 
+	public List<Atributo> findTipoDeProcesosByAtributo(long id) {
+		return repository.findTipoDeProcesosByAtributo(id);
+	}
+
+	public List<Atributo> findAllCategorias(boolean filtered) {
+		return repository.findAllAtributos(filtered);
+	}
+
 	public Page<Atributo> findByPage(List<Atributo> clientes, int page, int size) {
 		int start = page * size;
 		int end = Math.min(start + size, clientes.size());

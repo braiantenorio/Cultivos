@@ -118,7 +118,7 @@ function CategoriasList() {
   return (
     <div className="container">
       <h2>Categorias</h2>
-      <div className="mb-3 form-check">
+      <div className="mb-3 form-check form-switch">
         <input
           className="form-check-input"
           type="checkbox"

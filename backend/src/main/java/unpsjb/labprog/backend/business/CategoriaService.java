@@ -11,7 +11,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import unpsjb.labprog.backend.model.Categoria;
-import unpsjb.labprog.backend.model.ListaDeAtributos;
 
 @Service
 public class CategoriaService {

@@ -122,7 +122,7 @@ function ListarCultivares() {
       <h2>Cultivares </h2>
 
       <div className="col-auto">
-        <label className="form-check-label">
+        <label className="form-check-label form-switch">
           <input
             className="form-check-input"
             type="checkbox"
