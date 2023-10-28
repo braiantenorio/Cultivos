@@ -280,7 +280,7 @@ function CrearAgenda() {
                   }}
                 >
                   <option value="" disabled hidden>
-                    Choose...
+                    Seleccionar...
                   </option>
                   {tiposDeProcesos.map((proceso) => (
                     <option key={proceso.id} value={proceso.id}>

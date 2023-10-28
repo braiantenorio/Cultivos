@@ -116,7 +116,7 @@ function CrearTipoDeProceso() {
             onChange={(e) => setAtributoId(e.target.value)}
           >
             <option value="" disabled hidden>
-              Choose...
+              Seleccionar...
             </option>
             {atributosSelect.map((atributo) => (
               <option key={atributo.id} value={atributo.id}>

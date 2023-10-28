@@ -167,7 +167,7 @@ function CrearProceso() {
             id={atributo.id.toString()}
             className="form-control"
             type="file"
-            accept="image/*" // Esto limita la selección a archivos de imagen
+            accept="image/*" 
             name={atributo.nombre}
             required={atributo.obligatorio}
             onChange={(event) => handleAgregarImagen(event, atributo.nombre)}
@@ -330,7 +330,7 @@ function CrearProceso() {
               className="btn btn-success"
               disabled={tipoDeProceso.atributos == null}
             >
-              Enviar
+              Guardar
             </button>
             <button
               type="button"

@@ -51,7 +51,7 @@ public class Usuario {
   private String email;
 
   @NotBlank
-  @Size(max = 120)
+  @Size(max = 120, min = 8)
   private @JsonIgnore String password; 
 
   @OneToMany(fetch = FetchType.EAGER)

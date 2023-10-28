@@ -169,7 +169,7 @@ const Register: React.FC = () => {
                     placeholder="Password"
                     value={formData.password}
                     onChange={handleInputChange}
-                    pattern=".{6,40}"
+                    pattern=".{8,40}"
                     required
                   />
                   <label htmlFor="password">Contraseña</label>

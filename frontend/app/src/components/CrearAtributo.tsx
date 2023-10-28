@@ -11,7 +11,7 @@ function CrearAtributo() {
     obligatorio: false,
     caracteres: 50, // Valor predeterminado de 50 caracteres
     minimo: 0,
-    maximo: 0,
+    maximo: 100,
     decimales: 0,
   });
 
@@ -115,12 +115,12 @@ function CrearAtributo() {
             onChange={handleTipoChange}
           >
             <option value="" disabled selected hidden>
-              Choose...
+              Seleccionar...
             </option>
-            <option value="string">texto</option>
-            <option value="number">numerico</option>
-            <option value="fecha">fecha</option>
-            <option value="imagen">imagen</option>
+            <option value="string">Texto</option>
+            <option value="number">Numérico</option>
+            <option value="fecha">Fecha</option>
+            <option value="imagen">Imagen</option>
           </select>
         </div>
         <div className="col-md-2" hidden={atributo.tipo !== "number"}>
