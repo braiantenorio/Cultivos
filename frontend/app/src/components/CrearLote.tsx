@@ -25,8 +25,8 @@ const CrearLote: React.FC = () => {
   });
 
   useEffect(() => {
-    const url = "/categorias";
-    const url1 = "/cultivares";
+    const url = "/categorias/search";
+    const url1 = "/cultivares/search";
 
     fetch(url, {
       headers: authHeader(),
@@ -264,7 +264,7 @@ const CrearLote: React.FC = () => {
       <h1>Crear Nuevo Lote</h1>
       <form>
         <div className="mb-3 row align-items-center">
-          <div className="col-3">
+          <div className="col-12 col-md-6 col-lg-3">
             <label htmlFor="categoria" className="form-label">
               Categoría:
             </label>
@@ -283,29 +283,31 @@ const CrearLote: React.FC = () => {
               ))}
             </select>
           </div>
-          &nbsp; &nbsp;
-          {tipoAgendas.length > 0 && (
-            <div className="col-3">
-              <label htmlFor="agenda" className="form-label">
-                Agenda version:
-              </label>
-              <select
-                className="form-select"
-                id="agenda"
-                name="agenda"
-                value={nuevoLote.agenda?.tipoAgenda.id}
-                onChange={handleAgendaChange}
-              >
-                {tipoAgendas.map((categoria) => (
-                  <option key={categoria.id} value={categoria.id}>
-                    {categoria.version}
-                  </option>
-                ))}
-              </select>
-            </div>
-          )}
+          &nbsp;
+          <div className="col-12 col-md-6 col-lg-3">
+            {tipoAgendas.length > 0 && (
+              <>
+                <label htmlFor="agenda" className="form-label">
+                  Agenda version:
+                </label>
+                <select
+                  className="form-select"
+                  id="agenda"
+                  name="agenda"
+                  value={nuevoLote.agenda?.tipoAgenda.id}
+                  onChange={handleAgendaChange}
+                >
+                  {tipoAgendas.map((categoria) => (
+                    <option key={categoria.id} value={categoria.id}>
+                      {categoria.version}
+                    </option>
+                  ))}
+                </select>
+              </>
+            )}
+          </div>
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="lotePadre" className="form-label">
             Lote Predecesor
           </label>
@@ -324,7 +326,7 @@ const CrearLote: React.FC = () => {
             ))}
           </select>
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="cultivar" className="form-label">
             Cultivar:
           </label>
@@ -344,7 +346,7 @@ const CrearLote: React.FC = () => {
             ))}
           </select>
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="cantidad" className="form-label">
             Cantidad:
           </label>
@@ -360,7 +362,6 @@ const CrearLote: React.FC = () => {
             <div className="alert alert-danger">{cantidadError}</div>
           )}
         </div>
-        &nbsp;
         <div className="mb-3">
           <button
             type="button"

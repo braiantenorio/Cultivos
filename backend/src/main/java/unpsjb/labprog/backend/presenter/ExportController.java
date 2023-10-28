@@ -3,6 +3,7 @@ package unpsjb.labprog.backend.presenter;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -228,7 +229,18 @@ public class ExportController {
     public ResponseEntity<Object> crear(@RequestBody InformeDTO informeF) {
         InformeDTO informe = new InformeDTO();
 
-        List<Lote> lotes = loteService.findAll();
+        // Define el formato de la cadena de fecha
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        LocalDate fecha = LocalDate.now();
+
+        try {
+            fecha = LocalDate.parse(informeF.getFecha(), formatter);
+
+        } catch (Exception e) {
+            // System.err.println("Error al analizar la cadena de fecha: " +
+            // e.getMessage());
+        }
+        List<Lote> lotes = loteService.findAllFecha(fecha);
         StockDTO stock = new StockDTO();
         StockDTO stocki = informeF.getStock();
         List<Long> list = new ArrayList<>();
@@ -251,7 +263,7 @@ public class ExportController {
             }
         } else {
 
-            List<Object[]> results = loteService.findLotesAndValoresByAtributos(list);
+            List<Object[]> results = loteService.findLotesAndValoresByAtributos(list, fecha);
             Map<Long, List<Valor>> lotesValoresMap = new HashMap<>();
 
             for (Object[] result : results) {
@@ -285,7 +297,7 @@ public class ExportController {
         DDJJDTO ddjjdtoM;
         for (DDJJDTO ddjjdto : ddjjdtos) {
             ddjjdtoM = new DDJJDTO();
-            List<Lote> lotesc = loteService.findLotesByCategoria(ddjjdto.getCategoria());
+            List<Lote> lotesc = loteService.findLotesByCategoria(ddjjdto.getCategoria(), fecha);
             List<Atributo> dAtributos = ddjjdto.getAtributos();
             ddjjdtoM.setAtributos(dAtributos);
             ddjjdtoM.setCategoria(ddjjdto.getCategoria());
@@ -311,7 +323,7 @@ public class ExportController {
                 }
             } else {
                 List<Object[]> resultsD = loteService.findLotesAndValoresByAtributosAndCategoria(listd,
-                        ddjjdto.getCategoria());
+                        ddjjdto.getCategoria(), fecha);
                 Map<Long, List<Valor>> lotesValoresMapD = new HashMap<>();
 
                 for (Object[] result : resultsD) {

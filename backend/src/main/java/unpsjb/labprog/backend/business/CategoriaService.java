@@ -4,6 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -62,5 +65,13 @@ public class CategoriaService {
 
 	public List<Categoria> findLotesActivosByCategoria(long id) {
 		return repository.findLotesActivosByCategoria(id);
+	}
+
+	public Page<Categoria> findByPage(List<Categoria> clientes, int page, int size) {
+		int start = page * size;
+		int end = Math.min(start + size, clientes.size());
+		Page<Categoria> clientesPage = new PageImpl<>(clientes.subList(start, end), PageRequest.of(page, size),
+				clientes.size());
+		return clientesPage;
 	}
 }

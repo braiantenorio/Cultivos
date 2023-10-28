@@ -1,6 +1,7 @@
 package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
+import unpsjb.labprog.backend.model.Agenda;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.business.LoteService;
 import unpsjb.labprog.backend.business.AgendaService;
@@ -68,8 +69,10 @@ public class LotePresenter {
   @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> findAll(
       @RequestParam(value = "filtered", required = false) boolean filtered,
-      @RequestParam(value = "term", required = false) String term) {
-    return Response.ok(service.findAll(filtered, term));
+      @RequestParam(value = "term", required = false) String term,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    return Response.ok(service.findByPage(service.findAll(filtered, term), page, size));
   }
 
   @RequestMapping(value = "/activos/{id}", method = RequestMethod.GET)
@@ -93,7 +96,7 @@ public class LotePresenter {
 
       if (totalCantidadSublotes + lote.getCantidad() == lotePadre.getCantidad()) {
 
-        lotePadre.setEsHoja(false);
+        lotePadre.setFechaDeBaja(LocalDate.now());
 
         service.update(lotePadre);
       }
@@ -142,7 +145,7 @@ public class LotePresenter {
     service.delete(id);
     if (lote.getLotePadre() != null) {
       Lote lotePadre = service.findById(lote.getLotePadre().getId());
-      lotePadre.setEsHoja(true);
+      lotePadre.setFechaDeBaja(null);
       service.update(lotePadre);
     }
     // service.delete(id);
@@ -156,8 +159,12 @@ public class LotePresenter {
   @GetMapping("/procesosPendientes")
   public ResponseEntity<Object> obtenerLotesPadres(@RequestParam(value = "term", required = false) String lote
 
-      , @RequestParam(value = "dia", required = false) int dia) {
-    return Response.ok(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote, dia));
+      , @RequestParam(value = "dia", required = false) int dia,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    return Response
+        .ok(serviceProcesoProgramado
+            .findByPage(serviceProcesoProgramado.obtenerProcesosProgramadosPendientes(lote, dia), page, size));
   }
 
   @GetMapping("/search")
@@ -168,6 +175,16 @@ public class LotePresenter {
     List<String> resul = service.search(term);
     resul.addAll(serviceListaDeAtributos.search(term));
     return Response.ok(resul);
+  }
+
+  @RequestMapping(value = "/{id}/procesoprogramado", method = RequestMethod.PUT)
+  public ResponseEntity<Object> findById(@PathVariable("id") long id,
+      @RequestBody ProcesoProgramado procesoProgramado) {
+    Lote loteOrNull = service.findById(id);
+    Agenda agenda = loteOrNull.getAgenda();
+    agenda.addprocesoProgramado(serviceProcesoProgramado.add(procesoProgramado));
+    serviceAgenda.add(agenda);
+    return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
 
 }

@@ -1,6 +1,9 @@
 package unpsjb.labprog.backend.model;
 
 import jakarta.persistence.Entity;
+
+import org.hibernate.annotations.SQLDelete;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -14,6 +17,7 @@ import lombok.Setter;
 @Getter
 @Setter
 @NoArgsConstructor
+@SQLDelete(sql = "UPDATE Atributos SET deleted = true WHERE id=?")
 @Table(name = "Atributos")
 public class Atributo {
 
@@ -36,5 +40,7 @@ public class Atributo {
 	private int caracteres;
 
 	private boolean obligatorio;
+
+	private boolean deleted = Boolean.FALSE;
 
 }

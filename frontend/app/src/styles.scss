@@ -10,12 +10,14 @@
 $custom-color-1: #2161b0; // Primer color
 $custom-color-2: #2800c7; // Segundo color
 $custom-color-3: #416700; // Segundo color
+$custom-color-5: #003967; // Segundo color
 $custom-gradient: linear-gradient(to right, #4c31b8, #aec216);
 
 // Defisne tus colores personalizados en el mapa $custom-colors
 $custom-colors: (
   "custom-color-1": $custom-color-1,
   "custom-color-2": $custom-color-2,
+  "custom-color-5": $custom-color-5,
 );
 
 // Fusiona tus colores personalizados con los colores de Bootstrap en el mapa $theme-colors

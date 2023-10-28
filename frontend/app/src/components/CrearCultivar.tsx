@@ -92,26 +92,8 @@ function CrearCultivar() {
   return (
     <div className="container">
       <form>
-        <h2>
-          {tipo} &nbsp;&nbsp; &nbsp;&nbsp;
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={guardarCultivar}
-          >
-            Guardar
-          </button>
-          &nbsp;&nbsp;
-          <button
-            type="button"
-            className="btn btn-danger ms-2"
-            onClick={handleCancelar}
-          >
-            Cancelar
-          </button>
-        </h2>
-
-        <div className="mb-3 col-5">
+        <h2>{tipo} &nbsp;&nbsp; &nbsp;&nbsp;</h2>
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="categoria" className="form-label">
             Nombre:
           </label>
@@ -126,7 +108,7 @@ function CrearCultivar() {
             disabled={id != "new"}
           />
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="fechaInicio" className="form-label">
             Codigo:
           </label>
@@ -143,6 +125,22 @@ function CrearCultivar() {
             <div className="alert alert-danger">{cantidadError}</div>
           )}
         </div>
+        <ul></ul>
+        <button
+          type="button"
+          className="btn btn-success"
+          onClick={guardarCultivar}
+        >
+          Guardar
+        </button>
+        &nbsp;&nbsp;
+        <button
+          type="button"
+          className="btn btn-danger ms-2"
+          onClick={handleCancelar}
+        >
+          Cancelar
+        </button>
       </form>
     </div>
   );

@@ -21,7 +21,7 @@ function CrearCategoria() {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
-    const url = "/categorias";
+    const url = "/categorias/search";
 
     fetch(url, {
       headers: authHeader(),
@@ -141,25 +141,29 @@ function CrearCategoria() {
     <div className="container">
       <form>
         <h2>
-          {tipo} &nbsp;&nbsp; &nbsp;&nbsp;
-          <button
-            type="button"
-            className="btn btn-success"
-            onClick={guardarCategoria}
-          >
-            Guardar
-          </button>
-          &nbsp;&nbsp;
-          <button
-            type="button"
-            className="btn btn-danger ms-2"
-            onClick={handleCancelar}
-          >
-            Cancelar
-          </button>
+          <div className="mb-3 row align-items-center">
+            <div className="mb-2 col-12 col-md-6 col-lg-3">{tipo} &nbsp;</div>
+            {"  "}
+            <div className="col-12 col-md-6 col-lg-3">
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={guardarCategoria}
+              >
+                Guardar
+              </button>
+              &nbsp;&nbsp;
+              <button
+                type="button"
+                className="btn btn-danger ms-2"
+                onClick={handleCancelar}
+              >
+                Cancelar
+              </button>
+            </div>
+          </div>
         </h2>
-
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="categoria" className="form-label">
             Nombre:
           </label>
@@ -174,7 +178,7 @@ function CrearCategoria() {
             disabled={id != "new"}
           />
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="fechaInicio" className="form-label">
             Codigo:
           </label>
@@ -209,37 +213,38 @@ function CrearCategoria() {
           />
         </div>
 
-        <div className="col-md-5 d-flex align-items-center">
-          {" "}
+        <div className="col-md-5 d-flex flex-column flex-md-row align-items-md-center">
           <label htmlFor="validationCustom04" className="form-label">
             Subcategorias:
           </label>
-          &nbsp;&nbsp; &nbsp;
-          <select
-            className="form-select ms-2"
-            id="validationCustom04"
-            required
-            value={atributoId}
-            onChange={(e) => setAtributoId(e.target.value)}
-          >
-            <option value="" disabled hidden>
-              Seleccionar...
-            </option>
-            {categorias.map((atributo) => (
-              <option key={atributo.id} value={atributo.id}>
-                {atributo.nombre}
-              </option>
-            ))}
-          </select>
-          &nbsp;&nbsp;
-          <button
-            type="button"
-            disabled={atributoId === ""}
-            className="btn btn-primary ms-2"
-            onClick={handleAtributosChange}
-          >
-            Agregar
-          </button>
+          <div className="row">
+            <div className="mt-2 mt-md-0 ms-md-2 col-8 col-md-8">
+              <select
+                className="form-select"
+                id="validationCustom04"
+                required
+                value={atributoId}
+                onChange={(e) => setAtributoId(e.target.value)}
+              >
+                <option value="" disabled hidden></option>
+                {categorias.map((atributo) => (
+                  <option key={atributo.id} value={atributo.id}>
+                    {atributo.nombre}
+                  </option>
+                ))}
+              </select>
+            </div>
+            <div className="mt-2 mt-md-0 ms-md-2 col-4 col-md-2">
+              <button
+                type="button"
+                disabled={atributoId === ""}
+                className="btn btn-primary"
+                onClick={handleAtributosChange}
+              >
+                Agregar
+              </button>
+            </div>
+          </div>
         </div>
       </form>
 

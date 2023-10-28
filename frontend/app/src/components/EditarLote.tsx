@@ -16,7 +16,7 @@ const EditarLote: React.FC = () => {
     method: "PUT",
     headers: {
       "Content-Type": "application/json",
-      "Authorization": authHeader().Authorization
+      Authorization: authHeader().Authorization,
     },
     body: JSON.stringify(lote),
   };
@@ -40,7 +40,7 @@ const EditarLote: React.FC = () => {
         console.error(error);
       });
 
-    const categoriasUrl = "/categorias";
+    const categoriasUrl = "/categorias/search";
     fetch(categoriasUrl, {
       headers: authHeader(),
     })

@@ -30,7 +30,14 @@ public class CategoriaPresenter {
 
   @GetMapping
   @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-  public ResponseEntity<Object> findAll(@RequestParam(value = "filtered", required = false) boolean filtered) {
+  public ResponseEntity<Object> findAll(@RequestParam(value = "filtered", required = false) boolean filtered,
+      @RequestParam(defaultValue = "0") int page,
+      @RequestParam(defaultValue = "10") int size) {
+    return Response.ok(service.findByPage(service.findAllCategorias(filtered), page, size));
+  }
+
+  @RequestMapping(value = "/search", method = RequestMethod.GET)
+  public ResponseEntity<Object> search(@RequestParam(value = "filtered", required = false) boolean filtered) {
     return Response.ok(service.findAllCategorias(filtered));
   }
 

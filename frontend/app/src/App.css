@@ -37,10 +37,28 @@
   }
 }
 
-.custom {
+.custom-navbar {
   background: linear-gradient(to right, #e2dede, #96b50d, #125800);
   color: white; /* Ajusta el color del texto para que sea legible sobre el fondo */
 }
+.table-row {
+  display: table-row;
+  background-color: #ffffff;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  text-decoration: none; /* Quita el subrayado de los enlaces */
+  border-bottom: 1px solid #ccc;
+
+  &:hover {
+    background-color: #f0f0f0; /* Cambia el fondo cuando el mouse está sobre él */
+  }
+}
+.invisible-text {
+  visibility: hidden;
+  line-height: 0;
+  font-size: 55;
+}
+
 /* Estilo para la fuente personalizada */
 
 .titulo-personalizado {

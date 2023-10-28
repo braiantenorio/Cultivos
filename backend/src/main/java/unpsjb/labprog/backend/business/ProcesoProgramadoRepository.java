@@ -34,7 +34,7 @@ public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgr
                         "WHERE pp.fechaARealizar <= :fecha AND pp.completado = false " +
                         "AND (UPPER(l.codigo) LIKE CONCAT('%', UPPER(:term), '%') " +
                         "OR UPPER(pp.proceso.nombre)  LIKE CONCAT('%', UPPER(:term), '%')) " +
-                        // TODO:inactivo puede cambiar a fecha en vez de booleano
+                        "AND l.fechaDeBaja IS NULL " +
                         "ORDER BY pp.fechaARealizar ASC ")
         List<Object[]> findProcesosProgramadosPendientes(LocalDate fecha, String term);
 }

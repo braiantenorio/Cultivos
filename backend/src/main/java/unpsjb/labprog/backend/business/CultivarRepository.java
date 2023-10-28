@@ -13,7 +13,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 @Repository
 public interface CultivarRepository extends CrudRepository<Cultivar, Long>,
         PagingAndSortingRepository<Cultivar, Long> {
-    @Query("SELECT c FROM Lote l JOIN l.cultivar c WHERE l.esHoja=true AND l.cultivar.id=:id ")
+    @Query("SELECT c FROM Lote l JOIN l.cultivar c WHERE l.fechaDeBaja IS NULL AND l.cultivar.id=:id ")
     List<Cultivar> findLotesActivosByCultivar(long id);
 
     @Query("SELECT c FROM Cultivar c WHERE c.deleted=?1 ")

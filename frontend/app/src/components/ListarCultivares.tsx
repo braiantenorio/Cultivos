@@ -3,14 +3,29 @@ import { Link } from "react-router-dom";
 import authHeader from "../services/auth-header";
 import swal from "sweetalert";
 import { Cultivar } from "../types/cultivar";
+import { ResultsPage } from "../types/ResultsPage";
 function ListarCultivares() {
   const [cultivares, setCultivares] = useState<Cultivar[]>([]);
   const [showDeleted, setShowDeleted] = useState(false);
-
+  const [resultsPage, setResultsPage] = useState<ResultsPage<Cultivar>>({
+    content: [],
+    totalPages: 0,
+    last: false,
+    first: true,
+    size: 7,
+    number: 0,
+  });
   useEffect(() => {
-    fetch(`/cultivares?filtered=${showDeleted}`, {
-      headers: authHeader(),
-    })
+    fetchAtributos();
+  }, [showDeleted, resultsPage.number, resultsPage.size, cultivares]);
+
+  const fetchAtributos = () => {
+    fetch(
+      `/cultivares?filtered=${showDeleted}&page=${resultsPage.number}&size=${resultsPage.size}`,
+      {
+        headers: authHeader(),
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -18,12 +33,23 @@ function ListarCultivares() {
         return response.json();
       })
       .then((responseData) => {
-        setCultivares(responseData.data);
+        setResultsPage(responseData.data);
+        console.log(responseData);
       })
       .catch((error) => {
         console.error(error);
       });
-  }, [showDeleted]);
+  };
+  const handlePageChange = (newPage: number) => {
+    setResultsPage({
+      ...resultsPage,
+      number: newPage,
+    });
+  };
+  const pageNumbers = Array.from(Array(resultsPage.totalPages).keys()).map(
+    (n) => n + 1
+  );
+
   const handleEliminarTipoAgenda = (tipoAgendaId: number) => {
     swal({
       title: "¿Estás seguro?",
@@ -96,7 +122,7 @@ function ListarCultivares() {
       <h2>Cultivares </h2>
 
       <div className="col-auto">
-        <label className="form-check-label">
+        <label className="form-check-label form-switch">
           <input
             className="form-check-input"
             type="checkbox"
@@ -117,7 +143,7 @@ function ListarCultivares() {
           </tr>
         </thead>
         <tbody>
-          {cultivares.map((tipoAgenda, index) => (
+          {resultsPage.content.map((tipoAgenda, index) => (
             <tr key={tipoAgenda.id}>
               <td>{index + 1}</td>
               <td>{tipoAgenda.nombre}</td>
@@ -151,6 +177,67 @@ function ListarCultivares() {
           ))}
         </tbody>
       </table>
+      {!resultsPage.content.length && (
+        <div className="alert alert-warning">No se encontraron lotes</div>
+      )}
+      <nav aria-label="Page navigation example">
+        <div className="d-flex justify-content-between align-items-center">
+          <div>
+            <ul className="pagination">
+              <li
+                className={`page-item ${resultsPage.first ? "disabled" : ""}`}
+              >
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(resultsPage.number - 1)}
+                  disabled={resultsPage.first}
+                >
+                  &lsaquo;
+                </button>
+              </li>
+              {pageNumbers.map((pageNumber) => (
+                <li
+                  key={pageNumber}
+                  className={`page-item ${
+                    pageNumber === resultsPage.number + 1 ? "active" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(pageNumber - 1)}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              ))}
+              <li className={`page-item ${resultsPage.last ? "disabled" : ""}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(resultsPage.number + 1)}
+                  disabled={resultsPage.last}
+                >
+                  &rsaquo;
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className="input-group col-auto d-none d-md-flex align-items-center">
+            <div className="input-group-text mb-3">Elementos por página</div>
+            &nbsp;&nbsp;
+            <div className="col-1">
+              <input
+                type="number"
+                id="pageSizeInput"
+                value={resultsPage.size}
+                onChange={(e) =>
+                  setResultsPage({ ...resultsPage, size: +e.target.value })
+                }
+                className="form-control mb-3"
+              />
+            </div>
+          </div>
+        </div>
+      </nav>
     </div>
   );
 }

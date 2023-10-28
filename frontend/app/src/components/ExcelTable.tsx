@@ -8,16 +8,11 @@ import DescargarExcelButton from "./DescargarExcelButton";
 const InformeComponent = () => {
   const [activeTab, setActiveTab] = useState("Stock");
   const [generado, setGenerado] = useState(false);
-  const [informe, setInforme] = useState<Informe | null>({
-    stock: {
-      atributos: [],
-      lotesStock: [],
-    },
-    ddjjs: [],
-  });
+  const [informe, setInforme] = useState<Informe>({} as Informe);
 
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [atributos, setAtributos] = useState<Atributo[]>([]);
+  const fechaHoy = new Date().toISOString().split("T")[0];
 
   // Nuevo estado para el atributo seleccionado
   const [selectedAtributo, setSelectedAtributo] = useState<
@@ -28,7 +23,7 @@ const InformeComponent = () => {
   const [isAddAtributoFormVisible, setIsAddAtributoFormVisible] =
     useState(false);
   useEffect(() => {
-    const url = "/categorias";
+    const url = "/categorias/search";
     fetch(url, {
       headers: authHeader(),
     })
@@ -57,13 +52,14 @@ const InformeComponent = () => {
             lotesStock: [],
           },
           ddjjs: nuevosDDJJ,
+          fecha: fechaHoy,
         });
       })
       .catch((error) => {
         console.error(error);
       });
 
-    const url1 = "/atributos";
+    const url1 = "/atributos/search";
     fetch(url1, {
       headers: authHeader(),
     })
@@ -152,24 +148,46 @@ const InformeComponent = () => {
         console.error(error);
       });
   };
+  const handlefecha = (e: any) => {
+    setInforme((prevInforme) => ({
+      ...prevInforme,
+      fecha: e,
+    }));
+  };
 
   return (
     <div className="container">
-      <h2>
-        Nuevo Informe{"      "}&nbsp;&nbsp;
-        <button className="btn btn-success" onClick={handleGenerarInforme}>
+      <div className="d-flex align-items-center flex-wrap">
+        <h2 className="mb-2">Nuevo Informe</h2>
+        &nbsp;&nbsp; &nbsp;
+        <button
+          className="btn btn-success me-2 mb-1"
+          onClick={handleGenerarInforme}
+        >
           Generar Informe
         </button>
-      </h2>
+        &nbsp;&nbsp;
+        <div className="col-md-3 col-12 mb-2 mt-2">
+          <input
+            type="date"
+            className="form-control"
+            id="codigo"
+            name="codigo"
+            value={informe?.fecha}
+            onChange={(event) => handlefecha(event.target.value)}
+          />
+        </div>
+      </div>
+
       {generado && (
-        <div className="descargar-button-container">
+        <div className="descargar-button-container mb-2">
           <DescargarExcelButton informe={informe!} />
         </div>
       )}
-      <ul></ul>
-      <ul></ul>
+      <ul className="mb-3"></ul>
+      <ul className="mb-3"></ul>
       <div className="row">
-        <div className="col-2">
+        <div className="col-12 col-md-2 mb-3">
           <ul className="nav nav-pills flex-column">
             <li className="nav-item">
               <a
@@ -194,51 +212,54 @@ const InformeComponent = () => {
             ))}
           </ul>
         </div>
-        <div className="col-9">
+        <div className="col-12 col-md-9">
           {activeTab === "Stock" ? (
             <div>
-              <h3>
-                Detalles Stock Materiales &nbsp;&nbsp;
+              <div className="d-flex align-items-center flex-wrap mb-3">
+                <h3>
+                  <span>Detalles Stock de Materiales</span>
+                </h3>
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary ms-2"
                   onClick={() => setIsAddAtributoFormVisible(true)}
                 >
                   Agregar Atributo
                 </button>
-              </h3>
-
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th>Código</th>
-                    <th>Variedad</th>
-                    <th>Cantidad</th>
-                    <th>Categoria</th>
-                    {informe?.stock?.atributos?.map((atributo) => (
-                      <th key={atributo.id}>{atributo.nombre}</th>
-                    ))}
-                  </tr>
-                </thead>
-                <tbody>
-                  {informe?.stock?.lotesStock?.map((lote, index) => (
-                    <tr key={index}>
-                      <td>{lote.codigo}</td>
-                      <td>{lote.variedad}</td>
-                      <td>{lote.cantidad}</td>
-                      <td>{lote.categoria}</td>
+              </div>
+              <div className="table-responsive">
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th>Código</th>
+                      <th>Variedad</th>
+                      <th>Cantidad</th>
+                      <th>Categoria</th>
                       {informe?.stock?.atributos?.map((atributo) => (
-                        <td key={atributo.id}>
-                          {
-                            lote.valores?.find(
-                              (valor) => valor.atributo.id === atributo.id
-                            )?.valor
-                          }
-                        </td>
+                        <th key={atributo.id}>{atributo.nombre}</th>
                       ))}
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {informe?.stock?.lotesStock?.map((lote, index) => (
+                      <tr key={index}>
+                        <td>{lote.codigo}</td>
+                        <td>{lote.variedad}</td>
+                        <td>{lote.cantidad}</td>
+                        <td>{lote.categoria}</td>
+                        {informe?.stock?.atributos?.map((atributo) => (
+                          <td key={atributo.id}>
+                            {
+                              lote.valores?.find(
+                                (valor) => valor.atributo.id === atributo.id
+                              )?.valor
+                            }
+                          </td>
+                        ))}
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              </div>
             </div>
           ) : (
             <div>
@@ -246,7 +267,7 @@ const InformeComponent = () => {
                 Detalle DDJJ {activeTab}
                 &nbsp;&nbsp;
                 <button
-                  className="btn btn-primary"
+                  className="btn btn-primary ms-2"
                   onClick={() => setIsAddAtributoFormVisible(true)}
                 >
                   Agregar Atributo
@@ -258,50 +279,52 @@ const InformeComponent = () => {
                 if (ddjj.categoria.nombre === activeTab) {
                   return (
                     <div key={index}>
-                      <table className="table">
-                        <thead>
-                          <tr>
-                            <th>Código</th>
-                            <th>Variedad</th>
-                            <th>Cantidad</th>
-                            <th>fecha</th>
-                            <th>Codigo Padre</th>
-                            <th>Categoria Padre</th>
+                      <div className="table-responsive">
+                        <table className="table">
+                          <thead>
+                            <tr>
+                              <th>Código</th>
+                              <th>Variedad</th>
+                              <th>Cantidad</th>
+                              <th>fecha</th>
+                              <th>Codigo Padre</th>
+                              <th>Categoria Padre</th>
 
-                            {ddjj?.atributos?.map((atributo) => (
-                              <th key={atributo.id}>{atributo.nombre}</th>
-                            ))}
-                          </tr>
-                        </thead>
-                        <tbody>
-                          {ddjj?.lotesDDJJ?.map((lote, index) => (
-                            <tr key={index}>
-                              <td>{lote.codigo}</td>
-                              <td>{lote.variedad}</td>
-                              <td>{lote.cantidad}</td>
-                              <td>
-                                {" "}
-                                {new Date(
-                                  new Date(lote.fecha).getTime() +
-                                    24 * 60 * 60 * 1000
-                                ).toLocaleDateString()}
-                              </td>
-                              <td>{lote?.codigoPadre}</td>
-                              <td>{lote?.categoriaPadre}</td>
                               {ddjj?.atributos?.map((atributo) => (
-                                <td key={atributo.id}>
-                                  {
-                                    lote.valores?.find(
-                                      (valor) =>
-                                        valor.atributo.id === atributo.id
-                                    )?.valor
-                                  }
-                                </td>
+                                <th key={atributo.id}>{atributo.nombre}</th>
                               ))}
                             </tr>
-                          ))}
-                        </tbody>
-                      </table>
+                          </thead>
+                          <tbody>
+                            {ddjj?.lotesDDJJ?.map((lote, index) => (
+                              <tr key={index}>
+                                <td>{lote.codigo}</td>
+                                <td>{lote.variedad}</td>
+                                <td>{lote.cantidad}</td>
+                                <td>
+                                  {" "}
+                                  {new Date(
+                                    new Date(lote.fecha).getTime() +
+                                      24 * 60 * 60 * 1000
+                                  ).toLocaleDateString()}
+                                </td>
+                                <td>{lote?.codigoPadre}</td>
+                                <td>{lote?.categoriaPadre}</td>
+                                {ddjj?.atributos?.map((atributo) => (
+                                  <td key={atributo.id}>
+                                    {
+                                      lote.valores?.find(
+                                        (valor) =>
+                                          valor.atributo.id === atributo.id
+                                      )?.valor
+                                    }
+                                  </td>
+                                ))}
+                              </tr>
+                            ))}
+                          </tbody>
+                        </table>
+                      </div>
                     </div>
                   );
                 }
@@ -310,7 +333,7 @@ const InformeComponent = () => {
             </div>
           )}
           {isAddAtributoFormVisible && (
-            <div>
+            <div className="mb-3">
               <select
                 onChange={handleAtributoChange}
                 value={selectedAtributo ? selectedAtributo.id : ""}
@@ -324,7 +347,7 @@ const InformeComponent = () => {
               </select>
               &nbsp;&nbsp;
               <button
-                className="btn btn-primary"
+                className="btn btn-primary ms-2"
                 onClick={handleGuardarAtributo}
               >
                 Agregar

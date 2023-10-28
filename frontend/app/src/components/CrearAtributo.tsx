@@ -13,10 +13,10 @@ function CrearAtributo() {
     minimo: 0,
     maximo: 100,
     decimales: 0,
+    deleted: false,
   });
 
   const navigate = useNavigate();
-
 
   function handleNombreChange(e: React.ChangeEvent<HTMLInputElement>) {
     setAtributo({
@@ -71,7 +71,7 @@ function CrearAtributo() {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": authHeader().Authorization,
+        Authorization: authHeader().Authorization,
       },
       body: JSON.stringify(atributo),
     })
@@ -89,7 +89,7 @@ function CrearAtributo() {
     <div className="container">
       <h2>Nuevo atributo</h2>
       <form className="row g-3" onSubmit={handleSubmit}>
-        <div className="col-md-4" >
+        <div className="col-md-4">
           <label htmlFor="validationCustom01" className="form-label">
             Nombre
           </label>
@@ -101,7 +101,6 @@ function CrearAtributo() {
             onChange={handleNombreChange}
             required
           />
-          
         </div>
         <div className="col-md-2">
           <label htmlFor="validationCustom04" className="form-label">
@@ -135,7 +134,7 @@ function CrearAtributo() {
             onChange={handleRangoMinimoChange}
           />
         </div>
-        <div className="col-md-2"  hidden={atributo.tipo !== "string"}>
+        <div className="col-md-2" hidden={atributo.tipo !== "string"}>
           <label htmlFor="validationCustom02" className="form-label">
             Limite de carateres
           </label>
@@ -147,7 +146,7 @@ function CrearAtributo() {
             onChange={handleLimiteCaracteresChange}
           />
         </div>
-        <div className="col-md-2"  hidden={atributo.tipo !== "number"}>
+        <div className="col-md-2" hidden={atributo.tipo !== "number"}>
           <label htmlFor="validationCustom03" className="form-label">
             Rango maximo
           </label>
@@ -159,7 +158,7 @@ function CrearAtributo() {
             onChange={handleRangoMaximoChange}
           />
         </div>
-        <div className="col-md-2"  hidden={atributo.tipo !== "number"}>
+        <div className="col-md-2" hidden={atributo.tipo !== "number"}>
           <label htmlFor="validationCustom05" className="form-label">
             Limite de decimales
           </label>
