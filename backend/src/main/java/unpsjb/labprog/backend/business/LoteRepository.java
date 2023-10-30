@@ -42,22 +42,22 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
 
         @Query("SELECT l FROM Lote l " +
                         "WHERE (l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja > :localDate)")
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)")
         List<Lote> findAllFecha(@Param("localDate") LocalDate localDate);
 
         @Query("SELECT l.id,l, v FROM Lote l JOIN l.procesos p JOIN p.valores v WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) "
                         +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja > :localDate)) AND v.atributo.id IN :listaAtributos")
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) AND v.atributo.id IN :listaAtributos")
         List<Object[]> findLotesAndValoresByAtributos(@Param("listaAtributos") List<Long> listaAtributos,
                         LocalDate localDate);
 
         @Query("SELECT l FROM Lote l WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja > :localDate)) AND l.categoria = :categoria")
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) AND l.categoria = :categoria")
         List<Lote> findLotesByCategoria(@Param("categoria") Categoria categoria, LocalDate localDate);
 
         @Query("SELECT l.id, l, v FROM Lote l JOIN l.procesos p JOIN p.valores v WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) "
                         +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja > :localDate)) AND v.atributo.id IN :listaAtributos AND l.categoria = :categoria")
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) AND v.atributo.id IN :listaAtributos AND l.categoria = :categoria")
         List<Object[]> findLotesAndValoresByAtributosAndCategoria(
                         @Param("listaAtributos") List<Long> listaAtributos,
                         @Param("categoria") Categoria categoria, LocalDate localDate);
