@@ -6,6 +6,7 @@ import unpsjb.labprog.backend.model.Valor;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,6 +36,7 @@ public class ValorPresenter {
 	}
 
 	@PostMapping
+	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Object> crear(@RequestBody Valor valor) {
 
 		return Response.ok(
@@ -43,11 +45,13 @@ public class ValorPresenter {
 	}
 
 	@PutMapping
+	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Object> update(@RequestBody Valor valor) {
 		return Response.ok(service.update(valor), "Lote actualizado correctamente");
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
+	@PreAuthorize("hasRole('MODERATOR')")
 	public void delete(@PathVariable("id") Long id) {
 		service.delete(id);
 	}

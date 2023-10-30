@@ -134,7 +134,7 @@ function CrearProceso() {
             onChange={(event) => handleAgregarValor(event, atributo.nombre)}
           />
         );
-      case "int":
+      case "number":
         return (
           <input
             className="form-control"

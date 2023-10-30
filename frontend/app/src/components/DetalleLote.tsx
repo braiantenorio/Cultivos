@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, Children } from "react";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { Proceso } from "../types/proceso";
@@ -16,6 +16,8 @@ function DetalleLote() {
   const totalProcesos = allProcesos.length;
   const totalPages = Math.ceil(totalProcesos / pageSize);
   const pageNumbers = [];
+  const [sortField, setSortField] = useState("id");
+  const [sortDirection, setSortDirection] = useState("asc");
 
   const url = `/lotes/${loteId}`;
   useEffect(() => {
@@ -85,6 +87,44 @@ function DetalleLote() {
           });
       }
     });
+  };
+
+  const handleSort = (field: string) => {
+    // Alternar la dirección de ordenamiento si ya se ordena por el mismo campo
+    if (field === sortField && sortDirection === "asc") {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else if (field === sortField && sortDirection === "desc") {
+      reserSort();
+      console.log("reset")
+      return;
+    } else {
+      // Establecer el nuevo campo de ordenamiento y la dirección predeterminada
+      setSortField(field);
+      setSortDirection("asc");
+    }
+    console.log("no reset")
+
+    const sortedData = [...currentProcesos].sort((a, b) => {
+      // Accede a los campos dinámicamente usando el nombre del campo (field)
+      const aValue = a[field as keyof Proceso];
+      const bValue = b[field as keyof Proceso];
+
+      // Realiza la comparación según el campo especificado
+      if (sortDirection === "asc") {
+        return aValue! < bValue! ? 1 : -1;
+      } else {
+        return bValue! < aValue! ? 1 : -1;
+      }
+    });
+    setCurrentProcesos(sortedData);
+  };
+
+  const reserSort = () => {
+    setSortField("id");
+    setSortDirection("asc");
+
+    const sortedData = [...currentProcesos].sort((a, b) => (a.id! > b.id! ? 1 : -1));
+    setCurrentProcesos(sortedData);
   };
 
   return (
@@ -167,10 +207,37 @@ function DetalleLote() {
           <table className="table">
             <thead>
               <tr>
-                <th>ID</th>
-                <th>Usuario</th>
-                <th>Tipo</th>
-                <th>Fecha</th>
+                {/*<th>ID</th>*/}
+                <th onClick={() => handleSort("usuario")}>
+                  Usuario{" "}
+                  {sortField === "usuario" && (
+                    <i
+                      className={`bi bi-arrow-${
+                        sortDirection === "asc" ? "up" : "down"
+                      }`}
+                    ></i>
+                  )}
+                </th>
+                <th onClick={() => handleSort("listaDeAtributos")}>
+                  Tipo{" "}
+                  {sortField === "listaDeAtributos" && (
+                    <i
+                      className={`bi bi-arrow-${
+                        sortDirection === "asc" ? "up" : "down"
+                      }`}
+                    ></i>
+                  )}
+                </th>
+                <th onClick={() => handleSort("fecha")}>
+                  Fecha{" "}
+                  {sortField === "fecha" && (
+                    <i
+                      className={`bi bi-arrow-${
+                        sortDirection === "asc" ? "up" : "down"
+                      }`}
+                    ></i>
+                  )}
+                </th>
                 <th></th>
               </tr>
             </thead>
@@ -181,7 +248,7 @@ function DetalleLote() {
                   key={proceso.id}
                   className="table-row"
                 >
-                  <td>{proceso.id}</td>
+                  {/*<td>{proceso.id}</td>*/}
                   <td>
                     {proceso.usuario?.nombre} {proceso.usuario?.apellido}
                   </td>

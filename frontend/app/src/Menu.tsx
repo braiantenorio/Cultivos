@@ -25,6 +25,7 @@ import BoardAdmin from "./components/BoardAdmin";
 import EventBus from "./common/EventBus";
 import * as AuthService from "./services/auth.service";
 import authHeader from "./services/auth-header";
+import AuthVerify from "./common/AuthVerify";
 
 type NotificationsContextType = {
   notifications: number;
@@ -424,7 +425,9 @@ function Menu() {
           </div>
         </div>
       </div>
+      <AuthVerify/>
     </nav>
+
   );
 }
 

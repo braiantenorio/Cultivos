@@ -58,7 +58,7 @@ public class SecurityConfiguration {
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
     http.csrf(csrf -> csrf.disable())
-        .exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler))
+        //.exceptionHandling(exception -> exception.authenticationEntryPoint(unauthorizedHandler)) // TODO:esto lo cambiamos por los errores xd
         .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
         .authorizeHttpRequests(auth -> auth.requestMatchers("/api/auth/**").permitAll()
             .requestMatchers("/api/test/**").permitAll()

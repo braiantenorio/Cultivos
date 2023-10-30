@@ -18,6 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
+
 import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.DTOs.informe.DDJJDTO;
 import unpsjb.labprog.backend.DTOs.informe.InformeDTO;
@@ -32,10 +34,12 @@ import unpsjb.labprog.backend.model.Valor;
 @RestController
 @RequestMapping("/export")
 public class ExportController {
+
     @Autowired
     LoteService loteService;
 
     @PostMapping(value = "/toExcel")
+    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<byte[]> exportToExcel(@RequestBody InformeDTO informeDTO) throws IOException {
         // Crear un libro de Excel
         Workbook workbook = new XSSFWorkbook();
@@ -226,6 +230,7 @@ public class ExportController {
     }
 
     @PostMapping(value = "/generar-informe")
+    @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<Object> crear(@RequestBody InformeDTO informeF) {
         InformeDTO informe = new InformeDTO();
 

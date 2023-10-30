@@ -78,8 +78,7 @@ public class Lote {
 
 	@CreatedBy
 	@ManyToOne
-	private Usuario usuario; // sino usemos la propia logica, usando un find by id digo pero sacando el id de
-								// security context
+	private Usuario usuario; 
 
 	private boolean deleted = Boolean.FALSE;
 

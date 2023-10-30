@@ -15,14 +15,22 @@ function Loteslist() {
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleted, setShowDeleted] = useState(false);
+  const [sortField, setSortField] = useState("id");
+  const [sortDirection, setSortDirection] = useState("asc");
 
   useEffect(() => {
     fetchLotes();
-  }, [showDeleted, resultsPage.number, resultsPage.size]);
+  }, [
+    showDeleted,
+    resultsPage.number,
+    resultsPage.size,
+    sortField,
+    sortDirection,
+  ]);
 
   const fetchLotes = () => {
     fetch(
-      `/lotes?filtered=${showDeleted}&term=${searchTerm}&page=${resultsPage.number}&size=${resultsPage.size}`,
+      `/lotes?filtered=${showDeleted}&term=${searchTerm}&page=${resultsPage.number}&size=${resultsPage.size}&sortField=${sortField}&sortDirection=${sortDirection}`,
       {
         headers: authHeader(),
       }
@@ -70,6 +78,24 @@ function Loteslist() {
     (n) => n + 1
   );
 
+  const handleSort = (field: string) => {
+    // Alternar la dirección de ordenamiento si ya se ordena por el mismo campo
+    if (field === sortField && sortDirection === "asc") {
+      setSortDirection(sortDirection === "asc" ? "desc" : "asc");
+    } else if (field === sortField && sortDirection === "desc") {
+      reserSort();
+    } else {
+      // Establecer el nuevo campo de ordenamiento y la dirección predeterminada
+      setSortField(field);
+      setSortDirection("asc");
+    }
+  };
+
+  const reserSort = () => {
+    setSortField("id");
+    setSortDirection("asc");
+  };
+
   return (
     <div className="container">
       <h2>Lotes</h2>
@@ -111,11 +137,47 @@ function Loteslist() {
           {" "}
           <thead>
             <tr>
-              <th>#</th>
-              <th>Código</th>
-              <th>Cantidad</th>
-              <th>Categoría</th>
-              <th>Cultivar</th>
+              {/*<th>#</th>*/}
+              <th onClick={() => handleSort("codigo")}>
+                Código{" "}
+                {sortField === "codigo" && (
+                  <i
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
+                  ></i>
+                )}
+              </th>
+              <th onClick={() => handleSort("cantidad")}>
+                Cantidad{" "}
+                {sortField === "cantidad" && (
+                  <i
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
+                  ></i>
+                )}
+              </th>
+              <th onClick={() => handleSort("categoria")}>
+                Categoría{" "}
+                {sortField === "categoria" && (
+                  <i
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
+                  ></i>
+                )}
+              </th>
+              <th onClick={() => handleSort("cultivar")}>
+                Cultivar{" "}
+                {sortField === "cultivar" && (
+                  <i
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
+                  ></i>
+                )}
+              </th>
               <th>{showDeleted ? "Fecha de baja" : ""} </th>
               <th></th>
             </tr>
@@ -123,7 +185,7 @@ function Loteslist() {
           <tbody>
             {resultsPage.content.map((lote, index) => (
               <tr key={lote.id}>
-                <td>{index + 1}</td>
+                {/*<td>{index + 1}</td>*/}
                 <td>
                   {" "}
                   <span className="badge badge-custom-1 text-white me-2 fs-6">

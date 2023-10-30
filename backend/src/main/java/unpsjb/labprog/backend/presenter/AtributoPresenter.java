@@ -7,6 +7,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -42,6 +43,7 @@ public class AtributoPresenter {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> crear(@RequestBody Atributo tipoAgenda) {
 
     return Response.ok(
@@ -50,6 +52,7 @@ public class AtributoPresenter {
   }
 
   @PutMapping(value = "/{id}")
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     Atributo loteOrNull = service.findById(id);
     loteOrNull.setDeleted(false);
@@ -65,6 +68,7 @@ public class AtributoPresenter {
   }
 
   @DeleteMapping(value = "/delete/{id}")
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> delete(@PathVariable("id") long id) {
     List<Atributo> categorias = service.findTipoDeProcesosByAtributo(id);
     if (categorias.size() > 0) {

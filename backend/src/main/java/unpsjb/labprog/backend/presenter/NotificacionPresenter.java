@@ -4,6 +4,7 @@ import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.business.NotificacionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -34,6 +35,7 @@ public class NotificacionPresenter {
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     Notificacion notificacion = service.findById(id);
     notificacion.setRead(true);

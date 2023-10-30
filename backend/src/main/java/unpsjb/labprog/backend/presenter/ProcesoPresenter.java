@@ -2,6 +2,7 @@ package unpsjb.labprog.backend.presenter;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -37,6 +38,7 @@ public class ProcesoPresenter {
 	}
 
 	@PostMapping(value = "/lote/{codigo}")
+	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("codigo") String codigo,
 			@RequestParam(value = "indep", required = false) boolean indep) {
 
@@ -44,6 +46,7 @@ public class ProcesoPresenter {
 	}
 
 	@PostMapping(value = "/lotes")
+	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Object> crear(@RequestBody LoteCodigoDTO loteCodigo) {
 
 		for (String lote : loteCodigo.getLotesCodigos()) {
@@ -54,11 +57,13 @@ public class ProcesoPresenter {
 	}
 
 	@PutMapping
+	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Object> update(@RequestBody Proceso lote) {
 		return Response.ok(service.update(lote), "Proceso actualizado correctamente");
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
+	@PreAuthorize("hasRole('MODERATOR')")
 	public void delete(@PathVariable("id") Long id) {
 		service.delete(id);
 	}

@@ -4,6 +4,7 @@ import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.business.TipoAgendaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -35,6 +36,7 @@ public class TipoAgendaPresenter {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> crear(@RequestBody TipoAgenda tipoAgenda) {
     TipoAgenda loteOrNull = service.findByCategoria(tipoAgenda.getCategoria().getNombre(), tipoAgenda.getVersion());
     if (tipoAgenda.getId() != null && loteOrNull != null) {
@@ -57,6 +59,7 @@ public class TipoAgendaPresenter {
   }
 
   @DeleteMapping(value = "/delete/{id}")
+  @PreAuthorize("hasRole('MODERATOR')")
   public void delete(@PathVariable("id") Long id) {
     TipoAgenda loteOrNull = service.findById(id);
     loteOrNull.setDeleted(true);

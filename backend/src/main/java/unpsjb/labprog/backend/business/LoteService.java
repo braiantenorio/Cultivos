@@ -6,6 +6,7 @@ import java.util.Collections;
 import java.util.Comparator;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
@@ -87,14 +88,17 @@ public class LoteService {
 	}
 
 	// find all con filtro de lotes con softdelete
-	public List<Lote> findAll(boolean isDeleted, String term) {
+	public List<Lote> findAll(boolean isDeleted, String term, String sortField, String sortDirection) {
 		Session session = entityManager.unwrap(Session.class);
 
 		session.enableFilter("deletedLoteFilter")
 				.setParameter("isDeleted", isDeleted)
 				.setParameter("codigo", "%" + term + "%");
 
-		List<Lote> products = (List<Lote>) repository.findAll();
+		List<Lote> products = (List<Lote>) (sortDirection.equals("asc") ? repository.findAll(Sort.by(sortField).ascending())
+				: repository.findAll(Sort.by(sortField).descending()));
+
+		System.out.println(sortDirection.equals("asc") ? "asc": "des"); 
 		session.disableFilter("deletedLoteFilter");
 
 		return products;

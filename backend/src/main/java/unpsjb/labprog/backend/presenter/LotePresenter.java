@@ -66,13 +66,17 @@ public class LotePresenter {
   }
 
   @GetMapping
-  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  // @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> findAll(
       @RequestParam(value = "filtered", required = false) boolean filtered,
       @RequestParam(value = "term", required = false) String term,
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size) {
-    return Response.ok(service.findByPage(service.findAll(filtered, term), page, size));
+      @RequestParam(defaultValue = "10") int size, 
+      @RequestParam(defaultValue = "id", required = false) String sortField,
+      @RequestParam(defaultValue = "asc", required = false) String sortDirection) {
+
+      //System.out.println(sortDirection);
+    return Response.ok(service.findByPage(service.findAll(filtered, term, sortField, sortDirection), page, size));
   }
 
   @RequestMapping(value = "/activos/{id}", method = RequestMethod.GET)
@@ -87,6 +91,7 @@ public class LotePresenter {
   }
 
   @PostMapping
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
 
     if (lote.getCategoria().getLimite() && lote.getLotePadre() != null) {
@@ -135,6 +140,7 @@ public class LotePresenter {
   }
 
   @PutMapping
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> update(@RequestBody Lote lote) {
     return Response.ok(service.update(lote), "Lote actualizado correctamente");
   }
@@ -178,6 +184,7 @@ public class LotePresenter {
   }
 
   @RequestMapping(value = "/{id}/procesoprogramado", method = RequestMethod.PUT)
+  @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> findById(@PathVariable("id") long id,
       @RequestBody ProcesoProgramado procesoProgramado) {
     Lote loteOrNull = service.findById(id);
