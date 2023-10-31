@@ -230,7 +230,7 @@ public class ExportController {
     }
 
     @PostMapping(value = "/generar-informe")
-    @PreAuthorize("hasRole('MODERATOR')")
+    // @PreAuthorize("hasRole('MODERATOR')")
     public ResponseEntity<Object> crear(@RequestBody InformeDTO informeF) {
         InformeDTO informe = new InformeDTO();
 

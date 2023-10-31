@@ -183,73 +183,79 @@ function Loteslist() {
             </tr>
           </thead>
           <tbody>
-            {resultsPage.content.map((lote, index) => (
-              <tr key={lote.id}>
-                {/*<td>{index + 1}</td>*/}
-                <td>
-                  {" "}
-                  <span className="badge badge-custom-1 text-white me-2 fs-6">
-                    {lote.codigo}
-                  </span>
-                </td>
-                <td>{lote.cantidad}</td>
-                <td>{lote.categoria.nombre}</td>
-                <td>{lote.cultivar.nombre}</td>
-                <td>
-                  {showDeleted
-                    ? new Date(lote.fechaDeBaja).toLocaleDateString()
-                    : ""}
-                </td>
-                <td>
-                  <Link
-                    to={`/lotes/${lote.codigo}`}
-                    className="text-info me-2"
-                    title="Detalle"
-                  >
-                    <i
-                      className="bi bi-eye"
-                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                    ></i>
-                  </Link>
-                  &nbsp;&nbsp;
-                  {lote.deleted ? (
-                    <i
-                      className="bi bi-pencil-slash text-warning me-2"
-                      style={{ fontSize: "1.5rem", cursor: "not-allowed" }}
-                      title="Editar"
-                    ></i>
-                  ) : (
+            {resultsPage.content.map((lote, index) => {
+              const fechaDeBaja = lote.fechaDeBaja
+                ? new Date(lote.fechaDeBaja)
+                : null;
+
+              if (fechaDeBaja) {
+                // Sumar un día a la fecha de baja
+                fechaDeBaja.setDate(fechaDeBaja.getDate() + 1);
+              }
+
+              return (
+                <tr key={lote.id}>
+                  {/*<td>{index + 1}</td> */}
+                  <td>
+                    <span className="badge badge-custom-1 text-white me-2 fs-6">
+                      {lote.codigo}
+                    </span>
+                  </td>
+                  <td>{lote.cantidad}</td>
+                  <td>{lote.categoria.nombre}</td>
+                  <td>{lote.cultivar.nombre}</td>
+                  <td>{fechaDeBaja ? fechaDeBaja.toLocaleDateString() : ""}</td>
+                  <td>
                     <Link
-                      to={`/lotes/${lote.id}/edit`}
-                      className="text-warning me-2"
-                      title="Editar"
+                      to={`/lotes/${lote.codigo}`}
+                      className="text-info me-2"
+                      title="Detalle"
                     >
                       <i
-                        className="bi bi-pencil"
+                        className="bi bi-eye"
                         style={{ fontSize: "1.5rem", cursor: "pointer" }}
                       ></i>
                     </Link>
-                  )}
-                  &nbsp;&nbsp;
-                  <Link
-                    to={`/lotes/log/${lote.id}`}
-                    className="text-secondary me-2"
-                    title="Logs"
-                  >
-                    <i
-                      className="bi bi-journal"
-                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                    ></i>
-                  </Link>
-                  <Link
-                    to={`/lotes/${lote.id}/historia`}
-                    className="btn btn-sm btn-success me-2"
-                  >
-                    Historia
-                  </Link>
-                </td>
-              </tr>
-            ))}
+                    &nbsp;&nbsp;
+                    {lote.deleted ? (
+                      <i
+                        className="bi bi-pencil-slash text-warning me-2"
+                        style={{ fontSize: "1.5rem", cursor: "not-allowed" }}
+                        title="Editar"
+                      ></i>
+                    ) : (
+                      <Link
+                        to={`/lotes/${lote.id}/edit`}
+                        className="text-warning me-2"
+                        title="Editar"
+                      >
+                        <i
+                          className="bi bi-pencil"
+                          style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                        ></i>
+                      </Link>
+                    )}
+                    &nbsp;&nbsp;
+                    <Link
+                      to={`/lotes/log/${lote.id}`}
+                      className="text-secondary me-2"
+                      title="Logs"
+                    >
+                      <i
+                        className="bi bi-journal"
+                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      ></i>
+                    </Link>
+                    <Link
+                      to={`/lotes/${lote.id}/historia`}
+                      className="btn btn-sm btn-success me-2"
+                    >
+                      Historia
+                    </Link>
+                  </td>
+                </tr>
+              );
+            })}
           </tbody>
         </table>
       </div>

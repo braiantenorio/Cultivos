@@ -95,14 +95,14 @@ function DetalleLote() {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else if (field === sortField && sortDirection === "desc") {
       reserSort();
-      console.log("reset")
+      console.log("reset");
       return;
     } else {
       // Establecer el nuevo campo de ordenamiento y la dirección predeterminada
       setSortField(field);
       setSortDirection("asc");
     }
-    console.log("no reset")
+    console.log("no reset");
 
     const sortedData = [...currentProcesos].sort((a, b) => {
       // Accede a los campos dinámicamente usando el nombre del campo (field)
@@ -123,7 +123,9 @@ function DetalleLote() {
     setSortField("id");
     setSortDirection("asc");
 
-    const sortedData = [...currentProcesos].sort((a, b) => (a.id! > b.id! ? 1 : -1));
+    const sortedData = [...currentProcesos].sort((a, b) =>
+      a.id! > b.id! ? 1 : -1
+    );
     setCurrentProcesos(sortedData);
   };
 
@@ -169,7 +171,9 @@ function DetalleLote() {
               <span className="badge bg-secondary text-white me-2 fs-6">
                 Fecha de Baja:
               </span>{" "}
-              {new Date(lote.fechaDeBaja).toLocaleDateString()}
+              {new Date(
+                new Date(lote.fechaDeBaja).getTime() + 24 * 60 * 60 * 1000
+              ).toLocaleDateString()}
             </p>
           )}
         </div>
