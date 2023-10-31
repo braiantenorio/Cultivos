@@ -212,9 +212,8 @@ function DetalleLote() {
                   Usuario{" "}
                   {sortField === "usuario" && (
                     <i
-                      className={`bi bi-arrow-${
-                        sortDirection === "asc" ? "up" : "down"
-                      }`}
+                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                        }`}
                     ></i>
                   )}
                 </th>
@@ -222,9 +221,8 @@ function DetalleLote() {
                   Tipo{" "}
                   {sortField === "listaDeAtributos" && (
                     <i
-                      className={`bi bi-arrow-${
-                        sortDirection === "asc" ? "up" : "down"
-                      }`}
+                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                        }`}
                     ></i>
                   )}
                 </th>
@@ -232,9 +230,8 @@ function DetalleLote() {
                   Fecha{" "}
                   {sortField === "fecha" && (
                     <i
-                      className={`bi bi-arrow-${
-                        sortDirection === "asc" ? "up" : "down"
-                      }`}
+                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                        }`}
                     ></i>
                   )}
                 </th>
@@ -286,9 +283,8 @@ function DetalleLote() {
                 {pageNumbers.map((pageNumber) => (
                   <li
                     key={pageNumber}
-                    className={`page-item ${
-                      pageNumber === page ? "active" : ""
-                    }`}
+                    className={`page-item ${pageNumber === page ? "active" : ""
+                      }`}
                   >
                     <button
                       className="page-link"
@@ -304,9 +300,8 @@ function DetalleLote() {
                   </li>
                 ))}
                 <li
-                  className={`page-item ${
-                    page * pageSize >= allProcesos.length ? "disabled" : ""
-                  }`}
+                  className={`page-item ${page * pageSize >= allProcesos.length ? "disabled" : ""
+                    }`}
                 >
                   <button
                     className="page-link"
