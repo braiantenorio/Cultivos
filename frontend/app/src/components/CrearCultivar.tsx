@@ -10,7 +10,13 @@ function CrearCultivar() {
   const [tipo, setTipo] = useState("Crear Cultivar");
 
   const [cantidadError, setCantidadError] = useState("");
-  const [cultivar, setCultivar] = useState<Cultivar>({} as Cultivar);
+  const [cultivar, setCultivar] = useState<Cultivar>({
+    id: -1,
+    nombre:"",
+    codigo: 0,
+    deleted:false
+
+  });
 
   useEffect(() => {
     if (id != "new") {

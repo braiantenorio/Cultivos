@@ -28,13 +28,13 @@ INSERT INTO categorias_sub_categorias  (categoria_id,sub_categorias_id) values
 (5,6);
 
 
-insert into atributos (id, nombre, tipo, obligatorio, caracteres, minimo, maximo, decimales) values
-(1,'Cantidad de agua', 'string', true, 50,0,0,0),
-(2, 'Tipo de poda','string', true, 50,0,0,0),
-(3,'PH del agua','string', true, 50,0,0,0),
-(4, 'Peso de los recortes','string', false, 50,0,0,0),
-(5,'Tipo de Agua','string', true, 50,0,0,0),
-(6,'Rendimiento en gramos','string',true, 50,0,0,0);
+insert into atributos (id, nombre, tipo, obligatorio, caracteres, minimo, maximo, decimales,deleted) values
+(1,'Cantidad de agua', 'string', true, 50,0,0,0,false),
+(2, 'Tipo de poda','string', true, 50,0,0,0,false),
+(3,'PH del agua','string', true, 50,0,0,0,false),
+(4, 'Peso de los recortes','string', false, 50,0,0,0,false),
+(5,'Tipo de Agua','string', true, 50,0,0,0,false),
+(6,'Rendimiento en gramos','string',true, 50,0,0,0,false);
 
 
 insert into lista_de_atributos  (id, nombre) values
