@@ -1,9 +1,16 @@
 package unpsjb.labprog.backend.DTOs;
 
 import java.util.Date;
+import java.util.List;
+
+import lombok.Getter;
+import lombok.Setter;
 import unpsjb.labprog.backend.model.Lote;
+import unpsjb.labprog.backend.model.Proceso;
 import unpsjb.labprog.backend.model.Usuario;
 
+@Getter
+@Setter
 public class LoteRevisionDTO {
     private Lote entidad;
 
@@ -11,27 +18,6 @@ public class LoteRevisionDTO {
 
     private Usuario usuario;
 
-    public Lote getEntidad() {
-        return entidad;
-    }
+    private List<Proceso> procesos;
 
-    public void setEntidad(Lote entidad) {
-        this.entidad = entidad;
-    }
-
-    public Date getRevisionDate() {
-        return revisionDate;
-    }
-
-    public void setRevisionDate(Date revisionDate) {
-        this.revisionDate = revisionDate;
-    }
-
-    public void setUsuario(Usuario usuario) {
-        this.usuario = usuario;
-    }
-
-    public Usuario getUsuario() {
-        return usuario;
-    }
 }

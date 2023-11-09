@@ -17,7 +17,6 @@ const CrearLote: React.FC = () => {
   const navigate = useNavigate();
   const { notifications, updateNotifications } = useNotifications();
   const [tipoAgendas, setTipoAgendas] = useState<TipoAgenda[]>([]);
-  const [showModal, setShowModal] = useState(false);
   const [codigoLoteGenerado, setCodigoLoteGenerado] = useState("");
   const [selectsHabilitados, setSelectsHabilitados] = useState({
     cultivar: true,
@@ -237,11 +236,9 @@ const CrearLote: React.FC = () => {
         );
         updateNotifications(notifications + procesosHoy.length, []);
         setCodigoLoteGenerado(responseData.data.codigo);
-        setShowModal(true);
       })
       .catch((error) => {
         console.error("Error al enviar la solicitud POST:", error);
-
         if (error.message === "Error de solicitud incorrecta (BadRequest)") {
           setCantidadError("La cantidad es incorrecta. Verifique los valores.");
         } else {
@@ -251,12 +248,7 @@ const CrearLote: React.FC = () => {
   };
 
   const handleCancelar = () => {
-    // Redirige al link anterior
     navigate(-1);
-  };
-  const closeModal = () => {
-    setShowModal(false);
-    navigate("/lotes");
   };
 
   return (
@@ -307,25 +299,7 @@ const CrearLote: React.FC = () => {
             )}
           </div>
         </div>
-        <div className="mb-3 col-12 col-lg-5">
-          <label htmlFor="lotePadre" className="form-label">
-            Lote Predecesor
-          </label>
-          <select
-            className="form-select"
-            id="lotePadre"
-            name="lotePadre"
-            value={nuevoLote.lotePadre?.id || 0}
-            onChange={handleLoteChange}
-          >
-            <option value={0}></option>
-            {lotes.map((categoria) => (
-              <option key={categoria.id} value={categoria.id}>
-                {categoria.codigo} ({categoria.categoria.nombre})
-              </option>
-            ))}
-          </select>
-        </div>
+
         <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="cultivar" className="form-label">
             Cultivar:
@@ -366,7 +340,8 @@ const CrearLote: React.FC = () => {
           <button
             type="button"
             className="btn btn-success"
-            onClick={handleGuardarLote}
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalToggle"
             disabled={
               nuevoLote.codigo === "" ||
               nuevoLote.cantidad < 1 ||
@@ -387,19 +362,65 @@ const CrearLote: React.FC = () => {
         </div>
       </form>
       <div
-        className="modal fade show overlay"
-        tabIndex={-1}
-        style={{ display: showModal ? "block" : "none" }}
+        className="modal fade"
+        id="exampleModalToggle"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel"
       >
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Código del Lote Generado</h5>
+              {" "}
+              <h5 className="modal-title ">
+                ¡Advertencia!
+                <i className="bi bi-exclamation-triangle"></i>
+              </h5>
+            </div>
+            <div className="modal-body">
+              <div className="alert alert-warning" role="alert">
+                Una vez creado, no podrás editar este lote más tarde.
+              </div>
+            </div>
+
+            <div className="modal-footer">
               <button
                 type="button"
-                className="btn-close"
-                onClick={() => setShowModal(false)}
-              ></button>
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button
+                className="btn btn-success"
+                data-bs-target="#exampleModalToggle2"
+                data-bs-toggle="modal"
+                onClick={handleGuardarLote}
+              >
+                Continuar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div
+        className="modal fade"
+        id="exampleModalToggle2"
+        data-bs-backdrop="static"
+        data-bs-keyboard="false"
+        aria-labelledby="staticBackdropLabel"
+        aria-hidden="true"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              <h5 className="modal-title ">
+                Lote Creado Correctamente &nbsp; &nbsp;
+                <i
+                  className="bi bi-check-circle-fill text-success "
+                  style={{ fontSize: "2rem" }}
+                ></i>
+              </h5>
             </div>
             <div className="modal-body">
               <p>
@@ -409,13 +430,15 @@ const CrearLote: React.FC = () => {
                 </span>
               </p>
             </div>
+
             <div className="modal-footer">
               <button
                 type="button"
                 className="btn btn-primary"
-                onClick={closeModal}
+                data-bs-dismiss="modal"
+                onClick={handleCancelar}
               >
-                OK
+                Ok
               </button>
             </div>
           </div>

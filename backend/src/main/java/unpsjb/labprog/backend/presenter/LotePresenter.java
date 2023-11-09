@@ -1,6 +1,7 @@
 package unpsjb.labprog.backend.presenter;
 
 import unpsjb.labprog.backend.Response;
+import unpsjb.labprog.backend.DTOs.LotesCategoriaDTO;
 import unpsjb.labprog.backend.model.Agenda;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.business.LoteService;
@@ -71,11 +72,11 @@ public class LotePresenter {
       @RequestParam(value = "filtered", required = false) boolean filtered,
       @RequestParam(value = "term", required = false) String term,
       @RequestParam(defaultValue = "0") int page,
-      @RequestParam(defaultValue = "10") int size, 
+      @RequestParam(defaultValue = "10") int size,
       @RequestParam(defaultValue = "id", required = false) String sortField,
       @RequestParam(defaultValue = "asc", required = false) String sortDirection) {
 
-      //System.out.println(sortDirection);
+    // System.out.println(sortDirection);
     return Response.ok(service.findByPage(service.findAll(filtered, term, sortField, sortDirection), page, size));
   }
 
@@ -94,23 +95,6 @@ public class LotePresenter {
   @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
 
-    if (lote.getCategoria().getLimite() && lote.getLotePadre() != null) {
-
-      Lote lotePadre = service.findById(lote.getLotePadre().getId());
-      int totalCantidadSublotes = service.calculateTotalCantidadSublotes(lotePadre.getId());
-
-      if (totalCantidadSublotes + lote.getCantidad() == lotePadre.getCantidad()) {
-
-        lotePadre.setFechaDeBaja(LocalDate.now());
-
-        service.update(lotePadre);
-      }
-
-      if (totalCantidadSublotes + lote.getCantidad() > lote.getLotePadre().getCantidad()) {
-        return Response.badRequest("");
-      }
-    }
-
     List<ProcesoProgramado> procesosCopia = new ArrayList<>();
     LocalDate fechaActual = LocalDate.now();
     if (lote.getAgenda().getTipoAgenda() != null) {
@@ -119,6 +103,7 @@ public class LotePresenter {
           ProcesoProgramado procesoCopia = new ProcesoProgramado();
           procesoCopia.setCompletado(false);
           procesoCopia.setProceso(procesoOriginal.getProceso());
+          procesoCopia.setDiaInicio(i);
 
           LocalDate fechaARealizar = fechaActual
               .plusDays((procesoOriginal.getDiaInicio() - 1) + (procesoOriginal.getFrecuencia() * i));
@@ -185,13 +170,81 @@ public class LotePresenter {
 
   @RequestMapping(value = "/{id}/procesoprogramado", method = RequestMethod.PUT)
   @PreAuthorize("hasRole('MODERATOR')")
-  public ResponseEntity<Object> findById(@PathVariable("id") long id,
+  public ResponseEntity<Object> findById(@PathVariable("id") String id,
       @RequestBody ProcesoProgramado procesoProgramado) {
-    Lote loteOrNull = service.findById(id);
+    Lote loteOrNull = service.findByCode(id);
     Agenda agenda = loteOrNull.getAgenda();
     agenda.addprocesoProgramado(serviceProcesoProgramado.add(procesoProgramado));
     serviceAgenda.add(agenda);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
+  }
+
+  @PostMapping("/{loteId}")
+  @PreAuthorize("hasRole('MODERATOR')")
+  public ResponseEntity<Object> CambiarDeCategoria(@RequestBody LotesCategoriaDTO lotesCategoriaDTO,
+      @PathVariable String loteId) {
+    Lote lote = service.findByCode(loteId);
+    List<Lote> lotes = new ArrayList();
+    int sumaCantidades = 0;
+
+    for (Lote lotes1 : lotesCategoriaDTO.getLotes()) {
+      if (lotes1.getCategoria().getLimite()) {
+
+        sumaCantidades += lotes1.getCantidad();
+
+      }
+      lotes1.setCultivar(lote.getCultivar());
+      lotes1.setLotePadre(lote);
+
+    }
+    if (sumaCantidades > lote.getCantidad()) {
+
+      return Response.badRequest("");
+    }
+    for (Lote lotes2 : lotesCategoriaDTO.getLotes()) {
+
+      lotes.add(crear1(lotes2));
+    }
+    if (sumaCantidades == lote.getCantidad()) {
+
+      lote.setFechaDeBaja(LocalDate.now());
+
+    }
+    lote.setCantidad(lote.getCantidad() - sumaCantidades);
+    service.update(lote);
+
+    return Response.ok(
+        lotes,
+        "Lote creado correctamente");
+  }
+
+  public Lote crear1(@RequestBody Lote lote) {
+
+    List<ProcesoProgramado> procesosCopia = new ArrayList<>();
+    LocalDate fechaActual = LocalDate.now();
+    if (lote.getAgenda().getTipoAgenda() != null) {
+      for (ProcesoProgramado procesoOriginal : lote.getAgenda().getTipoAgenda().getProcesosProgramado()) {
+        for (int i = 0; i < procesoOriginal.getCantidad(); i++) {
+          ProcesoProgramado procesoCopia = new ProcesoProgramado();
+          procesoCopia.setCompletado(false);
+          procesoCopia.setProceso(procesoOriginal.getProceso());
+          procesoCopia.setDiaInicio(i);
+
+          LocalDate fechaARealizar = fechaActual
+              .plusDays((procesoOriginal.getDiaInicio() - 1) + (procesoOriginal.getFrecuencia() * i));
+          procesoCopia.setFechaARealizar(fechaARealizar);
+          procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+        }
+
+      }
+      lote.getAgenda().setProcesosProgramado(procesosCopia);
+
+    }
+    lote.setAgenda(serviceAgenda.add(lote.getAgenda()));
+
+    lote.setCodigo(service.generarCodigo(lote));
+
+    return service.add(lote);
   }
 
 }

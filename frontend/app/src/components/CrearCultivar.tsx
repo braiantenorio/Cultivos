@@ -10,7 +10,12 @@ function CrearCultivar() {
   const [tipo, setTipo] = useState("Crear Cultivar");
 
   const [cantidadError, setCantidadError] = useState("");
-  const [cultivar, setCultivar] = useState<Cultivar>({} as Cultivar);
+  const [cultivar, setCultivar] = useState<Cultivar>({
+    id: -1,
+    nombre: "",
+    codigo: 0,
+    deleted: false,
+  });
 
   useEffect(() => {
     if (id != "new") {
@@ -129,7 +134,8 @@ function CrearCultivar() {
         <button
           type="button"
           className="btn btn-success"
-          onClick={guardarCultivar}
+          data-bs-toggle="modal"
+          data-bs-target="#exampleModalToggle"
         >
           Guardar
         </button>
@@ -142,6 +148,46 @@ function CrearCultivar() {
           Cancelar
         </button>
       </form>
+      <div
+        className="modal fade"
+        id="exampleModalToggle"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              {" "}
+              <h5 className="modal-title ">
+                ¡Advertencia!
+                <i className="bi bi-exclamation-triangle"></i>
+              </h5>
+            </div>
+            <div className="modal-body">
+              <div className="alert alert-warning" role="alert">
+                Una vez creado, no podrás editar este lote más tarde.
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button
+                className="btn btn-success"
+                data-bs-dismiss="modal"
+                onClick={guardarCultivar}
+              >
+                Continuar
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

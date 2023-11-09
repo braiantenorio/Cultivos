@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import React, { useEffect, useState } from "react";
 import { TipoAgenda } from "../types/tipoAgenda";
 import swal from "sweetalert";
@@ -6,6 +6,11 @@ import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
 
 function TipoAgendaList() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const longitud = parseInt(queryParams.get("longitud")!, 10);
+  const pagina = parseInt(queryParams.get("pagina")!, 10);
+  const navigate = useNavigate(); // Obtiene el objeto navigate
   const [tipoAgendas, setTipoAgendas] = useState<TipoAgenda[]>([]);
 
   const [resultsPage, setResultsPage] = useState<ResultsPage<TipoAgenda>>({
@@ -13,10 +18,13 @@ function TipoAgendaList() {
     totalPages: 0,
     last: false,
     first: true,
-    size: 7,
-    number: 0,
+    size: longitud, // Usamos 0 como valor predeterminado si no se puede convertir a entero
+    number: pagina - 1,
   });
   useEffect(() => {
+    navigate(
+      `/agendas?pagina=${resultsPage.number + 1}&longitud=${resultsPage.size}`
+    );
     fetchAtributos();
   }, [resultsPage.number, resultsPage.size]);
 

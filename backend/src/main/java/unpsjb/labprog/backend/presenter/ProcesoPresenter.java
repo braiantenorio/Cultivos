@@ -67,4 +67,10 @@ public class ProcesoPresenter {
 	public void delete(@PathVariable("id") Long id) {
 		service.delete(id);
 	}
+
+	@GetMapping(value = "/audit/{id}")
+	@PreAuthorize("hasRole('MODERATOR')")
+	public ResponseEntity<Object> audit(@PathVariable("id") Long id) {
+		return Response.ok(service.findAllRevisions(id), "Proceso actualizado correctamente");
+	}
 }

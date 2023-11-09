@@ -1,24 +1,33 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Lote } from "../types/lote";
 import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
 
 function Loteslist() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const longitud = parseInt(queryParams.get("longitud")!, 10);
+  const pagina = parseInt(queryParams.get("pagina")!, 10);
+
   const [resultsPage, setResultsPage] = useState<ResultsPage<Lote>>({
     content: [],
     totalPages: 0,
     last: false,
     first: true,
-    size: 7,
-    number: 0,
+    size: longitud, // Usamos 0 como valor predeterminado si no se puede convertir a entero
+    number: pagina - 1, // Usamos 0 como valor predeterminado si no se puede convertir a entero
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleted, setShowDeleted] = useState(false);
   const [sortField, setSortField] = useState("id");
   const [sortDirection, setSortDirection] = useState("asc");
+  const navigate = useNavigate(); // Obtiene el objeto navigate
 
   useEffect(() => {
+    navigate(
+      `/lotes?pagina=${resultsPage.number + 1}&longitud=${resultsPage.size}`
+    );
     fetchLotes();
   }, [
     showDeleted,
@@ -207,7 +216,7 @@ function Loteslist() {
                   <td>{fechaDeBaja ? fechaDeBaja.toLocaleDateString() : ""}</td>
                   <td>
                     <Link
-                      to={`/lotes/${lote.codigo}`}
+                      to={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}
                       className="text-info me-2"
                       title="Detalle"
                     >
@@ -251,6 +260,17 @@ function Loteslist() {
                       className="btn btn-sm btn-success me-2"
                     >
                       Historia
+                    </Link>
+                    &nbsp;&nbsp;
+                    <Link
+                      to={`/lotes/cambiar-de-categoria/${lote.codigo}`}
+                      className="text-secondary me-2"
+                      title="Cambiar de Categoria"
+                    >
+                      <i
+                        className="bi bi-box-arrow-in-right me-1"
+                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                      ></i>
                     </Link>
                   </td>
                 </tr>

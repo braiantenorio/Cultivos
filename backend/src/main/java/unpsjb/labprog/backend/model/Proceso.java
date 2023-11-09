@@ -36,14 +36,16 @@ public class Proceso {
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 
-	@NotAudited
+	// @NotAudited
 	@ManyToOne
-	@JoinColumn(name = "usuario_id", nullable = true) //TODO: como todavia no
+	@JoinColumn(name = "usuario_id", nullable = true) // TODO: como todavia no
 	// implementamos usuarios, lo dejamos como opcional xd
 	Usuario usuario;
 
 	// @Column(nullable = false)
 	private LocalDate fecha;
+
+	private boolean deleted = Boolean.FALSE;
 
 	@NotAudited
 	@OneToMany(cascade = CascadeType.ALL)

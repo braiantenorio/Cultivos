@@ -1,10 +1,15 @@
 import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import authHeader from "../services/auth-header";
 import { Categoria } from "../types/categoria";
 import swal from "sweetalert";
 import { ResultsPage } from "../types/ResultsPage";
 function CategoriasList() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const longitud = parseInt(queryParams.get("longitud")!, 10);
+  const pagina = parseInt(queryParams.get("pagina")!, 10);
+  const navigate = useNavigate(); // Obtiene el objeto navigate
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [showDeleted, setShowDeleted] = useState(false);
   const [resultsPage, setResultsPage] = useState<ResultsPage<Categoria>>({
@@ -12,10 +17,15 @@ function CategoriasList() {
     totalPages: 0,
     last: false,
     first: true,
-    size: 7,
-    number: 0,
+    size: longitud, // Usamos 0 como valor predeterminado si no se puede convertir a entero
+    number: pagina - 1,
   });
   useEffect(() => {
+    navigate(
+      `/categorias?pagina=${resultsPage.number + 1}&longitud=${
+        resultsPage.size
+      }`
+    );
     fetchAtributos();
   }, [showDeleted, resultsPage.number, resultsPage.size, categorias]);
 
@@ -131,7 +141,7 @@ function CategoriasList() {
         <table className="table">
           <thead>
             <tr>
-              <th>#</th>
+              <th></th>
               <th>Nombre</th>
               <th>Codigo</th>
               <th></th>
@@ -140,7 +150,7 @@ function CategoriasList() {
           <tbody>
             {resultsPage.content.map((tipoAgenda, index) => (
               <tr key={tipoAgenda.id}>
-                <td>{index + 1}</td>
+                <td></td>
                 <td>{tipoAgenda.nombre}</td>
                 <td>{tipoAgenda.codigo}</td>
                 <td>
@@ -230,16 +240,19 @@ function CategoriasList() {
             </ul>
           </div>
           <div className="input-group col-auto d-none d-md-flex align-items-center">
-            <div className="input-group-text">Elementos por página</div>
-            <input
-              type="number"
-              id="pageSizeInput"
-              value={resultsPage.size}
-              onChange={(e) =>
-                setResultsPage({ ...resultsPage, size: +e.target.value })
-              }
-              className="form-control"
-            />
+            <div className="input-group-text mb-3">Elementos por página</div>
+            &nbsp;&nbsp;
+            <div className="col-1">
+              <input
+                type="number"
+                id="pageSizeInput"
+                value={resultsPage.size}
+                onChange={(e) =>
+                  setResultsPage({ ...resultsPage, size: +e.target.value })
+                }
+                className="form-control mb-3"
+              />
+            </div>
           </div>
         </div>
       </nav>

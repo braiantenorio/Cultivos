@@ -136,7 +136,7 @@ function ListarCultivares() {
       <table className="table">
         <thead>
           <tr>
-            <th>#</th>
+            <th></th>
             <th>Nombre</th>
             <th>Codigo</th>
             <th></th>
@@ -145,7 +145,7 @@ function ListarCultivares() {
         <tbody>
           {resultsPage.content.map((tipoAgenda, index) => (
             <tr key={tipoAgenda.id}>
-              <td>{index + 1}</td>
+              <td></td>
               <td>{tipoAgenda.nombre}</td>
               <td>{tipoAgenda.codigo}</td>
               <td>

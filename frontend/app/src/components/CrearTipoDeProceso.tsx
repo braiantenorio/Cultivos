@@ -173,9 +173,55 @@ function CrearTipoDeProceso() {
         </div>
 
         <div className="col-12">
-          <button className="btn btn-primary" type="submit">
+          <button
+            type="button"
+            className="btn btn-success"
+            data-bs-toggle="modal"
+            data-bs-target="#exampleModalToggle"
+          >
             Guardar
           </button>
+        </div>
+
+        <div
+          className="modal fade"
+          id="exampleModalToggle"
+          aria-hidden="true"
+          aria-labelledby="exampleModalToggleLabel"
+        >
+          <div className="modal-dialog modal-dialog-centered">
+            <div className="modal-content">
+              <div className="modal-header">
+                {" "}
+                <h5 className="modal-title ">
+                  ¡Advertencia!
+                  <i className="bi bi-exclamation-triangle"></i>
+                </h5>
+              </div>
+              <div className="modal-body">
+                <div className="alert alert-warning" role="alert">
+                  Una vez creado, no podrás editar este lote más tarde.
+                </div>
+              </div>
+
+              <div className="modal-footer">
+                <button
+                  type="button"
+                  className="btn btn-danger"
+                  data-bs-dismiss="modal"
+                >
+                  Cerrar
+                </button>
+                <button
+                  className="btn btn-success"
+                  data-bs-dismiss="modal"
+                  type="submit"
+                >
+                  Continuar
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
       </form>
     </div>

@@ -109,12 +109,6 @@ function Menu() {
     setCurrentUser(undefined);
   };
 
-  const navigate = useNavigate();
-  const navigateToLink = (link: string) => {
-    const llink = "/lotes/" + link;
-    navigate(llink);
-  };
-
   const { notifications, updateNotifications } = useNotifications();
 
   const toggleNotifications = () => {
@@ -195,15 +189,20 @@ function Menu() {
                   data-bs-dismiss="offcanvas"
                 >
                   <li>
-                    <Link className="dropdown-item" to="/lotes">
+                    <Link
+                      className="dropdown-item"
+                      to="/lotes?pagina=1&longitud=7"
+                    >
                       Listar
                     </Link>
                   </li>
-                  <li>
-                    <Link className="dropdown-item" to="/lotes/crear-lote">
-                      Nuevo
-                    </Link>
-                  </li>
+                  {showModeratorBoard && (
+                    <li>
+                      <Link className="dropdown-item" to="/lotes/crear-lote">
+                        Nuevo
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
               &nbsp;
@@ -227,21 +226,28 @@ function Menu() {
                       Atributos
                     </Link>
                   </li>
+                  {showModeratorBoard && (
+                    <li>
+                      <Link className="dropdown-item" to="/atributos/new">
+                        Nuevo atributo
+                      </Link>
+                    </li>
+                  )}
                   <li>
-                    <Link className="dropdown-item" to="/atributos/new">
-                      Nuevo atributo
-                    </Link>
+                    <hr className="dropdown-divider" />
                   </li>
                   <li>
                     <Link className="dropdown-item" to="/tipo-proceso">
                       Tipos de procesos
                     </Link>
                   </li>
-                  <li>
-                    <Link className="dropdown-item" to="/tipo-proceso/new">
-                      Nuevo tipo de proceso
-                    </Link>
-                  </li>
+                  {showModeratorBoard && (
+                    <li>
+                      <Link className="dropdown-item" to="/tipo-proceso/new">
+                        Nuevo tipo de proceso
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
               &nbsp;
@@ -261,15 +267,20 @@ function Menu() {
                   data-bs-dismiss="offcanvas"
                 >
                   <li>
-                    <Link className="dropdown-item" to="/agendas">
+                    <Link
+                      className="dropdown-item"
+                      to="/agendas?pagina=1&longitud=7"
+                    >
                       Listar
                     </Link>
                   </li>
-                  <li>
-                    <Link className="dropdown-item" to="/agendas/new">
-                      Nuevo
-                    </Link>
-                  </li>
+                  {showModeratorBoard && (
+                    <li>
+                      <Link className="dropdown-item" to="/agendas/new">
+                        Nuevo
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
               &nbsp;
@@ -289,15 +300,20 @@ function Menu() {
                   data-bs-dismiss="offcanvas"
                 >
                   <li>
-                    <Link className="dropdown-item" to="/categorias">
+                    <Link
+                      className="dropdown-item"
+                      to="/categorias?pagina=1&longitud=7"
+                    >
                       Listar
                     </Link>
                   </li>
-                  <li>
-                    <Link className="dropdown-item" to="/categorias/new">
-                      Nuevo
-                    </Link>
-                  </li>
+                  {showModeratorBoard && (
+                    <li>
+                      <Link className="dropdown-item" to="/categorias/new">
+                        Nuevo
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
               &nbsp;
@@ -321,11 +337,13 @@ function Menu() {
                       Listar
                     </Link>
                   </li>
-                  <li>
-                    <Link className="dropdown-item" to="/cultivares/new">
-                      Nuevo
-                    </Link>
-                  </li>
+                  {showModeratorBoard && (
+                    <li>
+                      <Link className="dropdown-item" to="/cultivares/new">
+                        Nuevo
+                      </Link>
+                    </li>
+                  )}
                 </ul>
               </div>
               &nbsp;
@@ -338,24 +356,26 @@ function Menu() {
               </div>
             </ul>
             <ul></ul>
-            <Link
-              to="/agenda/general"
-              className="btn btn-custom-color-2 position-relative rounded-circle "
-              onClick={toggleNotifications}
-            >
-              <i
-                className="bi bi-journal custom-icon bi-lg"
-                data-bs-dismiss="offcanvas"
-              ></i>
-              {notifications > 0 && (
-                <span
-                  className="position-absolute translate-middle badge rounded-pill bg-danger"
-                  style={{ left: "35px", top: "6px" }}
-                >
-                  {notifications}
-                </span>
-              )}
-            </Link>
+            {showModeratorBoard && (
+              <Link
+                to="/agenda/general?pagina=1&longitud=7"
+                className="btn btn-custom-color-2 position-relative rounded-circle "
+                onClick={toggleNotifications}
+              >
+                <i
+                  className="bi bi-journal custom-icon bi-lg"
+                  data-bs-dismiss="offcanvas"
+                ></i>
+                {notifications > 0 && (
+                  <span
+                    className="position-absolute translate-middle badge rounded-pill bg-danger"
+                    style={{ left: "35px", top: "6px" }}
+                  >
+                    {notifications}
+                  </span>
+                )}
+              </Link>
+            )}
             <ul></ul>
             <ul className="navbar-nav ms-auto">
               {showModeratorBoard && (
@@ -425,9 +445,8 @@ function Menu() {
           </div>
         </div>
       </div>
-      <AuthVerify/>
+      <AuthVerify />
     </nav>
-
   );
 }
 
