@@ -38,7 +38,7 @@ function DetalleProceso() {
                     const fileInfo = response.data;
                     console.log(fileInfo)
                     return (
-                        <a key={valor.id} href={"http://localhost:8080/files/view/" + valor.valor} target="_blank" rel="noreferrer">
+                        <a key={valor.id} href={ process.env.REACT_APP_API_URL +"/files/view/" + valor.valor} target="_blank" rel="noreferrer">
                             {fileInfo.name}
                         </a>
                     );

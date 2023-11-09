@@ -18,8 +18,6 @@ import Usuario from "./types/usuario";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
@@ -80,7 +78,6 @@ function Menu() {
   const location = useLocation();
   const isLoginPage =
     location.pathname === "/login" || location.pathname === "/register";
-  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
     undefined
@@ -91,7 +88,6 @@ function Menu() {
 
     if (user) {
       setCurrentUser(user);
-      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
 
@@ -104,7 +100,6 @@ function Menu() {
 
   const logOut = () => {
     AuthService.logout();
-    setShowModeratorBoard(false);
     setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
@@ -359,13 +354,6 @@ function Menu() {
             </Link>
             <ul></ul>
             <ul className="navbar-nav ms-auto">
-              {showModeratorBoard && (
-                <li className="nav-item">
-                  <Link to="/mod" className="nav-link">
-                    Moderator Board
-                  </Link>
-                </li>
-              )}
               {showAdminBoard && (
                 <li className="nav-item">
                   <Link to="/admin" className="nav-link">

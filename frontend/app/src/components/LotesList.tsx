@@ -3,6 +3,7 @@ import { Link } from "react-router-dom";
 import { Lote } from "../types/lote";
 import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
+import { Hidden } from "@mui/material";
 
 function Loteslist() {
   const [resultsPage, setResultsPage] = useState<ResultsPage<Lote>>({
@@ -79,13 +80,11 @@ function Loteslist() {
   );
 
   const handleSort = (field: string) => {
-    // Alternar la dirección de ordenamiento si ya se ordena por el mismo campo
     if (field === sortField && sortDirection === "asc") {
       setSortDirection(sortDirection === "asc" ? "desc" : "asc");
     } else if (field === sortField && sortDirection === "desc") {
       reserSort();
     } else {
-      // Establecer el nuevo campo de ordenamiento y la dirección predeterminada
       setSortField(field);
       setSortDirection("asc");
     }
@@ -132,7 +131,7 @@ function Loteslist() {
         </div>
       </div>
 
-      <div className="table-responsive">
+      <div className="table-responsive"  >
         <table className="table">
           {" "}
           <thead>
@@ -142,9 +141,8 @@ function Loteslist() {
                 Código{" "}
                 {sortField === "codigo" && (
                   <i
-                    className={`bi bi-arrow-${
-                      sortDirection === "asc" ? "up" : "down"
-                    }`}
+                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                      }`}
                   ></i>
                 )}
               </th>
@@ -152,9 +150,8 @@ function Loteslist() {
                 Cantidad{" "}
                 {sortField === "cantidad" && (
                   <i
-                    className={`bi bi-arrow-${
-                      sortDirection === "asc" ? "up" : "down"
-                    }`}
+                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                      }`}
                   ></i>
                 )}
               </th>
@@ -162,9 +159,8 @@ function Loteslist() {
                 Categoría{" "}
                 {sortField === "categoria" && (
                   <i
-                    className={`bi bi-arrow-${
-                      sortDirection === "asc" ? "up" : "down"
-                    }`}
+                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                      }`}
                   ></i>
                 )}
               </th>
@@ -172,9 +168,8 @@ function Loteslist() {
                 Cultivar{" "}
                 {sortField === "cultivar" && (
                   <i
-                    className={`bi bi-arrow-${
-                      sortDirection === "asc" ? "up" : "down"
-                    }`}
+                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                      }`}
                   ></i>
                 )}
               </th>
@@ -189,13 +184,11 @@ function Loteslist() {
                 : null;
 
               if (fechaDeBaja) {
-                // Sumar un día a la fecha de baja
                 fechaDeBaja.setDate(fechaDeBaja.getDate() + 1);
               }
 
               return (
                 <tr key={lote.id}>
-                  {/*<td>{index + 1}</td> */}
                   <td>
                     <span className="badge badge-custom-1 text-white me-2 fs-6">
                       {lote.codigo}
@@ -206,52 +199,40 @@ function Loteslist() {
                   <td>{lote.cultivar.nombre}</td>
                   <td>{fechaDeBaja ? fechaDeBaja.toLocaleDateString() : ""}</td>
                   <td>
-                    <Link
-                      to={`/lotes/${lote.codigo}`}
-                      className="text-info me-2"
-                      title="Detalle"
-                    >
-                      <i
-                        className="bi bi-eye"
-                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                      ></i>
-                    </Link>
-                    &nbsp;&nbsp;
-                    {lote.deleted ? (
-                      <i
-                        className="bi bi-pencil-slash text-warning me-2"
-                        style={{ fontSize: "1.5rem", cursor: "not-allowed" }}
-                        title="Editar"
-                      ></i>
-                    ) : (
-                      <Link
-                        to={`/lotes/${lote.id}/edit`}
-                        className="text-warning me-2"
-                        title="Editar"
+                    <div className="dropdown" style={{ position: "static" }}>
+                      <button
+                        className="d-flex align-items-center link-body-emphasis text-decoration-none"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style={{ position: "static", padding: 0, border: "none", background: "none" }}
                       >
-                        <i
-                          className="bi bi-pencil"
-                          style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                        ></i>
-                      </Link>
-                    )}
-                    &nbsp;&nbsp;
-                    <Link
-                      to={`/lotes/log/${lote.id}`}
-                      className="text-secondary me-2"
-                      title="Logs"
-                    >
-                      <i
-                        className="bi bi-journal"
-                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                      ></i>
-                    </Link>
-                    <Link
-                      to={`/lotes/${lote.id}/historia`}
-                      className="btn btn-sm btn-success me-2"
-                    >
-                      Historia
-                    </Link>
+                        <i className="bi bi-three-dots" ></i>
+                      </button>
+                      <ul className="dropdown-menu text-small shadow " data-boundary="viewport" >
+                        <li>
+                          <a className="dropdown-item" href={`/lotes/${lote.codigo}`}>
+                            Detalle
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href={`/lotes/${lote.id}/edit`}>
+                            Editar
+                          </a>
+                        </li>
+                        <li>
+                          <a className="dropdown-item" href={`/lotes/log/${lote.id}`}>
+                            Logs
+                          </a>
+                        </li>
+
+                        <li>
+                          <a className="dropdown-item" href={`/lotes/${lote.id}/historia`}>
+                            Historia
+                          </a>
+                        </li>
+
+                      </ul>
+                    </div>
                   </td>
                 </tr>
               );
@@ -280,9 +261,8 @@ function Loteslist() {
               {pageNumbers.map((pageNumber) => (
                 <li
                   key={pageNumber}
-                  className={`page-item ${
-                    pageNumber === resultsPage.number + 1 ? "active" : ""
-                  }`}
+                  className={`page-item ${pageNumber === resultsPage.number + 1 ? "active" : ""
+                    }`}
                 >
                   <button
                     className="page-link"

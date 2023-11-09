@@ -19,10 +19,10 @@ import io.jsonwebtoken.security.Keys;
 public class JwtUtils {
   private static final Logger logger = LoggerFactory.getLogger(JwtUtils.class);
 
-  @Value("${bezkoder.app.jwtSecret}")
+  @Value("${APP_JWTSECRET}")
   private String jwtSecret;
 
-  @Value("${bezkoder.app.jwtExpirationMs}")
+  @Value("${APP_JWTEXPIRATION}")
   private int jwtExpirationMs;
 
   public String generateJwtToken(Authentication authentication) {

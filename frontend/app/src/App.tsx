@@ -38,8 +38,6 @@ import Usuario from "./types/usuario";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
@@ -259,22 +257,6 @@ function App() {
             element={
               <RequireAuth>
                 <Profile />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/user"
-            element={
-              <RequireAuth>
-                <BoardUser />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/mod"
-            element={
-              <RequireAuth>
-                <BoardModerator />
               </RequireAuth>
             }
           />

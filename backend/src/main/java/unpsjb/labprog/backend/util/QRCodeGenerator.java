@@ -6,6 +6,8 @@ import com.google.zxing.WriterException;
 import com.google.zxing.common.BitMatrix;
 import com.google.zxing.qrcode.QRCodeWriter; 
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;
+
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.converter.BufferedImageHttpMessageConverter;
 import org.springframework.http.converter.HttpMessageConverter;
@@ -21,12 +23,15 @@ import java.awt.Font;
 @Service
 public class QRCodeGenerator {
 
+	@Value("${FRONTEND_URL}")
+	private String frontend_url;
+
 	public BufferedImage createQRImage(String qrCodeText, int size, String fileType)
 			throws WriterException, IOException {
 		Hashtable<EncodeHintType, ErrorCorrectionLevel> hintMap = new Hashtable<>();
 		hintMap.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.M);
 		QRCodeWriter qrCodeWriter = new QRCodeWriter();
-		BitMatrix byteMatrix = qrCodeWriter.encode( "http://localhost:3000/lotes/" + qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
+		BitMatrix byteMatrix = qrCodeWriter.encode( frontend_url + "/lotes/" + qrCodeText, BarcodeFormat.QR_CODE, size, size, hintMap);
 
 		// Create a BufferedImage with a white background
 		int matrixWidth = byteMatrix.getWidth();
