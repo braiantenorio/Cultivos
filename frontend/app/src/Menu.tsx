@@ -236,6 +236,7 @@ function Menu() {
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
+                  <li><hr className="dropdown-divider"/></li>
                   <li>
                     <Link className="dropdown-item" to="/tipo-proceso">
                       Tipos de procesos
