@@ -78,6 +78,7 @@ function Menu() {
   const location = useLocation();
   const isLoginPage =
     location.pathname === "/login" || location.pathname === "/register";
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
     undefined
@@ -88,6 +89,7 @@ function Menu() {
 
     if (user) {
       setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
 
@@ -100,6 +102,7 @@ function Menu() {
 
   const logOut = () => {
     AuthService.logout();
+    setShowModeratorBoard(false);
     setShowAdminBoard(false);
     setCurrentUser(undefined);
   };
@@ -231,7 +234,6 @@ function Menu() {
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
-                  <li><hr className="dropdown-divider"/></li>
                   <li>
                     <Link className="dropdown-item" to="/tipo-proceso">
                       Tipos de procesos
@@ -374,6 +376,13 @@ function Menu() {
             )}
             <ul></ul>
             <ul className="navbar-nav ms-auto">
+              {showModeratorBoard && (
+                <li className="nav-item">
+                  <Link to="/mod" className="nav-link">
+                    Moderator Board
+                  </Link>
+                </li>
+              )}
               {showAdminBoard && (
                 <li className="nav-item">
                   <Link to="/admin" className="nav-link">
