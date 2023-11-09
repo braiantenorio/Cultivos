@@ -2,8 +2,15 @@ import React, { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Categoria } from "../types/categoria";
 import authHeader from "../services/auth-header";
+import Usuario from "../types/usuario";
+import * as AuthService from "../services/auth.service";
 
 function CrearCategoria() {
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
   const navigate = useNavigate();
   const { id } = useParams();
   const [tipo, setTipo] = useState("Crear Categoria");
@@ -21,6 +28,13 @@ function CrearCategoria() {
   const [showAlert, setShowAlert] = useState(false);
 
   useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
     const url = "/categorias/search";
 
     fetch(url, {
@@ -148,7 +162,8 @@ function CrearCategoria() {
               <button
                 type="button"
                 className="btn btn-success"
-                onClick={guardarCategoria}
+                data-bs-toggle="modal"
+                data-bs-target="#exampleModalToggle"
               >
                 Guardar
               </button>
@@ -184,7 +199,7 @@ function CrearCategoria() {
           </label>
           <input
             type="text"
-            className="form-control"
+            className="form-control mb-4"
             id="codigo"
             name="codigo"
             value={categoria.codigo}
@@ -195,9 +210,9 @@ function CrearCategoria() {
             <div className="alert alert-danger">{cantidadError}</div>
           )}
         </div>
-        <div className="mb-3 col-5">
+        <div className="mb-4 col-12">
           <label className="form-check-label" htmlFor="flexCheckDefault">
-            Limite:
+            Lleva control en la cantidad del lote :
           </label>
           &nbsp;&nbsp;
           <input
@@ -213,38 +228,41 @@ function CrearCategoria() {
           />
         </div>
 
-        <div className="col-md-5 d-flex flex-column flex-md-row align-items-md-center">
-          <label htmlFor="validationCustom04" className="form-label">
-            Subcategorias:
+        <div className="col-md-7 d-flex flex-column flex-md-row align-items-md-center">
+          <label htmlFor="validationCustom04" className="form-label col-md-3  ">
+            Se puede Transformar en las categorias:
           </label>
-          <div className="row">
-            <div className="mt-2 mt-md-0 ms-md-2 col-8 col-md-8">
-              <select
-                className="form-select"
-                id="validationCustom04"
-                required
-                value={atributoId}
-                onChange={(e) => setAtributoId(e.target.value)}
-              >
-                <option value="" disabled hidden></option>
-                {categorias.map((atributo) => (
-                  <option key={atributo.id} value={atributo.id}>
-                    {atributo.nombre}
-                  </option>
-                ))}
-              </select>
+          {showModeratorBoard && (
+            <div className="row">
+              <div className="mt-2 mt-md-0 ms-md-2 col-8 col-md-8">
+                <select
+                  className="form-select"
+                  id="validationCustom04"
+                  required
+                  value={atributoId}
+                  onChange={(e) => setAtributoId(e.target.value)}
+                >
+                  <option value="" disabled hidden></option>
+                  {categorias.map((atributo) => (
+                    <option key={atributo.id} value={atributo.id}>
+                      {atributo.nombre}
+                    </option>
+                  ))}
+                </select>
+              </div>
+
+              <div className="mt-2 mt-md-0 ms-md-2 col-4 col-md-2">
+                <button
+                  type="button"
+                  disabled={atributoId === ""}
+                  className="btn btn-primary"
+                  onClick={handleAtributosChange}
+                >
+                  Agregar
+                </button>
+              </div>
             </div>
-            <div className="mt-2 mt-md-0 ms-md-2 col-4 col-md-2">
-              <button
-                type="button"
-                disabled={atributoId === ""}
-                className="btn btn-primary"
-                onClick={handleAtributosChange}
-              >
-                Agregar
-              </button>
-            </div>
-          </div>
+          )}
         </div>
       </form>
 
@@ -282,6 +300,46 @@ function CrearCategoria() {
             </li>
           ))}
         </ul>
+      </div>
+      <div
+        className="modal fade"
+        id="exampleModalToggle"
+        aria-hidden="true"
+        aria-labelledby="exampleModalToggleLabel"
+      >
+        <div className="modal-dialog modal-dialog-centered">
+          <div className="modal-content">
+            <div className="modal-header">
+              {" "}
+              <h5 className="modal-title ">
+                ¡Advertencia!
+                <i className="bi bi-exclamation-triangle"></i>
+              </h5>
+            </div>
+            <div className="modal-body">
+              <div className="alert alert-warning" role="alert">
+                Una vez creado, no podrás editar este lote más tarde.
+              </div>
+            </div>
+
+            <div className="modal-footer">
+              <button
+                type="button"
+                className="btn btn-danger"
+                data-bs-dismiss="modal"
+              >
+                Cerrar
+              </button>
+              <button
+                className="btn btn-success"
+                data-bs-dismiss="modal"
+                onClick={guardarCategoria}
+              >
+                Continuar
+              </button>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   );

@@ -17,6 +17,7 @@ function LoteRevisiones() {
       .then((response) => response.json())
       .then((responseData) => {
         setLotesRevision(responseData.data);
+        console.log(responseData.data);
       })
       .catch((error) => {
         console.error("Error al obtener los datos ", error);

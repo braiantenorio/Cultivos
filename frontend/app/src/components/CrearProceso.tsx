@@ -167,7 +167,7 @@ function CrearProceso() {
             id={atributo.id.toString()}
             className="form-control"
             type="file"
-            accept="image/*" 
+            accept="image/*"
             name={atributo.nombre}
             required={atributo.obligatorio}
             onChange={(event) => handleAgregarImagen(event, atributo.nombre)}
@@ -217,6 +217,7 @@ function CrearProceso() {
       fecha: null,
       valores: valores,
       listaDeAtributos: tipoDeProceso,
+      deleted: false,
     };
 
     if (notificationMessages.length > 0) {
@@ -326,8 +327,10 @@ function CrearProceso() {
           ))}
           <div className="col-md-12">
             <button
-              type="submit"
+              type="button"
               className="btn btn-success"
+              data-bs-toggle="modal"
+              data-bs-target="#exampleModalToggle"
               disabled={tipoDeProceso.atributos == null}
             >
               Guardar
@@ -339,6 +342,46 @@ function CrearProceso() {
             >
               Cancelar
             </button>
+          </div>
+          <div
+            className="modal fade"
+            id="exampleModalToggle"
+            aria-hidden="true"
+            aria-labelledby="exampleModalToggleLabel"
+          >
+            <div className="modal-dialog modal-dialog-centered">
+              <div className="modal-content">
+                <div className="modal-header">
+                  {" "}
+                  <h5 className="modal-title ">
+                    ¡Advertencia!
+                    <i className="bi bi-exclamation-triangle"></i>
+                  </h5>
+                </div>
+                <div className="modal-body">
+                  <div className="alert alert-warning" role="alert">
+                    Una vez creado, no podrás editar este lote más tarde.
+                  </div>
+                </div>
+
+                <div className="modal-footer">
+                  <button
+                    type="button"
+                    className="btn btn-danger"
+                    data-bs-dismiss="modal"
+                  >
+                    Cerrar
+                  </button>
+                  <button
+                    className="btn btn-success"
+                    data-bs-dismiss="modal"
+                    type="submit"
+                  >
+                    Continuar
+                  </button>
+                </div>
+              </div>
+            </div>
           </div>
         </form>
       )}

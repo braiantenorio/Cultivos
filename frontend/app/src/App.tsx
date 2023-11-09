@@ -48,7 +48,7 @@ import CrearCultivar from "./components/CrearCultivar";
 import ListarCultivares from "./components/ListarCultivares";
 import CrearProcesoProgramado from "./components/CrearProcesoProgramado";
 import AuthVerify from "./common/AuthVerify";
-
+import CambiarDeCategoria from "./components/CambiarDeCategoria";
 
 function App() {
   return (
@@ -61,6 +61,14 @@ function App() {
             element={
               <RequireAuth>
                 <CrearLote />
+              </RequireAuth>
+            }
+          />
+          <Route
+            path="/lotes/cambiar-de-categoria/:id"
+            element={
+              <RequireAuth>
+                <CambiarDeCategoria />
               </RequireAuth>
             }
           />
@@ -129,7 +137,7 @@ function App() {
             }
           />
           <Route
-            path="/lotes/:loteId"
+            path="/lotes/:loteId/procesos"
             element={
               <RequireAuth>
                 <DetalleLote />
@@ -234,7 +242,8 @@ function App() {
           />
           <Route
             path="/"
-            element={ //deberiamos deja un solo home no? o podriamos hacer que uno sea como una pantalla de presentacion y el otro si sea el home del software. xd 
+            element={
+              //deberiamos deja un solo home no? o podriamos hacer que uno sea como una pantalla de presentacion y el otro si sea el home del software. xd
               <RequireAuth>
                 {" "}
                 <Home />
@@ -270,7 +279,6 @@ function App() {
           />
         </Routes>
       </NotificationsProvider>
-
     </BrowserRouter>
   );
 }

@@ -5,6 +5,7 @@ import java.util.Optional;
 import java.time.LocalDate;
 import java.util.List;
 import unpsjb.labprog.backend.model.Categoria;
+import unpsjb.labprog.backend.model.Cultivar;
 
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.CrudRepository;
@@ -34,8 +35,9 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
         @Query("SELECT COUNT(l) FROM Lote l " +
                         "JOIN l.categoria c " +
                         "WHERE c = :categoria " +
+                        "AND l.cultivar= :cultivar " +
                         "AND YEAR(l.fecha) = YEAR(CURRENT_DATE)")
-        int countLotesByCategoria(@Param("categoria") Categoria categoria);
+        int countLotesByCategoria(@Param("categoria") Categoria categoria, @Param("cultivar") Cultivar cultivar);
 
         @Query("SELECT l.codigo FROM Lote l WHERE UPPER(l.codigo) LIKE CONCAT('%', UPPER(?1), '%') ")
         List<String> searchLote(String term);

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link, useNavigate, useParams } from "react-router-dom";
+import { Link, useLocation, useNavigate, useParams } from "react-router-dom";
 import { ProcesoProgramado } from "../types/procesoProgramado";
 import { useNotifications } from "../Menu";
 import AutoComplete from "./AutoComplete";
@@ -7,6 +7,10 @@ import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
 
 function AgendaGeneralDeProcesos() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const longitud = parseInt(queryParams.get("longitud")!, 10);
+  const pagina = parseInt(queryParams.get("pagina")!, 10);
   const [lotes, setLotes] = useState<ProcesoProgramado[]>([]);
   const [codigos, setCodigos] = useState<string[]>([]);
   const [proceso, setProceso] = useState("");
@@ -25,28 +29,16 @@ function AgendaGeneralDeProcesos() {
     totalPages: 0,
     last: false,
     first: true,
-    size: 7,
-    number: 0,
+    size: longitud, // Usamos 0 como valor predeterminado si no se puede convertir a entero
+    number: pagina - 1, // Usamos 0 como valor predeterminado si no se puede convertir a entero
   });
 
   useEffect(() => {
-    fetch(`/lotes/procesosPendientes?term=${searchTerm}&dia=${filterText}`, {
-      headers: authHeader(),
-    })
-      .then((response) => {
-        if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
-        }
-        return response.json();
-      })
-      .then((responseData) => {
-        setLotes(responseData.data);
-      })
-      .catch((error) => {
-        console.error(error);
-      });
-  }, [filterText]);
-  useEffect(() => {
+    navigate(
+      `/agenda/general?pagina=${resultsPage.number + 1}&longitud=${
+        resultsPage.size
+      }`
+    );
     handleBuscarLote();
   }, [filterText, resultsPage.number, resultsPage.size]);
 

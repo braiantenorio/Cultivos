@@ -8,15 +8,8 @@ function AgendaDeProcesos() {
   const { loteId } = useParams();
   const [lote, setLote] = useState<Lote | null>(null);
   const url1 = `/lotes/id/${loteId}`;
-  const [allProcesos, setAllProcesos] = useState<ProcesoProgramado[]>([]);
-  const [currentProcesos, setCurrentProcesos] = useState<ProcesoProgramado[]>(
-    []
-  );
-  const [page, setPage] = useState(1);
-  const [pageSize, setPageSize] = useState(7);
-  const totalProcesos = allProcesos.length;
-  const totalPages = Math.ceil(totalProcesos / pageSize);
-  const pageNumbers = [];
+  const [lotes, setProcesoProgramadoA] = useState<ProcesoProgramado[]>([]);
+  const [lotes1, setProcesoProgramadoi] = useState<ProcesoProgramado[]>([]);
 
   useEffect(() => {
     fetch(url1, {
@@ -30,50 +23,27 @@ function AgendaDeProcesos() {
       })
       .then((responseData) => {
         setLote(responseData.data);
-        setAllProcesos(
-          responseData.data.agenda.procesosProgramado
-            .slice()
-            .sort(
-              (
-                a: { fechaARealizar: string | number | Date; completado: any },
-                b: { fechaARealizar: string | number | Date; completado: any }
-              ) => {
-                const fechaA = new Date(a.fechaARealizar);
-                const fechaB = new Date(b.fechaARealizar);
+        const procesosProgramadosAgregados: ProcesoProgramado[] = [];
+        const procesosProgramadosExcluidos: ProcesoProgramado[] = [];
 
-                // Compara las fechas para ordenar en función de la prioridad
-                if (a.completado && !b.completado) {
-                  return 1; // Proceso no realizado primero
-                } else if (!a.completado && b.completado) {
-                  return -1; // Proceso no realizado primero
-                } else if (a.completado && b.completado) {
-                  // Si ambos son procesos completados, ordena por fecha en orden descendente
-                  return fechaB.getTime() - fechaA.getTime();
-                } else {
-                  // Si ambos son procesos no completados, ordena por fecha en orden ascendente
-                  return fechaA.getTime() - fechaB.getTime();
-                }
-              }
-            )
-        );
+        // Recorre la lista de procesos que deseas agregar
+        //if(responseData.data.a)
+        for (const proceso of responseData.data.agenda.procesosProgramado) {
+          // Aplica tu condición lógica
+          if (proceso.diaInicio === 0) {
+            procesosProgramadosAgregados.push(proceso);
+          }
+          if (proceso.diaInicio === -1) {
+            procesosProgramadosExcluidos.push(proceso);
+          }
+        }
+        setProcesoProgramadoA(procesosProgramadosAgregados);
+        setProcesoProgramadoi(procesosProgramadosExcluidos);
       })
       .catch((error) => {
         console.error(error);
       });
   }, []);
-
-  const updateCurrentProcesos = (page: number, pageSize: number) => {
-    const startIndex = (page - 1) * pageSize;
-    const endIndex = startIndex + pageSize;
-    const currentProcesos = allProcesos.slice(startIndex, endIndex);
-    setCurrentProcesos(currentProcesos);
-  };
-  for (let i = 1; i <= totalPages; i++) {
-    pageNumbers.push(i);
-  }
-  useEffect(() => {
-    updateCurrentProcesos(page, pageSize);
-  }, [page, pageSize, lote]);
 
   if (!lote) {
     return <div>Cargando...</div>;
@@ -82,132 +52,73 @@ function AgendaDeProcesos() {
   return (
     <div className="container">
       <h3>
-        Agenda de Procesos &nbsp;&nbsp; &nbsp;&nbsp;
-        <Link to={`/lotes/${loteId}/agenda/new`} className="btn btn-primary ">
-          Agregar
-        </Link>
+        Lote: &nbsp;
+        <span className="badge badge-custom-1 text-white me-6 fs-7">
+          {lote.codigo}
+        </span>{" "}
       </h3>
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Fecha a Realizar</th>
-              <th>Proceso</th>
-              <th>&nbsp; Estado</th>
-              <th></th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            {currentProcesos?.map((proceso: ProcesoProgramado) => {
-              const fechaARealizar = new Date(proceso.fechaARealizar);
-              fechaARealizar.setDate(fechaARealizar.getDate() + 1); // Agrega un día a la fecha
-              const fechaARealizar1 = new Date();
-              fechaARealizar1.setDate(fechaARealizar1.getDate() + 1); // Agrega un día a la fecha
 
-              return (
+      <div className="d-flex flex-wrap">
+        {" "}
+        {/* Contenedor de flexbox con "flex-wrap" */}
+        <div className="table-responsive col-lg-6 col-12 mt-2">
+          <h4 className="col-lg-8">
+            Procesos Programados de la Agenda version{" "}
+            <span className="badge bg-info text-white me-6 fs-8">
+              {lote.agenda.tipoAgenda?.version}
+            </span>{" "}
+          </h4>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Proceso</th>
+              </tr>
+            </thead>
+            <tbody>
+              {lotes.map((proceso: ProcesoProgramado, index) => (
+                // Verifica si la cantidad es igual a cero
                 <tr key={proceso.id}>
-                  <td>{proceso.id}</td>
-                  <td>{fechaARealizar.toLocaleDateString()}</td>
+                  <td>{index + 1}</td>
                   <td>{proceso.proceso.nombre}</td>
-                  <td>
-                    {proceso.completado ? (
-                      <span className="badge bg-success ms-2">Realizado</span>
-                    ) : fechaARealizar1 >= fechaARealizar ||
-                      lote?.fechaDeBaja ? (
-                      <>
-                        <span className="badge bg-danger ms-2">
-                          No Realizado
-                        </span>
-                      </>
-                    ) : (
-                      <>
-                        <span className="badge bg-warning ms-2">
-                          A Realizar
-                        </span>
-                      </>
-                    )}
-                  </td>
                 </tr>
-              );
-            })}
-          </tbody>
-        </table>
-      </div>
-      <nav aria-label="Page navigation example">
-        <div className="d-flex justify-content-between align-items-center">
-          <div>
-            <ul className="pagination">
-              <li className={`page-item ${page === 1 ? "disabled" : ""}`}>
-                <button
-                  className="page-link"
-                  onClick={() => {
-                    if (page > 1) {
-                      setPage(page - 1);
-                      updateCurrentProcesos(page - 1, pageSize);
-                    }
-                  }}
-                >
-                  &lsaquo;
-                </button>
-              </li>
-              {pageNumbers.map((pageNumber) => (
-                <li
-                  key={pageNumber}
-                  className={`page-item ${pageNumber === page ? "active" : ""}`}
-                >
-                  <button
-                    className="page-link"
-                    onClick={() => {
-                      if (pageNumber !== page) {
-                        setPage(pageNumber);
-                        updateCurrentProcesos(pageNumber, pageSize);
-                      }
-                    }}
-                  >
-                    {pageNumber}
-                  </button>
-                </li>
               ))}
-              <li
-                className={`page-item ${
-                  page * pageSize >= allProcesos.length ? "disabled" : ""
-                }`}
-              >
-                <button
-                  className="page-link"
-                  onClick={() => {
-                    if (page * pageSize < allProcesos.length) {
-                      setPage(page + 1);
-                      updateCurrentProcesos(page + 1, pageSize);
-                    }
-                  }}
-                >
-                  &rsaquo;
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div className="input-group col-auto d-none d-md-flex align-items-center">
-            <div className="input-group-text mb-3">Elementos por página</div>
-            <div className="col-1">
-              <input
-                type="number"
-                min="1"
-                max="100"
-                value={pageSize}
-                onChange={(e) => {
-                  const newPageSize = parseInt(e.target.value);
-                  setPageSize(newPageSize);
-                  updateCurrentProcesos(page, newPageSize);
-                }}
-                className="form-control mb-3"
-              />
-            </div>
-          </div>
+            </tbody>
+          </table>
         </div>
-      </nav>
+        <div className="table-responsive col-lg-6 col-12 mt-2">
+          <h4 className="col-lg-8">
+            Procesos Programados independientes &nbsp;
+            <Link
+              to={`/lotes/${lote.codigo}/agenda/new`}
+              className="btn btn-primary"
+            >
+              Agregar
+            </Link>
+          </h4>
+          <table className="table">
+            <thead>
+              <tr>
+                <th>#</th>
+
+                <th>Proceso</th>
+
+                <th></th>
+                <th></th>
+              </tr>
+            </thead>
+            <tbody>
+              {lotes1.map((proceso: ProcesoProgramado, index) => (
+                <tr key={proceso.id}>
+                  <td>{index + 1}</td>
+                  <td>{proceso.proceso.nombre}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      </div>
+      {/* Resto de tu contenido */}
     </div>
   );
 }

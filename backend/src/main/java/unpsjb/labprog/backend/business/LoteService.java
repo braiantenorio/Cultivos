@@ -17,6 +17,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDate;
 import jakarta.persistence.EntityManager;
 import unpsjb.labprog.backend.model.Lote;
+import unpsjb.labprog.backend.model.Proceso;
 import unpsjb.labprog.backend.model.Usuario;
 import unpsjb.labprog.backend.model.Categoria;
 import java.util.Date;
@@ -63,6 +64,8 @@ public class LoteService {
 		AuditReader reader = AuditReaderFactory.get(entityManager);
 		List<Number> revisionNumbers = reader.getRevisions(Lote.class, id);
 		List<LoteRevisionDTO> revisions = new ArrayList<>();
+		List<Number> revisionNumbers2 = reader.getRevisions(Proceso.class, 2052);
+		System.out.println(revisionNumbers2.size());
 
 		for (Number revisionNumber : revisionNumbers) {
 			Lote entidad = reader.find(Lote.class, id, revisionNumber);
@@ -74,6 +77,7 @@ public class LoteService {
 			LoteRevisionDTO revisionDTO = new LoteRevisionDTO();
 			revisionDTO.setUsuario(usuarioService.findById(entidad.getUsuario().getId()));
 			entidad.setUsuario(null);
+			entidad.setProcesos(null);
 			revisionDTO.setEntidad(entidad);
 			revisionDTO.setRevisionDate(revisionDate);
 
@@ -95,10 +99,11 @@ public class LoteService {
 				.setParameter("isDeleted", isDeleted)
 				.setParameter("codigo", "%" + term + "%");
 
-		List<Lote> products = (List<Lote>) (sortDirection.equals("asc") ? repository.findAll(Sort.by(sortField).ascending())
+		List<Lote> products = (List<Lote>) (sortDirection.equals("asc")
+				? repository.findAll(Sort.by(sortField).ascending())
 				: repository.findAll(Sort.by(sortField).descending()));
 
-		System.out.println(sortDirection.equals("asc") ? "asc": "des"); 
+		System.out.println(sortDirection.equals("asc") ? "asc" : "des");
 		session.disableFilter("deletedLoteFilter");
 
 		return products;
@@ -155,7 +160,7 @@ public class LoteService {
 	}
 
 	public String generarCodigo(Lote lote) {
-		int count = repository.countLotesByCategoria(lote.getCategoria()) + 1;
+		int count = repository.countLotesByCategoria(lote.getCategoria(), lote.getCultivar()) + 1;
 		LocalDate fecha = LocalDate.now();
 		int year = fecha.getYear() % 100;
 		String codigo = lote.getCultivar().getCodigo() + "-" + lote.getCategoria().getCodigo() +

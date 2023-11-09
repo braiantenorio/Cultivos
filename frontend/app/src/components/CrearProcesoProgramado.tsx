@@ -17,7 +17,7 @@ function CrearProcesoProgramado() {
     completado: false,
     frecuencia: 0,
     cantidad: 0,
-    diaInicio: 0,
+    diaInicio: -1,
   });
 
   const [tiposDeProcesos, setTipoDeProceso] = useState<TipoDeProceso[]>([]);
@@ -120,6 +120,15 @@ function CrearProcesoProgramado() {
     <div className="container">
       <form>
         <h2>Crear Proceso Programado</h2>
+        <ul className="list-inline">
+          <label htmlFor="proceso" className="form-label fs-6">
+            Lote:
+          </label>
+          &nbsp;&nbsp;
+          <span className="badge badge-custom-1 text-white me-2 fs-6">
+            {loteId}
+          </span>{" "}
+        </ul>
         <div className="mb-3 col-12 col-lg-5">
           <label htmlFor="fechaInicio" className="form-label">
             Fecha:

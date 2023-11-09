@@ -1,25 +1,34 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Lote } from "../types/lote";
 import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
 import { Hidden } from "@mui/material";
 
 function Loteslist() {
+  const location = useLocation();
+  const queryParams = new URLSearchParams(location.search);
+  const longitud = parseInt(queryParams.get("longitud")!, 10);
+  const pagina = parseInt(queryParams.get("pagina")!, 10);
+
   const [resultsPage, setResultsPage] = useState<ResultsPage<Lote>>({
     content: [],
     totalPages: 0,
     last: false,
     first: true,
-    size: 7,
-    number: 0,
+    size: longitud, // Usamos 0 como valor predeterminado si no se puede convertir a entero
+    number: pagina - 1, // Usamos 0 como valor predeterminado si no se puede convertir a entero
   });
   const [searchTerm, setSearchTerm] = useState("");
   const [showDeleted, setShowDeleted] = useState(false);
   const [sortField, setSortField] = useState("id");
   const [sortDirection, setSortDirection] = useState("asc");
+  const navigate = useNavigate(); // Obtiene el objeto navigate
 
   useEffect(() => {
+    navigate(
+      `/lotes?pagina=${resultsPage.number + 1}&longitud=${resultsPage.size}`
+    );
     fetchLotes();
   }, [
     showDeleted,

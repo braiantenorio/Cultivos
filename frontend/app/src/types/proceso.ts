@@ -9,4 +9,5 @@ export type Proceso = {
   fecha: Date | null;
   valores: Valor[];
   listaDeAtributos: TipoDeProceso;
+  deleted: boolean;
 };
