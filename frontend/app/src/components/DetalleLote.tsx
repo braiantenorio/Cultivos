@@ -223,7 +223,7 @@ function DetalleLote() {
       <div className="qr-code">
         <p>
           <a
-            href={"http://localhost:8080/qrcodes/" + lote.codigo}
+            href={  process.env.REACT_APP_API_URL + "/qrcodes/" + lote.codigo}
             target="_blank"
             rel="noreferrer"
           >

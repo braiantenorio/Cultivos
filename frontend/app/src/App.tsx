@@ -38,8 +38,6 @@ import Usuario from "./types/usuario";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
@@ -51,6 +49,7 @@ import ListarCultivares from "./components/ListarCultivares";
 import CrearProcesoProgramado from "./components/CrearProcesoProgramado";
 import AuthVerify from "./common/AuthVerify";
 import CambiarDeCategoria from "./components/CambiarDeCategoria";
+import { Footer } from "./components/Footer";
 
 function App() {
   return (
@@ -272,22 +271,6 @@ function App() {
             }
           />
           <Route
-            path="/user"
-            element={
-              <RequireAuth>
-                <BoardUser />
-              </RequireAuth>
-            }
-          />
-          <Route
-            path="/mod"
-            element={
-              <RequireAuth>
-                <BoardModerator />
-              </RequireAuth>
-            }
-          />
-          <Route
             path="/admin"
             element={
               <RequireAuth>
@@ -296,6 +279,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer/>
       </NotificationsProvider>
     </BrowserRouter>
   );

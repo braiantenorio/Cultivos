@@ -18,8 +18,6 @@ import Usuario from "./types/usuario";
 import Login from "./components/Login";
 import Register from "./components/Register";
 import Profile from "./components/Profile";
-import BoardUser from "./components/BoardUser";
-import BoardModerator from "./components/BoardModerator";
 import BoardAdmin from "./components/BoardAdmin";
 
 import EventBus from "./common/EventBus";
@@ -236,7 +234,6 @@ function Menu() {
                   <li>
                     <hr className="dropdown-divider" />
                   </li>
-                  <li><hr className="dropdown-divider"/></li>
                   <li>
                     <Link className="dropdown-item" to="/tipo-proceso">
                       Tipos de procesos
@@ -379,13 +376,6 @@ function Menu() {
             )}
             <ul></ul>
             <ul className="navbar-nav ms-auto">
-              {showModeratorBoard && (
-                <li className="nav-item">
-                  <Link to="/mod" className="nav-link">
-                    Moderator Board
-                  </Link>
-                </li>
-              )}
               {showAdminBoard && (
                 <li className="nav-item">
                   <Link to="/admin" className="nav-link">

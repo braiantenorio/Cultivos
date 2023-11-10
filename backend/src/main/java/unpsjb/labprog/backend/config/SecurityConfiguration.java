@@ -70,7 +70,7 @@ public class SecurityConfiguration {
             .requestMatchers("/files/**").permitAll()
             .requestMatchers("/procesos/**").permitAll()
             .requestMatchers("/qrcodes/**").permitAll()
-            .anyRequest().authenticated());
+            .anyRequest().authenticated()).cors();
 
     http.authenticationProvider(authenticationProvider());
 
