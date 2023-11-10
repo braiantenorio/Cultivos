@@ -13,5 +13,6 @@ export type Lote = {
   procesos: Proceso[];
   deleted: boolean;
   fechaDeBaja: Date;
+  fecha: Date;
   cultivar: Cultivar;
 };

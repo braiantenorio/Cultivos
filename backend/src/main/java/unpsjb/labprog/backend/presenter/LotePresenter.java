@@ -11,11 +11,18 @@ import unpsjb.labprog.backend.business.CategoriaService;
 import unpsjb.labprog.backend.business.ListaDeAtributosService;
 import unpsjb.labprog.backend.business.UsuarioService;
 import unpsjb.labprog.backend.business.ProcesoProgramadoService;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.ArrayList;
 import unpsjb.labprog.backend.model.ProcesoProgramado;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.InputStreamResource;
+import org.springframework.http.ContentDisposition;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -76,7 +83,6 @@ public class LotePresenter {
       @RequestParam(defaultValue = "id", required = false) String sortField,
       @RequestParam(defaultValue = "asc", required = false) String sortDirection) {
 
-    // System.out.println(sortDirection);
     return Response.ok(service.findByPage(service.findAll(filtered, term, sortField, sortDirection), page, size));
   }
 
@@ -245,6 +251,19 @@ public class LotePresenter {
     lote.setCodigo(service.generarCodigo(lote));
 
     return service.add(lote);
+  }
+
+  @GetMapping("/mostrar-pdf")
+  public ResponseEntity<byte[]> mostrarPDF(@RequestParam("id") long id) throws IOException {
+      byte[] contenidoPDF = service.generarContenidoPDF(id);
+  
+      HttpHeaders headers = new HttpHeaders();
+      headers.setContentType(MediaType.APPLICATION_PDF);
+  
+      return ResponseEntity
+              .ok()
+              .headers(headers)
+              .body(contenidoPDF);
   }
 
 }

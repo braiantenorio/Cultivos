@@ -73,7 +73,7 @@ const Register: React.FC = () => {
   };
 
   return (
-    <div className="container">
+    <div className="container container-auth">
       <div className="col-md-12">
         <div className="form-signup w-100 m-auto">
           <h2>Crear usuario</h2>

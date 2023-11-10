@@ -158,3 +158,16 @@ body {
 .component-with-margin {
   margin-top: 20px;
 }
+
+.container {
+  min-height: 73vh;
+}
+
+.container-auth {
+  min-height: 82vh;
+}
+
+.footer {
+  flex: 0 0 auto;
+  margin-top:  px;
+}

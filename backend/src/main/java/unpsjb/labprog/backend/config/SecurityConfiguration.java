@@ -70,6 +70,8 @@ public class SecurityConfiguration {
             .requestMatchers("/files/**").permitAll()
             .requestMatchers("/procesos/**").permitAll()
             .requestMatchers("/qrcodes/**").permitAll()
+            .requestMatchers("/lotes/descargar-pdf**").permitAll()
+            .requestMatchers("/lotes/mostrar-pdf**").permitAll()
             .anyRequest().authenticated())
         .cors();
 

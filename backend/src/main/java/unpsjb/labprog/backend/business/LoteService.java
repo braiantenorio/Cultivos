@@ -4,6 +4,13 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Collections;
 import java.util.Comparator;
+
+import org.apache.pdfbox.pdmodel.PDDocument;
+import org.apache.pdfbox.pdmodel.PDDocumentInformation;
+import org.apache.pdfbox.pdmodel.PDPage;
+import org.apache.pdfbox.pdmodel.PDPageContentStream;
+import org.apache.pdfbox.pdmodel.font.PDType1Font;
+import org.apache.tomcat.util.http.fileupload.ByteArrayOutputStream;
 import org.hibernate.Session;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
@@ -14,6 +21,8 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
+import java.io.IOException;
 import java.time.LocalDate;
 import jakarta.persistence.EntityManager;
 import unpsjb.labprog.backend.model.Lote;
@@ -103,7 +112,6 @@ public class LoteService {
 				? repository.findAll(Sort.by(sortField).ascending())
 				: repository.findAll(Sort.by(sortField).descending()));
 
-		System.out.println(sortDirection.equals("asc") ? "asc" : "des");
 		session.disableFilter("deletedLoteFilter");
 
 		return products;
@@ -191,4 +199,68 @@ public class LoteService {
 			LocalDate localDate) {
 		return repository.findLotesAndValoresByAtributosAndCategoria(listaAtributos, categoria, localDate);
 	}
+
+	public byte[] generarContenidoPDF(Long id) throws IOException {
+		Lote lote = findById(id);
+
+		try (PDDocument document = new PDDocument()) {
+			PDPage page = new PDPage();
+			document.addPage(page);
+			PDDocumentInformation info = document.getDocumentInformation();
+        	info.setTitle("Inf-" + lote.getCodigo() + "-"+ LocalDate.now());
+
+			try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
+				contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
+				contentStream.beginText();
+				contentStream.newLineAtOffset(215.2f, 718);
+				contentStream.showText("Informe de Lote");
+				contentStream.newLine();
+				contentStream.newLine();
+				contentStream.newLine();
+
+				contentStream.endText();
+
+				contentStream.beginText();
+				contentStream.setFont(PDType1Font.HELVETICA, 15);
+				contentStream.setLeading(30);
+				contentStream.newLineAtOffset(57, 678); // 25 725
+				String text1 = "Codigo: " + lote.getCodigo();
+				String text2 = "Categoria: " + lote.getCategoria().getNombre();
+				String text3 = "Cultivar: " + lote.getCultivar().getNombre();
+				String text4 = "Cantidad: " + lote.getCantidad(); //
+				String text5 = "Fecha de Creacion: " + lote.getFecha().toString();
+				String estado = lote.getFechaDeBaja() == null ? "Activo": "Inactivo";
+				String text6 = "Estado: " + estado;
+
+				String text7 = "Procedencia: " + lote.getLotePadre().getCategoria().getNombre() + " con codigo "
+						+ lote.getLotePadre().getCodigo();
+
+				contentStream.showText(text1);
+				contentStream.newLine();
+				contentStream.showText(text2);
+				contentStream.newLine();
+				contentStream.showText(text3);
+				contentStream.newLine();
+				contentStream.showText(text4);
+				contentStream.newLine();
+				contentStream.showText(text5);
+				contentStream.newLine();
+				contentStream.showText(text6);
+				contentStream.newLine();
+				contentStream.showText(text7);
+				contentStream.newLine();
+
+				// fecha, nombre del cultivar, fecha de siembra, cantidad, procedencia,
+				contentStream.endText();
+			}
+
+			// Convierte el documento a un arreglo de bytes
+			ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+			document.save(byteArrayOutputStream);
+			document.close();
+
+			return byteArrayOutputStream.toByteArray();
+		}
+	}
+
 }

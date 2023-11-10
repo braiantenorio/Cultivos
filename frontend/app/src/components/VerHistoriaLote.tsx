@@ -41,64 +41,44 @@ function VerHistoriaLote() {
         <h2>Historia de lote</h2>
       </div>
       {lotes.map((lote) => (
-        <div key={lote.id}>
-          <div className="accordion" id="accordionPanelsStayOpenExample">
-            <div className="accordion-item">
-              <h2 className="accordion-header">
-                <button
-                  className="accordion-button btn-sm"
-                  type="button"
-                  data-bs-toggle="collapse"
-                  data-bs-target={`#collapse-${lote.id}`}
-                  aria-expanded="true"
-                  aria-controls={`collapse-${lote.id}`}
+        <div>
+          <div key={lote.id}>
+            <div className="card mt-2 mb-4">
+              <div className="card-header">Lote: {lote.codigo}</div>
+              <div className="card-body">
+                <h5 className="card-title">{lote.categoria.nombre}</h5>
+                <p className="card-text">
+                  <dl className="row">
+                    <dt className="col-sm-3">Cultivar</dt>
+                    <dd className="col-sm-9">{lote.cultivar.nombre}</dd>
+
+                    <dt className="col-sm-3">Cantidad</dt>
+                    <dd className="col-sm-9">{lote.cantidad}</dd>
+
+                    <dt className="col-sm-3">Fecha de alta</dt>
+                    <dd className="col-sm-9">{lote.fecha.toString()}</dd>
+
+                    <dt className="col-sm-3">Estado</dt>
+                    <dd className="col-sm-9">
+                      {lote.fechaDeBaja ? "Inactivo" : "Activo"}
+                    </dd>
+
+                    {lote.fechaDeBaja ? (
+                      <>
+                        <dt className="col-sm-3">Fecha de baja</dt>
+                        <dd className="col-sm-9">
+                          {lote.fechaDeBaja.toString()}
+                        </dd>
+                      </>
+                    ) : null}
+                  </dl>
+                </p>
+                <a
+                  href={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}
+                  className="btn btn-primary"
                 >
-                  Codigo: {lote.codigo}
-                </button>
-              </h2>
-              <div
-                id={`collapse-${lote.id}`}
-                className="accordion-collapse collapse show"
-              >
-                <div className="accordion-body">
-                  <table className="table caption-top">
-                    <caption>Procesos</caption>
-                    <thead>
-                      <tr>
-                        <th>ID</th>
-                        <th>Usuario</th>
-                        <th>Tipo</th>
-                        <th>Fecha</th>
-                        <th></th>
-                      </tr>
-                    </thead>
-                    <tbody>
-                      {lote.procesos.map((proceso) => (
-                        <tr key={proceso.id}>
-                          <td>{proceso.id}</td>
-                          <td>
-                            {proceso.usuario?.nombre}{" "}
-                            {proceso.usuario?.apellido}
-                          </td>
-                          <td>{proceso.listaDeAtributos.nombre}</td>
-                          <td>
-                            {proceso.fecha
-                              ? new Date(proceso.fecha).toLocaleDateString()
-                              : ""}
-                          </td>
-                          <td>
-                            <Link
-                              to={`/procesos/${proceso.id}`}
-                              className="btn btn-sm btn-info me-2"
-                            >
-                              Ver Detalle
-                            </Link>
-                          </td>
-                        </tr>
-                      ))}
-                    </tbody>
-                  </table>
-                </div>
+                  Ver detalle
+                </a>
               </div>
             </div>
           </div>

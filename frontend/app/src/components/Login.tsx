@@ -53,7 +53,7 @@ const Login: React.FC<Props> = () => {
   };
 
   return (
-    <div className="container mt-3">
+    <div className="container mt-3 container-auth">
       <div className="col-md-12">
         <div className="form-signin w-100 m-auto">
           <h2>Iniciar sesion</h2>
