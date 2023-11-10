@@ -146,3 +146,13 @@ body {
 .component-with-margin {
   margin-top: 20px;
 }
+
+
+.container {
+  min-height: 73vh;
+}
+
+.footer {
+  flex: 0 0 auto;
+  margin-top:  px;
+}

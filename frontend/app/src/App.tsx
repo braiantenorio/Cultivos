@@ -49,6 +49,7 @@ import ListarCultivares from "./components/ListarCultivares";
 import CrearProcesoProgramado from "./components/CrearProcesoProgramado";
 import AuthVerify from "./common/AuthVerify";
 import CambiarDeCategoria from "./components/CambiarDeCategoria";
+import { Footer } from "./components/Footer";
 
 function App() {
   return (
@@ -278,6 +279,7 @@ function App() {
             }
           />
         </Routes>
+        <Footer/>
       </NotificationsProvider>
     </BrowserRouter>
   );

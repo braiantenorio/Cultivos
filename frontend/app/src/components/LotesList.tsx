@@ -219,7 +219,8 @@ function Loteslist() {
                       </button>
                       <ul className="dropdown-menu text-small shadow " data-boundary="viewport" >
                         <li>
-                          <a className="dropdown-item" href={`/lotes/${lote.codigo}`}>
+                          <a className="dropdown-item" href={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}>
+
                             Detalle
                           </a>
                         </li>
@@ -237,6 +238,12 @@ function Loteslist() {
                         <li>
                           <a className="dropdown-item" href={`/lotes/${lote.id}/historia`}>
                             Historia
+                          </a>
+                        </li>
+
+                        <li>
+                          <a className="dropdown-item" href={`/lotes/cambiar-de-categoria/${lote.codigo}`}>
+                            Cambiar categoria
                           </a>
                         </li>
 
