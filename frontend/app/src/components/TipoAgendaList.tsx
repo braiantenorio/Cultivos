@@ -4,6 +4,8 @@ import { TipoAgenda } from "../types/tipoAgenda";
 import swal from "sweetalert";
 import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
+import * as AuthService from "../services/auth.service";
+import Usuario from "../types/usuario";
 
 function TipoAgendaList() {
   const location = useLocation();
@@ -12,6 +14,12 @@ function TipoAgendaList() {
   const pagina = parseInt(queryParams.get("pagina")!, 10);
   const navigate = useNavigate(); // Obtiene el objeto navigate
   const [tipoAgendas, setTipoAgendas] = useState<TipoAgenda[]>([]);
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
+  const user = AuthService.getCurrentUser();
 
   const [resultsPage, setResultsPage] = useState<ResultsPage<TipoAgenda>>({
     content: [],
@@ -22,6 +30,11 @@ function TipoAgendaList() {
     number: pagina - 1,
   });
   useEffect(() => {
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
     navigate(
       `/agendas?pagina=${resultsPage.number + 1}&longitud=${resultsPage.size}`
     );
@@ -117,24 +130,26 @@ function TipoAgendaList() {
                 <Link
                   to={`/agendas/${tipoAgenda.id}`}
                   className="text-warning me-2"
-                  title="Editar"
+                  title="Detalle"
                 >
                   <i
-                    className="bi bi-pencil"
+                    className="bi bi-eye"
                     style={{ fontSize: "1.5rem", cursor: "pointer" }}
                   ></i>
                 </Link>
                 &nbsp;&nbsp;
-                <button
-                  className="text-danger border-0 bg-transparent me-2"
-                  onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
-                  title="Eliminar"
-                >
-                  <i
-                    className="bi bi-trash"
-                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  ></i>
-                </button>
+                {showModeratorBoard && (
+                  <button
+                    className="text-danger border-0 bg-transparent me-2"
+                    onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
+                    title="Eliminar"
+                  >
+                    <i
+                      className="bi bi-trash"
+                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                    ></i>
+                  </button>
+                )}
               </td>
             </tr>
           ))}

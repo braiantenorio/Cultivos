@@ -83,7 +83,7 @@ function CrearAgenda() {
 
     if (id != "new") {
       // Realiza una solicitud al servidor para obtener los datos de la agenda por su ID
-      setTipo("Editar agenda");
+      setTipo("Detalle agenda");
       fetch(`/tipoagendas/id/${id}`, {
         headers: authHeader(),
       })
@@ -224,6 +224,7 @@ function CrearAgenda() {
             name="categoria"
             value={tipoAgenda.categoria.id}
             onChange={handleCategoriaChange}
+            disabled={tipo === "Detalle agenda"}
           >
             <option value={0}>Seleccione una categoría</option>
             {categorias.map((categoria) => (
@@ -242,6 +243,7 @@ function CrearAgenda() {
             className="form-control"
             id="fechaInicio"
             value={tipoAgenda.version}
+            disabled={tipo === "Detalle agenda"}
             onChange={(e) =>
               setTipoAgenda({ ...tipoAgenda, version: e.target.value })
             }
@@ -258,6 +260,7 @@ function CrearAgenda() {
                 type="button"
                 className="btn btn-primary"
                 onClick={agregarProcesoProgramado}
+                disabled={tipo === "Detalle agenda"}
               >
                 Agregar
               </button>
@@ -299,6 +302,7 @@ function CrearAgenda() {
                     onChange={(e) => {
                       handleInputChange(index, "proceso", e.target.value);
                     }}
+                    disabled={tipo === "Detalle agenda"}
                   >
                     <option value="" disabled hidden>
                       Choose...
@@ -316,6 +320,7 @@ function CrearAgenda() {
                     className="form-control"
                     name="diaInicio"
                     value={proceso.diaInicio}
+                    disabled={tipo === "Detalle agenda"}
                     onChange={(e) =>
                       handleInputChange(index, "diaInicio", e.target.value)
                     }
@@ -330,6 +335,7 @@ function CrearAgenda() {
                     onChange={(e) =>
                       handleInputChange(index, "cantidad", e.target.value)
                     }
+                    disabled={tipo === "Detalle agenda"}
                   />
                 </td>
                 <td>
@@ -341,7 +347,9 @@ function CrearAgenda() {
                     onChange={(e) =>
                       handleInputChange(index, "frecuencia", e.target.value)
                     }
-                    disabled={proceso.cantidad <= 1}
+                    disabled={
+                      proceso.cantidad <= 1 || tipo === "Detalle agenda"
+                    }
                   />
                 </td>
                 <td>

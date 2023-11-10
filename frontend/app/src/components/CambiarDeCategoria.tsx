@@ -26,7 +26,7 @@ function CambiarDeCategoria() {
   const [categorias, setCategorias] = useState<Categoria[]>([]);
 
   useEffect(() => {
-    fetch(`/lotes/${id}`, {
+    fetch(`/lotes/codigo/${id}`, {
       headers: authHeader(),
     })
       .then((response) => {

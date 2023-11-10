@@ -11,7 +11,7 @@ function VerHistoriaLote() {
   const [procesos, setProcesos] = useState<Proceso[]>([]);
   const navigate = useNavigate();
 
-  const url = `/lotes/${loteId}/historia`;
+  const url = `/lotes/historia/${loteId}`;
   useEffect(() => {
     fetch(url, {
       headers: authHeader(),
@@ -76,7 +76,10 @@ function VerHistoriaLote() {
                       {lote.procesos.map((proceso) => (
                         <tr key={proceso.id}>
                           <td>{proceso.id}</td>
-                          <td>{proceso.usuario?.nombre} {proceso.usuario?.apellido}</td>
+                          <td>
+                            {proceso.usuario?.nombre}{" "}
+                            {proceso.usuario?.apellido}
+                          </td>
                           <td>{proceso.listaDeAtributos.nombre}</td>
                           <td>
                             {proceso.fecha

@@ -60,7 +60,7 @@ public class LotePresenter {
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
   }
 
-  @RequestMapping(value = "/{code}", method = RequestMethod.GET)
+  @RequestMapping(value = "/codigo/{code}", method = RequestMethod.GET)
   public ResponseEntity<Object> findByCode(@PathVariable("code") String code) {
     Lote loteOrNull = service.findByCode(code);
     return (loteOrNull != null) ? Response.ok(loteOrNull) : Response.notFound();
@@ -142,7 +142,7 @@ public class LotePresenter {
     // service.delete(id);
   }
 
-  @GetMapping("/{loteId}/historia")
+  @GetMapping("/historia/{loteId}")
   public ResponseEntity<Object> obtenerLotesPadres(@PathVariable Long loteId) {
     return Response.ok(service.obtenerLotesPadres(loteId));
   }

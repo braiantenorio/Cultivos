@@ -5,6 +5,8 @@ import swal from "sweetalert";
 import { Atributo } from "../types/atributo";
 import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
+import * as AuthService from "../services/auth.service";
+import Usuario from "../types/usuario";
 
 function ListarAtributos() {
   const [showDeleted, setShowDeleted] = useState(false);
@@ -17,7 +19,18 @@ function ListarAtributos() {
     size: 7,
     number: 0,
   });
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
+  const user = AuthService.getCurrentUser();
   useEffect(() => {
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
     fetchAtributos();
   }, [resultsPage.number, resultsPage.size, showDeleted, categorias]);
 
@@ -155,33 +168,37 @@ function ListarAtributos() {
                 <td>{tipoAgenda.caracteres}</td>
                 <td>{tipoAgenda.maximo}</td>
                 <td>{tipoAgenda.minimo}</td>
-                <td>
-                  {!tipoAgenda.deleted ? (
-                    <>
+                {showModeratorBoard && (
+                  <td>
+                    {!tipoAgenda.deleted ? (
+                      <>
+                        <button
+                          className="text-danger border-0 bg-transparent me-2"
+                          onClick={() =>
+                            handleEliminarTipoAgenda(tipoAgenda.id)
+                          }
+                          title="Eliminar"
+                        >
+                          <i
+                            className="bi bi-trash"
+                            style={{ fontSize: "1.5rem", cursor: "pointer" }}
+                          ></i>
+                        </button>
+                      </>
+                    ) : (
                       <button
-                        className="text-danger border-0 bg-transparent me-2"
-                        onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
+                        className="text-info border-0 bg-transparent me-2"
+                        onClick={() => handleEliminarTipoAgenda1(tipoAgenda.id)}
                         title="Eliminar"
                       >
                         <i
-                          className="bi bi-trash"
+                          className="bi bi-arrow-clockwise"
                           style={{ fontSize: "1.5rem", cursor: "pointer" }}
                         ></i>
                       </button>
-                    </>
-                  ) : (
-                    <button
-                      className="text-info border-0 bg-transparent me-2"
-                      onClick={() => handleEliminarTipoAgenda1(tipoAgenda.id)}
-                      title="Eliminar"
-                    >
-                      <i
-                        className="bi bi-arrow-clockwise"
-                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                      ></i>
-                    </button>
-                  )}
-                </td>
+                    )}
+                  </td>
+                )}
               </tr>
             ))}
           </tbody>
