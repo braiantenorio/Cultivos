@@ -3,6 +3,8 @@ import { Link, useNavigate, useParams } from "react-router-dom";
 import { Lote } from "../types/lote";
 import { ProcesoProgramado } from "../types/procesoProgramado";
 import authHeader from "../services/auth-header";
+import * as AuthService from "../services/auth.service";
+import Usuario from "../types/usuario";
 
 function AgendaDeProcesos() {
   const { loteId } = useParams();
@@ -10,8 +12,19 @@ function AgendaDeProcesos() {
   const url1 = `/lotes/id/${loteId}`;
   const [lotes, setProcesoProgramadoA] = useState<ProcesoProgramado[]>([]);
   const [lotes1, setProcesoProgramadoi] = useState<ProcesoProgramado[]>([]);
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
+  const user = AuthService.getCurrentUser();
 
   useEffect(() => {
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
     fetch(url1, {
       headers: authHeader(),
     })
@@ -89,12 +102,14 @@ function AgendaDeProcesos() {
         <div className="table-responsive col-lg-6 col-12 mt-2">
           <h4 className="col-lg-8">
             Procesos Programados independientes &nbsp;
-            <Link
-              to={`/lotes/${lote.codigo}/agenda/new`}
-              className="btn btn-primary"
-            >
-              Agregar
-            </Link>
+            {showModeratorBoard && (
+              <Link
+                to={`/lotes/${lote.codigo}/agenda/new`}
+                className="btn btn-primary"
+              >
+                Agregar
+              </Link>
+            )}
           </h4>
           <table className="table">
             <thead>

@@ -4,13 +4,20 @@ import { Lote } from "../types/lote";
 import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
 import { Hidden } from "@mui/material";
+import Usuario from "../types/usuario";
+import * as AuthService from "../services/auth.service";
 
 function Loteslist() {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const longitud = parseInt(queryParams.get("longitud")!, 10);
   const pagina = parseInt(queryParams.get("pagina")!, 10);
-
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
+  const user = AuthService.getCurrentUser();
   const [resultsPage, setResultsPage] = useState<ResultsPage<Lote>>({
     content: [],
     totalPages: 0,
@@ -26,6 +33,11 @@ function Loteslist() {
   const navigate = useNavigate(); // Obtiene el objeto navigate
 
   useEffect(() => {
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
     navigate(
       `/lotes?pagina=${resultsPage.number + 1}&longitud=${resultsPage.size}`
     );
@@ -136,11 +148,11 @@ function Loteslist() {
             checked={showDeleted}
             onChange={handleShowDeletedChange}
           />
-          <label className="form-check-label mt-1">Mostrar Eliminados</label>
+          <label className="form-check-label mt-1">Mostrar Inactivos</label>
         </div>
       </div>
 
-      <div className="table-responsive"  >
+      <div className="table-responsive">
         <table className="table">
           {" "}
           <thead>
@@ -150,8 +162,9 @@ function Loteslist() {
                 Código{" "}
                 {sortField === "codigo" && (
                   <i
-                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
-                      }`}
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
                   ></i>
                 )}
               </th>
@@ -159,8 +172,9 @@ function Loteslist() {
                 Cantidad{" "}
                 {sortField === "cantidad" && (
                   <i
-                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
-                      }`}
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
                   ></i>
                 )}
               </th>
@@ -168,8 +182,9 @@ function Loteslist() {
                 Categoría{" "}
                 {sortField === "categoria" && (
                   <i
-                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
-                      }`}
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
                   ></i>
                 )}
               </th>
@@ -177,8 +192,9 @@ function Loteslist() {
                 Cultivar{" "}
                 {sortField === "cultivar" && (
                   <i
-                    className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
-                      }`}
+                    className={`bi bi-arrow-${
+                      sortDirection === "asc" ? "up" : "down"
+                    }`}
                   ></i>
                 )}
               </th>
@@ -213,40 +229,72 @@ function Loteslist() {
                         className="d-flex align-items-center link-body-emphasis text-decoration-none"
                         data-bs-toggle="dropdown"
                         aria-expanded="false"
-                        style={{ position: "static", padding: 0, border: "none", background: "none" }}
+                        style={{
+                          position: "static",
+                          padding: 0,
+                          border: "none",
+                          background: "none",
+                        }}
                       >
-                        <i className="bi bi-three-dots" ></i>
+                        <i className="bi bi-three-dots"></i>
                       </button>
-                      <ul className="dropdown-menu text-small shadow " data-boundary="viewport" >
+                      <ul
+                        className="dropdown-menu text-small shadow "
+                        data-boundary="viewport"
+                      >
                         <li>
-                          <a className="dropdown-item" href={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}>
-
+                          <a
+                            className="dropdown-item"
+                            href={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}
+                          >
                             Detalle
                           </a>
                         </li>
+                        {lote.deleted ||
+                        !showModeratorBoard ||
+                        lote.cantidad === 0 ? (
+                          <></>
+                        ) : (
+                          <li>
+                            <a
+                              className="dropdown-item"
+                              href={`/lotes/${lote.id}/edit`}
+                            >
+                              Editar
+                            </a>
+                          </li>
+                        )}
                         <li>
-                          <a className="dropdown-item" href={`/lotes/${lote.id}/edit`}>
-                            Editar
-                          </a>
-                        </li>
-                        <li>
-                          <a className="dropdown-item" href={`/lotes/log/${lote.id}`}>
+                          <a
+                            className="dropdown-item"
+                            href={`/lotes/log/${lote.id}`}
+                          >
                             Logs
                           </a>
                         </li>
 
                         <li>
-                          <a className="dropdown-item" href={`/lotes/${lote.id}/historia`}>
+                          <a
+                            className="dropdown-item"
+                            href={`/lotes/${lote.id}/historia`}
+                          >
                             Historia
                           </a>
                         </li>
-
-                        <li>
-                          <a className="dropdown-item" href={`/lotes/cambiar-de-categoria/${lote.codigo}`}>
-                            Cambiar categoria
-                          </a>
-                        </li>
-
+                        {lote.deleted ||
+                        !showModeratorBoard ||
+                        lote.cantidad === 0 ? (
+                          <></>
+                        ) : (
+                          <li>
+                            <a
+                              className="dropdown-item"
+                              href={`/lotes/cambiar-de-categoria/${lote.codigo}`}
+                            >
+                              Cambiar categoria
+                            </a>
+                          </li>
+                        )}
                       </ul>
                     </div>
                   </td>
@@ -277,8 +325,9 @@ function Loteslist() {
               {pageNumbers.map((pageNumber) => (
                 <li
                   key={pageNumber}
-                  className={`page-item ${pageNumber === resultsPage.number + 1 ? "active" : ""
-                    }`}
+                  className={`page-item ${
+                    pageNumber === resultsPage.number + 1 ? "active" : ""
+                  }`}
                 >
                   <button
                     className="page-link"

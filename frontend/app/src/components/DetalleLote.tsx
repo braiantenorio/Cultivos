@@ -31,7 +31,7 @@ function DetalleLote() {
   );
   const [showDeleted, setShowDeleted] = useState(false);
 
-  const url = `/lotes/${loteId}`;
+  const url = `/lotes/codigo/${loteId}`;
   useEffect(() => {
     const user = AuthService.getCurrentUser();
 
@@ -223,7 +223,7 @@ function DetalleLote() {
       <div className="qr-code">
         <p>
           <a
-            href={  process.env.REACT_APP_API_URL + "/qrcodes/" + lote.codigo}
+            href={process.env.REACT_APP_API_URL + "/qrcodes/" + lote.codigo}
             target="_blank"
             rel="noreferrer"
           >

@@ -137,14 +137,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/lotes/:loteId/procesos"
-            element={
-              <RequireAuth>
-                <DetalleLote />
-              </RequireAuth>
-            }
-          />
+          <Route path="/lotes/:loteId/procesos" element={<DetalleLote />} />
           <Route
             path="/lotes/log/:loteId"
             element={
@@ -153,14 +146,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/lotes/:loteId/historia"
-            element={
-              <RequireAuth>
-                <VerHistoriaLote />
-              </RequireAuth>
-            }
-          />
+          <Route path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
           <Route
             path="/lotes/:loteId/procesos/:listId"
             element={
@@ -279,7 +265,7 @@ function App() {
             }
           />
         </Routes>
-        <Footer/>
+        <Footer />
       </NotificationsProvider>
     </BrowserRouter>
   );

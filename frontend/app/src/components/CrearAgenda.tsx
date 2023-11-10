@@ -193,6 +193,7 @@ function CrearAgenda() {
           <div className="mb-3 row align-items-center">
             <div className="mb-2 col-12 col-md-6 col-lg-3">{tipo} &nbsp;</div>
             {"  "}
+
             <div className="col-12 col-md-6 col-lg-3">
               <button
                 type="button"
@@ -381,13 +382,13 @@ function CrearAgenda() {
             <div className="modal-header">
               {" "}
               <h5 className="modal-title ">
-                ¡Advertencia!
+                ¿ESTAS SEGURO?
                 <i className="bi bi-exclamation-triangle"></i>
               </h5>
             </div>
             <div className="modal-body">
               <div className="alert alert-warning" role="alert">
-                Una vez creado, no podrás editar este lote más tarde.
+                Una vez creado, no podrás editar esta agenda más tarde.
               </div>
             </div>
 

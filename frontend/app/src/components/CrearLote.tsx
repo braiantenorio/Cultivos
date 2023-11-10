@@ -250,6 +250,9 @@ const CrearLote: React.FC = () => {
   const handleCancelar = () => {
     navigate(-1);
   };
+  const handleCancelar1 = () => {
+    navigate("/lotes?pagina=1&longitud=7");
+  };
 
   return (
     <div className="container">
@@ -372,7 +375,7 @@ const CrearLote: React.FC = () => {
             <div className="modal-header">
               {" "}
               <h5 className="modal-title ">
-                ¡Advertencia!
+                ¿ESTAS SEGURO?
                 <i className="bi bi-exclamation-triangle"></i>
               </h5>
             </div>
@@ -436,7 +439,7 @@ const CrearLote: React.FC = () => {
                 type="button"
                 className="btn btn-primary"
                 data-bs-dismiss="modal"
-                onClick={handleCancelar}
+                onClick={handleCancelar1}
               >
                 Ok
               </button>

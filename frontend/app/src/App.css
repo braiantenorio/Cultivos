@@ -99,6 +99,18 @@
   margin-top: 10px; /* Ajusta el margen superior según tus necesidades */
 }
 
+.watermark {
+  position: fixed;
+  top: 50%;
+  left: 45%;
+  transform: translate(-50%, -50%); /* Rotar el texto en 45 grados */
+  font-size: 48px;
+  color: rgba(0, 0, 0, 0.153); /* Hacer el texto más transparente */
+  font-weight: bold;
+  text-align: center;
+  pointer-events: none; /* Evitar que el elemento interfiera con los clics */
+  z-index: 9999; /* Asegurar que esté por encima de otros elementos */
+}
 /* Codigo de Braian, para login y otras cosas. Deberiamos poder organizarlo mejor */
 body {
   height: 100%;
@@ -145,14 +157,4 @@ body {
 
 .component-with-margin {
   margin-top: 20px;
-}
-
-
-.container {
-  min-height: 73vh;
-}
-
-.footer {
-  flex: 0 0 auto;
-  margin-top:  px;
 }

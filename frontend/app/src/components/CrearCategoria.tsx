@@ -312,13 +312,14 @@ function CrearCategoria() {
             <div className="modal-header">
               {" "}
               <h5 className="modal-title ">
-                ¡Advertencia!
+                ¿ESTAS SEGURO?
                 <i className="bi bi-exclamation-triangle"></i>
               </h5>
             </div>
             <div className="modal-body">
               <div className="alert alert-warning" role="alert">
-                Una vez creado, no podrás editar este lote más tarde.
+                Una vez creado, no podrás editar el nombre y codigo de esta
+                categoria más tarde.
               </div>
             </div>
 

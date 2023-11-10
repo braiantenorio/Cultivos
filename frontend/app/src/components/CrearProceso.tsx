@@ -268,7 +268,7 @@ function CrearProceso() {
 
   return (
     <div className="container">
-      <h2>Nuevo Proceso </h2>
+      <h2>Registrar Proceso </h2>
       <div className="col-md-6">
         {notificationMessages.length > 0 ? (
           <ul className="list-inline">
@@ -354,13 +354,13 @@ function CrearProceso() {
                 <div className="modal-header">
                   {" "}
                   <h5 className="modal-title ">
-                    ¡Advertencia!
+                    ¿ESTAS SEGURO?
                     <i className="bi bi-exclamation-triangle"></i>
                   </h5>
                 </div>
                 <div className="modal-body">
                   <div className="alert alert-warning" role="alert">
-                    Una vez creado, no podrás editar este lote más tarde.
+                    Una vez registrado, no podrás editar este proceso más tarde.
                   </div>
                 </div>
 

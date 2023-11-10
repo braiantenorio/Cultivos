@@ -61,10 +61,23 @@ export const NotificationsProvider = ({
     setNotificationMessages(newMessages);
   };
 
+  const currentUser = AuthService.getCurrentUser();
+  const location = useLocation();
+
+  // Condición para mostrar la marca de agua solo si el usuario es moderador
+  const showWatermark =
+    currentUser?.roles.includes("ROLE_MODERATOR") ||
+    currentUser?.roles.includes("ROLE_ADMIN") ||
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/home" ||
+    location.pathname === "/";
+
   return (
     <NotificationsContext.Provider
       value={{ notifications, notificationMessages, updateNotifications }}
     >
+      {!showWatermark && <div className="watermark col-12">Solo Lectura</div>}
       {children}
     </NotificationsContext.Provider>
   );
@@ -198,6 +211,14 @@ function Menu() {
                     <li>
                       <Link className="dropdown-item" to="/lotes/crear-lote">
                         Nuevo
+                      </Link>
+                    </li>
+                  )}
+                  {showModeratorBoard && (
+                    <li>
+                      {" "}
+                      <Link to="/generar/informe" className="dropdown-item">
+                        Informe
                       </Link>
                     </li>
                   )}
@@ -345,13 +366,6 @@ function Menu() {
                 </ul>
               </div>
               &nbsp;
-              <ul></ul>
-              <div className="nav-item mt-1" data-bs-dismiss="offcanvas">
-                {" "}
-                <Link to="/generar/informe" className="btn btn-custom-color-2">
-                  Informes
-                </Link>
-              </div>
             </ul>
             <ul></ul>
             {showModeratorBoard && (
