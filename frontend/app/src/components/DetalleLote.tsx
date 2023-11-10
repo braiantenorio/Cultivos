@@ -171,14 +171,63 @@ function DetalleLote() {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
         <h2>Detalle del Lote</h2>
-        {showModeratorBoard && (
-          <button className="btn btn-danger" onClick={handleAnular}>
-            Anular
+
+        <div className="dropdown" style={{ position: "static" }}>
+          <button
+            className="d-flex align-items-center link-body-emphasis text-decoration-none"
+            data-bs-toggle="dropdown"
+            aria-expanded="false"
+            style={{
+              position: "static",
+              padding: 0,
+              border: "none",
+              background: "none",
+            }}
+          >
+            <i className="bi bi-three-dots"></i>
           </button>
-        )}
+          <ul
+            className="dropdown-menu text-small shadow "
+            data-boundary="viewport"
+          >
+            <li>
+              <a
+                className="dropdown-item"
+                href={`/lotes/${lote.id}/agenda`}
+              >
+                Agenda
+              </a>
+            </li>
+
+            <li>
+              <a
+                className="dropdown-item"
+                href={process.env.REACT_APP_API_URL + "/qrcodes/" + lote.codigo}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Código QR
+              </a>
+            </li>
+
+            {showModeratorBoard && (
+              <div>
+                <li><hr className="dropdown-divider" /></li>
+
+                <li>
+                  <button className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center" onClick={handleAnular}>
+                    Anular
+                  </button>
+                </li>
+              </div>
+
+            )}
+
+          </ul>
+        </div>
       </div>
 
-      <div className="detail-info row">
+      <div className="detail-info row mt-2">
         <div className="col-12 col-md-6 col-lg-4">
           <p>
             <span className="badge bg-secondary text-white me-2 fs-6">
@@ -220,21 +269,10 @@ function DetalleLote() {
         </div>
       </div>
 
-      <div className="qr-code">
-        <p>
-          <a
-            href={process.env.REACT_APP_API_URL + "/qrcodes/" + lote.codigo}
-            target="_blank"
-            rel="noreferrer"
-          >
-            Ver código QR
-          </a>
-        </p>
-      </div>
 
       <div className="processes">
         <div className="row">
-          <div className="col-8 col-md-6 col-lg-10 row">
+          <div className="col-8 col-md-6 col-lg-10 row mt-3">
             <div className="col-md-3 ">
               <h3>
                 <span>Procesos&nbsp;&nbsp;</span>
@@ -260,14 +298,6 @@ function DetalleLote() {
             </div>
           </div>
 
-          <div className="col-4 col-md-3 col-lg-2">
-            <Link
-              to={`/lotes/${lote.id}/agenda`}
-              className="btn btn-info float-end"
-            >
-              Agenda
-            </Link>
-          </div>
         </div>
 
         <div className="table-responsive">
@@ -279,9 +309,8 @@ function DetalleLote() {
                   Usuario{" "}
                   {sortField === "usuario" && (
                     <i
-                      className={`bi bi-arrow-${
-                        sortDirection === "asc" ? "up" : "down"
-                      }`}
+                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                        }`}
                     ></i>
                   )}
                 </th>
@@ -289,9 +318,8 @@ function DetalleLote() {
                   Tipo{" "}
                   {sortField === "listaDeAtributos" && (
                     <i
-                      className={`bi bi-arrow-${
-                        sortDirection === "asc" ? "up" : "down"
-                      }`}
+                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                        }`}
                     ></i>
                   )}
                 </th>
@@ -299,9 +327,8 @@ function DetalleLote() {
                   Fecha{" "}
                   {sortField === "fecha" && (
                     <i
-                      className={`bi bi-arrow-${
-                        sortDirection === "asc" ? "up" : "down"
-                      }`}
+                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
+                        }`}
                     ></i>
                   )}
                 </th>
@@ -353,9 +380,8 @@ function DetalleLote() {
                 {pageNumbers.map((pageNumber) => (
                   <li
                     key={pageNumber}
-                    className={`page-item ${
-                      pageNumber === page ? "active" : ""
-                    }`}
+                    className={`page-item ${pageNumber === page ? "active" : ""
+                      }`}
                   >
                     <button
                       className="page-link"
@@ -375,9 +401,8 @@ function DetalleLote() {
                   </li>
                 ))}
                 <li
-                  className={`page-item ${
-                    page * pageSize >= allProcesos.length ? "disabled" : ""
-                  }`}
+                  className={`page-item ${page * pageSize >= allProcesos.length ? "disabled" : ""
+                    }`}
                 >
                   <button
                     className="page-link"

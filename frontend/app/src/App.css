@@ -171,3 +171,15 @@ body {
   flex: 0 0 auto;
   margin-top:  px;
 }
+
+.dropdown-item.dropdown-item-danger{
+  color: #dc3545;
+  background-color: transparent;
+}
+
+.dropdown-item.dropdown-item-danger.active,
+.dropdown-item.dropdown-item-danger:hover,
+.dropdown-item.dropdown-item-danger:focus {
+  background-color: #dc3545;
+  color: #fff;
+}
