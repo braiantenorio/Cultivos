@@ -202,6 +202,7 @@ public class LoteService {
 
 	public byte[] generarContenidoPDF(Long id) throws IOException {
 		Lote lote = findById(id);
+		System.out.println(lote.getId());
 
 		try (PDDocument document = new PDDocument()) {
 			PDPage page = new PDPage();
@@ -232,8 +233,8 @@ public class LoteService {
 				String estado = lote.getFechaDeBaja() == null ? "Activo": "Inactivo";
 				String text6 = "Estado: " + estado;
 
-				String text7 = "Procedencia: " + lote.getLotePadre().getCategoria().getNombre() + " con codigo "
-						+ lote.getLotePadre().getCodigo();
+				String text7 =lote.getLotePadre() != null? "Procedencia: " + lote.getLotePadre().getCategoria().getNombre() + " con codigo "
+						+ lote.getLotePadre().getCodigo() : "Procedencia: Nuevo";
 
 				contentStream.showText(text1);
 				contentStream.newLine();

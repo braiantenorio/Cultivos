@@ -111,10 +111,9 @@ function TipoAgendaList() {
     <div className="container">
       <h2>Agendas </h2>
 
-      <table className="table">
+      <table className="table table-responsive">
         <thead>
           <tr>
-            <th>#</th>
             <th>Categoria</th>
             <th>Version</th>
             <th></th>
@@ -123,33 +122,55 @@ function TipoAgendaList() {
         <tbody>
           {resultsPage.content.map((tipoAgenda, index) => (
             <tr key={tipoAgenda.id}>
-              <td>{index + 1}</td>
               <td>{tipoAgenda.categoria.nombre}</td>
               <td>{tipoAgenda.version}</td>
               <td>
-                <Link
-                  to={`/agendas/${tipoAgenda.id}`}
-                  className="text-warning me-2"
-                  title="Detalle"
-                >
-                  <i
-                    className="bi bi-eye"
-                    style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                  ></i>
-                </Link>
-                &nbsp;&nbsp;
-                {showModeratorBoard && (
+                <div className="dropdown" style={{ position: "static" }}>
                   <button
-                    className="text-danger border-0 bg-transparent me-2"
-                    onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
-                    title="Eliminar"
+                    className="d-flex align-items-center link-body-emphasis text-decoration-none"
+                    data-bs-toggle="dropdown"
+                    aria-expanded="false"
+                    style={{
+                      position: "static",
+                      padding: 0,
+                      border: "none",
+                      background: "none",
+                    }}
                   >
-                    <i
-                      className="bi bi-trash"
-                      style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                    ></i>
+                    <i className="bi bi-three-dots"></i>
                   </button>
-                )}
+                  <ul
+                    className="dropdown-menu text-small shadow "
+                    data-boundary="viewport"
+                  >
+                    <li>
+                      <a
+                        className="dropdown-item"
+                        href={`/agendas/${tipoAgenda.id}`}
+                      >
+                        Detalle
+                      </a>
+                    </li>
+
+                    {showModeratorBoard && (
+                      <div>
+                        <li>
+                          <hr className="dropdown-divider" />
+                        </li>
+                        <li>
+                          <button
+                            className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
+                            onClick={() =>
+                              handleEliminarTipoAgenda(tipoAgenda.id)
+                            }
+                          >
+                            Anular
+                          </button>
+                        </li>
+                      </div>
+                    )}
+                  </ul>
+                </div>
               </td>
             </tr>
           ))}

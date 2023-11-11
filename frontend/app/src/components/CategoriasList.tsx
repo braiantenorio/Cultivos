@@ -150,68 +150,87 @@ function CategoriasList() {
         />
         <label className="form-check-label">Mostrar Eliminados</label>
       </div>
-      <div className="table-responsive">
-        <table className="table">
-          <thead>
-            <tr>
-              <th></th>
-              <th>Nombre</th>
-              <th>Codigo</th>
-              <th></th>
+      <table className="table">
+        <thead>
+          <tr>
+            <th>Nombre</th>
+            <th>Codigo</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {resultsPage.content.map((categoria, index) => (
+            <tr key={categoria.id}>
+              <td>{categoria.nombre}</td>
+              <td>{categoria.codigo}</td>
+              {showModeratorBoard && (
+                <td>
+                  <div className="dropdown" style={{ position: "static" }}>
+                    <button
+                      className="d-flex align-items-center link-body-emphasis text-decoration-none"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      style={{
+                        position: "static",
+                        padding: 0,
+                        border: "none",
+                        background: "none",
+                      }}
+                    >
+                      <i className="bi bi-three-dots"></i>
+                    </button>
+                    <ul
+                      className="dropdown-menu text-small shadow "
+                      data-boundary="viewport"
+                    >
+                      {!categoria.deleted ? (
+                        <div>
+                          <li>
+                            <a
+                              className="dropdown-item"
+                              href={`/categorias/${categoria.id}`}
+                            >
+                              Editar
+                            </a>
+                          </li>
+
+                          <div>
+                            <li>
+                              <hr className="dropdown-divider" />
+                            </li>
+
+                            <li>
+                              <button
+                                className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
+                                onClick={() =>
+                                  handleEliminarTipoAgenda(categoria.id)
+                                }
+                              >
+                                Anular
+                              </button>
+                            </li>
+                          </div>
+                        </div>
+                      ) : (
+                        <li>
+                          <button
+                            className="dropdown-item  d-flex gap-2 align-items-center"
+                            onClick={() =>
+                              handleEliminarTipoAgenda1(categoria.id)
+                            }
+                          >
+                            Restaurar
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
+                </td>
+              )}
             </tr>
-          </thead>
-          <tbody>
-            {resultsPage.content.map((tipoAgenda, index) => (
-              <tr key={tipoAgenda.id}>
-                <td></td>
-                <td>{tipoAgenda.nombre}</td>
-                <td>{tipoAgenda.codigo}</td>
-                {showModeratorBoard && (
-                  <td>
-                    {!tipoAgenda.deleted ? (
-                      <>
-                        <Link
-                          to={`/categorias/${tipoAgenda.id}`}
-                          className="text-primary me-2"
-                          title="Editar"
-                        >
-                          <i
-                            className="bi bi-eye-fill"
-                            style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                          ></i>
-                        </Link>
-                        <button
-                          className="text-danger border-0 bg-transparent me-2"
-                          onClick={() =>
-                            handleEliminarTipoAgenda(tipoAgenda.id)
-                          }
-                          title="Eliminar"
-                        >
-                          <i
-                            className="bi bi-trash"
-                            style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                          ></i>
-                        </button>
-                      </>
-                    ) : (
-                      <button
-                        className="text-info border-0 bg-transparent me-2"
-                        onClick={() => handleEliminarTipoAgenda1(tipoAgenda.id)}
-                        title="Eliminar"
-                      >
-                        <i
-                          className="bi bi-arrow-clockwise"
-                          style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                        ></i>
-                      </button>
-                    )}
-                  </td>
-                )}
-              </tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
+          ))}
+        </tbody>
+      </table>
       {!resultsPage.content.length && (
         <div className="alert alert-warning">No se encontraron lotes</div>
       )}

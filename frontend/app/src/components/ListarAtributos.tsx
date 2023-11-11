@@ -146,57 +146,72 @@ function ListarAtributos() {
         <table className="table">
           <thead>
             <tr>
-              <th>#</th>
-              <th>Nombre</th>
-              <th>Tipo</th>
-              <th>Obligatorio</th>
-              <th>Decimales</th>
-              <th>Caracteres</th>
-              <th>Maximo</th>
-              <th>Minimo</th>
-              <th></th>
+              <th scope="col">Nombre</th>
+              <th scope="col">Tipo</th>
+              <th scope="col">Obligatorio</th>
+              <th scope="col">Decimales</th>
+              <th scope="col">Caracteres</th>
+              <th scope="col">Maximo</th>
+              <th scope="col">Minimo</th>
+              <th scope="col"></th>
             </tr>
           </thead>
           <tbody>
-            {resultsPage.content.map((tipoAgenda, index) => (
-              <tr key={tipoAgenda.id}>
-                <td>{index + 1}</td>
-                <td>{tipoAgenda.nombre}</td>
-                <td>{tipoAgenda.tipo}</td>
-                <td>{tipoAgenda.obligatorio ? "Si" : "No"}</td>
-                <td>{tipoAgenda.decimales}</td>
-                <td>{tipoAgenda.caracteres}</td>
-                <td>{tipoAgenda.maximo}</td>
-                <td>{tipoAgenda.minimo}</td>
+            {resultsPage.content.map((atributo, index) => (
+              <tr key={atributo.id}>
+                <td>{atributo.nombre}</td>
+                <td>{atributo.tipo}</td>
+                <td >{atributo.obligatorio ? "Si" : "No"}</td>
+                <td>{atributo.decimales}</td>
+                <td>{atributo.caracteres}</td>
+                <td>{atributo.maximo}</td>
+                <td>{atributo.minimo}</td>
+
                 {showModeratorBoard && (
                   <td>
-                    {!tipoAgenda.deleted ? (
-                      <>
-                        <button
-                          className="text-danger border-0 bg-transparent me-2"
-                          onClick={() =>
-                            handleEliminarTipoAgenda(tipoAgenda.id)
-                          }
-                          title="Eliminar"
-                        >
-                          <i
-                            className="bi bi-trash"
-                            style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                          ></i>
-                        </button>
-                      </>
-                    ) : (
+                    <div className="dropdown" style={{ position: "static" }}>
                       <button
-                        className="text-info border-0 bg-transparent me-2"
-                        onClick={() => handleEliminarTipoAgenda1(tipoAgenda.id)}
-                        title="Eliminar"
+                        className="d-flex align-items-center link-body-emphasis text-decoration-none"
+                        data-bs-toggle="dropdown"
+                        aria-expanded="false"
+                        style={{
+                          position: "static",
+                          padding: 0,
+                          border: "none",
+                          background: "none",
+                        }}
                       >
-                        <i
-                          className="bi bi-arrow-clockwise"
-                          style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                        ></i>
+                        <i className="bi bi-three-dots"></i>
                       </button>
-                    )}
+                      <ul
+                        className="dropdown-menu text-small shadow "
+                        data-boundary="viewport"
+                      >
+                        {!atributo.deleted ? (
+                          <>
+                            <li>
+                              <button
+                                className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
+                                onClick={() =>
+                                  handleEliminarTipoAgenda(atributo.id)
+                                }
+                              >
+                                Anular
+                              </button>
+                            </li>
+                          </>
+                        ) : (
+                          <button
+                            className="dropdown-item d-flex gap-2 align-items-center"
+                            onClick={() =>
+                              handleEliminarTipoAgenda1(atributo.id)
+                            }
+                          >
+                            Restaurar
+                          </button>
+                        )}
+                      </ul>
+                    </div>
                   </td>
                 )}
               </tr>

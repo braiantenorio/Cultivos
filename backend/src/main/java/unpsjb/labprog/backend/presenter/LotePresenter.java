@@ -253,8 +253,8 @@ public class LotePresenter {
     return service.add(lote);
   }
 
-  @GetMapping("/mostrar-pdf")
-  public ResponseEntity<byte[]> mostrarPDF(@RequestParam("id") long id) throws IOException {
+  @GetMapping("/mostrar-pdf/{id}/{fileName}.pdf")
+  public ResponseEntity<byte[]> mostrarPDF(@PathVariable("id") Long id, @PathVariable("fileName") String fileName) throws IOException {
       byte[] contenidoPDF = service.generarContenidoPDF(id);
   
       HttpHeaders headers = new HttpHeaders();

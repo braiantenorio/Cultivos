@@ -149,43 +149,60 @@ function ListarCultivares() {
       <table className="table">
         <thead>
           <tr>
-            <th></th>
             <th>Nombre</th>
             <th>Codigo</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
           {resultsPage.content.map((tipoAgenda, index) => (
             <tr key={tipoAgenda.id}>
-              <td></td>
               <td>{tipoAgenda.nombre}</td>
               <td>{tipoAgenda.codigo}</td>
               {showModeratorBoard && (
                 <td>
-                  {!tipoAgenda.deleted ? (
+                  <div className="dropdown" style={{ position: "static" }}>
                     <button
-                      className="text-danger border-0 bg-transparent me-2"
-                      onClick={() => handleEliminarTipoAgenda(tipoAgenda.id)}
-                      title="Eliminar"
+                      className="d-flex align-items-center link-body-emphasis text-decoration-none"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                      style={{
+                        position: "static",
+                        padding: 0,
+                        border: "none",
+                        background: "none",
+                      }}
                     >
-                      <i
-                        className="bi bi-trash"
-                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                      ></i>
+                      <i className="bi bi-three-dots"></i>
                     </button>
-                  ) : (
-                    <button
-                      className="text-info border-0 bg-transparent me-2"
-                      onClick={() => handleEliminarTipoAgenda1(tipoAgenda.id)}
-                      title="Eliminar"
+                    <ul
+                      className="dropdown-menu text-small shadow "
+                      data-boundary="viewport"
                     >
-                      <i
-                        className="bi bi-arrow-clockwise"
-                        style={{ fontSize: "1.5rem", cursor: "pointer" }}
-                      ></i>
-                    </button>
-                  )}
+                      {!tipoAgenda.deleted ? (
+                        <li>
+                          <button
+                            className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
+                            onClick={() =>
+                              handleEliminarTipoAgenda(tipoAgenda.id)
+                            }
+                          >
+                            Anular
+                          </button>
+                        </li>
+                      ) : (
+                        <li>
+                          <button
+                            className="dropdown-item d-flex gap-2 align-items-center"
+                            onClick={() =>
+                              handleEliminarTipoAgenda1(tipoAgenda.id)
+                            }
+                          >
+                            Restaurar
+                          </button>
+                        </li>
+                      )}
+                    </ul>
+                  </div>
                 </td>
               )}
             </tr>

@@ -191,10 +191,7 @@ function DetalleLote() {
             data-boundary="viewport"
           >
             <li>
-              <a
-                className="dropdown-item"
-                href={`/lotes/${lote.id}/agenda`}
-              >
+              <a className="dropdown-item" href={`/lotes/${lote.id}/agenda`}>
                 Agenda
               </a>
             </li>
@@ -210,19 +207,33 @@ function DetalleLote() {
               </a>
             </li>
 
+            <li>
+              <a
+                className="dropdown-item"
+                href={`${process.env.REACT_APP_API_URL}/lotes/mostrar-pdf/${lote.id}/${lote.codigo}.pdf`}
+                target="_blank"
+                rel="noreferrer"
+              >
+                Imprimir detalle
+              </a>
+            </li>
+
             {showModeratorBoard && (
               <div>
-                <li><hr className="dropdown-divider" /></li>
+                <li>
+                  <hr className="dropdown-divider" />
+                </li>
 
                 <li>
-                  <button className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center" onClick={handleAnular}>
+                  <button
+                    className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
+                    onClick={handleAnular}
+                  >
                     Anular
                   </button>
                 </li>
               </div>
-
             )}
-
           </ul>
         </div>
       </div>
@@ -269,7 +280,6 @@ function DetalleLote() {
         </div>
       </div>
 
-
       <div className="processes">
         <div className="row">
           <div className="col-8 col-md-6 col-lg-10 row mt-3">
@@ -297,7 +307,6 @@ function DetalleLote() {
               />
             </div>
           </div>
-
         </div>
 
         <div className="table-responsive">
@@ -309,8 +318,9 @@ function DetalleLote() {
                   Usuario{" "}
                   {sortField === "usuario" && (
                     <i
-                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
-                        }`}
+                      className={`bi bi-arrow-${
+                        sortDirection === "asc" ? "up" : "down"
+                      }`}
                     ></i>
                   )}
                 </th>
@@ -318,8 +328,9 @@ function DetalleLote() {
                   Tipo{" "}
                   {sortField === "listaDeAtributos" && (
                     <i
-                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
-                        }`}
+                      className={`bi bi-arrow-${
+                        sortDirection === "asc" ? "up" : "down"
+                      }`}
                     ></i>
                   )}
                 </th>
@@ -327,8 +338,9 @@ function DetalleLote() {
                   Fecha{" "}
                   {sortField === "fecha" && (
                     <i
-                      className={`bi bi-arrow-${sortDirection === "asc" ? "up" : "down"
-                        }`}
+                      className={`bi bi-arrow-${
+                        sortDirection === "asc" ? "up" : "down"
+                      }`}
                     ></i>
                   )}
                 </th>
@@ -380,8 +392,9 @@ function DetalleLote() {
                 {pageNumbers.map((pageNumber) => (
                   <li
                     key={pageNumber}
-                    className={`page-item ${pageNumber === page ? "active" : ""
-                      }`}
+                    className={`page-item ${
+                      pageNumber === page ? "active" : ""
+                    }`}
                   >
                     <button
                       className="page-link"
@@ -401,8 +414,9 @@ function DetalleLote() {
                   </li>
                 ))}
                 <li
-                  className={`page-item ${page * pageSize >= allProcesos.length ? "disabled" : ""
-                    }`}
+                  className={`page-item ${
+                    page * pageSize >= allProcesos.length ? "disabled" : ""
+                  }`}
                 >
                   <button
                     className="page-link"
