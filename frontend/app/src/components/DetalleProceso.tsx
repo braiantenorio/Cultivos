@@ -75,7 +75,7 @@ function DetalleProceso() {
           return (
             <a
               key={valor.id}
-              href={"http://localhost:8080/files/view/" + valor.valor}
+              href={process.env.REACT_APP_API_URL +"/files/view/" + valor.valor}
               target="_blank"
               rel="noreferrer"
             >
