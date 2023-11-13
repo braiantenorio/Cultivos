@@ -45,7 +45,7 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 		@ParamDef(name = "isDeleted", type = boolean.class),
 		@ParamDef(name = "codigo", type = String.class)
 })
-@Filter(name = "deletedLoteFilter", condition = "((:isDeleted = true AND fecha_De_Baja IS NOT NULL) OR (:isDeleted = false AND fecha_De_Baja IS NULL)) AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
+@Filter(name = "deletedLoteFilter", condition = "((:isDeleted AND (:isDeleted = deleted OR fecha_De_Baja IS NOT NULL )) OR (:isDeleted = deleted AND fecha_De_Baja IS NULL)) AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
 
 @JsonIgnoreProperties(value = { "lotePadre" }, allowSetters = true)
 @EntityListeners(AuditingEntityListener.class)
@@ -78,7 +78,7 @@ public class Lote {
 
 	@CreatedBy
 	@ManyToOne
-	private Usuario usuario; 
+	private Usuario usuario;
 
 	private boolean deleted = Boolean.FALSE;
 
