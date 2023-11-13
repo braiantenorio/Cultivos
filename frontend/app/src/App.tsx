@@ -278,7 +278,7 @@ function Home() {
         Sistema de Gestión y Control en la producción de Cannabis medicinal
       </h1>
 
-      <div className="my-4">
+      <div className="mt-4 " >
         <img src={fondo} alt="Cannabis Medicinal" className="img-fluid" />
       </div>
     </div>

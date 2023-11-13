@@ -160,18 +160,20 @@ body {
 }
 
 .container {
+  position: relative;
   min-height: 73vh;
 }
 
 .container-auth {
+  position: relative;
   min-height: 80vh;
 }
 
 .footer {
-  flex: 0 0 auto;
-  margin-top:  px;
+  position: absolute;
+  bottom: 0;
+  width: 100%;
 }
-
 .dropdown-item.dropdown-item-danger{
   color: #dc3545;
   background-color: transparent;
