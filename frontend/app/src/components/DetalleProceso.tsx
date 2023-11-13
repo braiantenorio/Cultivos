@@ -28,6 +28,9 @@ function DetalleProceso() {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
+    if (user.roles.includes("ROLE_ADMIN")) {
+      setShowModeratorBoard(true);
+    }
     fetch(`/procesos/id/${procesoId}`, {
       headers: authHeader(),
     })
@@ -75,7 +78,9 @@ function DetalleProceso() {
           return (
             <a
               key={valor.id}
-              href={process.env.REACT_APP_API_URL +"/files/view/" + valor.valor}
+              href={
+                process.env.REACT_APP_API_URL + "/files/view/" + valor.valor
+              }
               target="_blank"
               rel="noreferrer"
             >

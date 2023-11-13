@@ -31,6 +31,9 @@ function ListarAtributos() {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
+    if (user.roles.includes("ROLE_ADMIN")) {
+      setShowModeratorBoard(true);
+    }
     fetchAtributos();
   }, [resultsPage.number, resultsPage.size, showDeleted, categorias]);
 
@@ -161,7 +164,7 @@ function ListarAtributos() {
               <tr key={atributo.id}>
                 <td>{atributo.nombre}</td>
                 <td>{atributo.tipo}</td>
-                <td >{atributo.obligatorio ? "Si" : "No"}</td>
+                <td>{atributo.obligatorio ? "Si" : "No"}</td>
                 <td>{atributo.decimales}</td>
                 <td>{atributo.caracteres}</td>
                 <td>{atributo.maximo}</td>
