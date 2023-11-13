@@ -69,7 +69,6 @@ public class ProcesoPresenter {
 	}
 
 	@GetMapping(value = "/audit/{id}")
-	@PreAuthorize("hasRole('MODERATOR')")
 	public ResponseEntity<Object> audit(@PathVariable("id") Long id) {
 		return Response.ok(service.findAllRevisions(id), "Proceso actualizado correctamente");
 	}

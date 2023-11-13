@@ -232,7 +232,7 @@ function CategoriasList() {
         </tbody>
       </table>
       {!resultsPage.content.length && (
-        <div className="alert alert-warning">No se encontraron lotes</div>
+        <div className="alert alert-warning">No se encontraron categorias</div>
       )}
       <nav aria-label="Page navigation example">
         <div className="d-flex justify-content-between align-items-center">

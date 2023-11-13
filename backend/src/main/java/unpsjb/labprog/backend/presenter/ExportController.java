@@ -245,7 +245,7 @@ public class ExportController {
             // System.err.println("Error al analizar la cadena de fecha: " +
             // e.getMessage());
         }
-        List<Lote> lotes = loteService.findAllFecha(fecha);
+        List<Object[]> lotes = loteService.findAllFecha(fecha);
         StockDTO stock = new StockDTO();
         StockDTO stocki = informeF.getStock();
         List<Long> list = new ArrayList<>();
@@ -257,10 +257,13 @@ public class ExportController {
         List<LoteStockDTO> lotesStock = new ArrayList<>();
         LoteStockDTO loteStock;
         if (list.size() == 0) {
-            for (Lote l : lotes) {
+            for (Object[] result : lotes) {
                 loteStock = new LoteStockDTO();
+                Lote l = (Lote) result[0];
+                Long longValue = (Long) result[1];
+                int loteId = longValue.intValue();
                 loteStock.setCodigo(l.getCodigo());
-                loteStock.setCantidad(l.getCantidad());
+                loteStock.setCantidad(l.getCantidad() + loteId);
                 loteStock.setVariedad(l.getCultivar().getNombre());
                 loteStock.setCategoria(l.getCategoria().getNombre());
 
@@ -275,10 +278,12 @@ public class ExportController {
                 Long loteId = (Long) result[0];
                 Lote l = (Lote) result[1];
                 Valor valor = (Valor) result[2];
+                Long longValue = (Long) result[3];
+                int loteId2 = longValue.intValue();
                 if (!lotesValoresMap.containsKey(loteId)) {
                     loteStock = new LoteStockDTO();
                     loteStock.setCodigo(l.getCodigo());
-                    loteStock.setCantidad(l.getCantidad());
+                    loteStock.setCantidad(l.getCantidad() + loteId2);
                     loteStock.setVariedad(l.getCultivar().getNombre());
                     loteStock.setCategoria(l.getCategoria().getNombre());
                     loteStock.addValor(valor);
@@ -302,7 +307,7 @@ public class ExportController {
         DDJJDTO ddjjdtoM;
         for (DDJJDTO ddjjdto : ddjjdtos) {
             ddjjdtoM = new DDJJDTO();
-            List<Lote> lotesc = loteService.findLotesByCategoria(ddjjdto.getCategoria(), fecha);
+            List<Object[]> lotesc = loteService.findLotesByCategoria(ddjjdto.getCategoria(), fecha);
             List<Atributo> dAtributos = ddjjdto.getAtributos();
             ddjjdtoM.setAtributos(dAtributos);
             ddjjdtoM.setCategoria(ddjjdto.getCategoria());
@@ -314,14 +319,18 @@ public class ExportController {
             }
             if (listd.size() == 0) {
 
-                for (Lote ld : lotesc) {
+                for (Object[] result : lotesc) {
                     loteD = new LoteDDJJDTO();
+                    Lote ld = (Lote) result[0];
+                    Long longValue = (Long) result[1];
+                    int loteId = longValue.intValue();
+
                     loteD.setCodigo(ld.getCodigo());
                     if (ld.getLotePadre() != null) {
                         loteD.setCodigoPadre(ld.getLotePadre().getCodigo());
                         loteD.setCategoriaPadre(ld.getLotePadre().getCategoria().getNombre());
                     }
-                    loteD.setCantidad(ld.getCantidad());
+                    loteD.setCantidad(ld.getCantidad() + loteId);
                     loteD.setVariedad(ld.getCultivar().getNombre());
                     loteD.setFecha(ld.getFecha());
                     lotesD.add(loteD);
@@ -335,6 +344,8 @@ public class ExportController {
                     Long loteId = (Long) result[0];
                     Lote ld = (Lote) result[1];
                     Valor valor = (Valor) result[2];
+                    Long longValue = (Long) result[3];
+                    int loteId2 = longValue.intValue();
                     if (!lotesValoresMapD.containsKey(loteId)) {
                         loteD = new LoteDDJJDTO();
                         loteD.setCodigo(ld.getCodigo());
@@ -342,7 +353,7 @@ public class ExportController {
                             loteD.setCodigoPadre(ld.getLotePadre().getCodigo());
                             loteD.setCategoriaPadre(ld.getLotePadre().getCategoria().getNombre());
                         }
-                        loteD.setCantidad(ld.getCantidad());
+                        loteD.setCantidad(ld.getCantidad() + loteId2);
                         loteD.setVariedad(ld.getCultivar().getNombre());
                         loteD.setFecha(ld.getFecha());
                         loteD.addValor(valor);

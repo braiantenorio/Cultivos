@@ -187,12 +187,12 @@ public class LoteService {
 		return repository.findLotesAndValoresByAtributos(list, localDate);
 	}
 
-	public List<Lote> findLotesByCategoria(Categoria categoria, LocalDate localDate) {
-		return repository.findLotesByCategoria(categoria, localDate);
+	public List<Object[]> findLotesByCategoria(Categoria categoria, LocalDate localDate) {
+		return repository.findLotesByCategoriaWithTotalCantidad(categoria, localDate);
 	}
 
-	public List<Lote> findAllFecha(LocalDate date) {
-		return repository.findAllFecha(date);
+	public List<Object[]> findAllFecha(LocalDate date) {
+		return repository.findAllFechaWithTotalCantidad(date);
 	}
 
 	public List<Object[]> findLotesAndValoresByAtributosAndCategoria(List<Long> listaAtributos, Categoria categoria,
@@ -208,7 +208,7 @@ public class LoteService {
 			PDPage page = new PDPage();
 			document.addPage(page);
 			PDDocumentInformation info = document.getDocumentInformation();
-        	info.setTitle("Inf-" + lote.getCodigo() + "-"+ LocalDate.now());
+			info.setTitle("Inf-" + lote.getCodigo() + "-" + LocalDate.now());
 
 			try (PDPageContentStream contentStream = new PDPageContentStream(document, page)) {
 				contentStream.setFont(PDType1Font.HELVETICA_BOLD, 24);
@@ -230,11 +230,13 @@ public class LoteService {
 				String text3 = "Cultivar: " + lote.getCultivar().getNombre();
 				String text4 = "Cantidad: " + lote.getCantidad(); //
 				String text5 = "Fecha de Creacion: " + lote.getFecha().toString();
-				String estado = lote.getFechaDeBaja() == null ? "Activo": "Inactivo";
+				String estado = lote.getFechaDeBaja() == null ? "Activo" : "Inactivo";
 				String text6 = "Estado: " + estado;
 
-				String text7 =lote.getLotePadre() != null? "Procedencia: " + lote.getLotePadre().getCategoria().getNombre() + " con codigo "
-						+ lote.getLotePadre().getCodigo() : "Procedencia: Nuevo";
+				String text7 = lote.getLotePadre() != null
+						? "Procedencia: " + lote.getLotePadre().getCategoria().getNombre() + " con codigo "
+								+ lote.getLotePadre().getCodigo()
+						: "Procedencia: Nuevo";
 
 				contentStream.showText(text1);
 				contentStream.newLine();

@@ -5,6 +5,8 @@ import { Proceso } from "../types/proceso";
 import swal from "sweetalert";
 import authHeader from "../services/auth-header";
 import axios from "axios";
+import Usuario from "../types/usuario";
+import * as AuthService from "../services/auth.service";
 
 function DetalleProceso() {
   const { procesoId } = useParams();
@@ -12,8 +14,20 @@ function DetalleProceso() {
   const [procesoD, setProcesoD] = useState<Proceso | null>(null);
   const [fileLinks, setFileLinks] = useState<(JSX.Element | null)[]>([]); // State to store file links
   const navigate = useNavigate();
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
 
   useEffect(() => {
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
     fetch(`/procesos/id/${procesoId}`, {
       headers: authHeader(),
     })
@@ -115,9 +129,13 @@ function DetalleProceso() {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
         <h2>Detalle del proceso</h2>
-        <button className="btn btn-danger" onClick={handleAnular}>
-          Anular
-        </button>
+        {showModeratorBoard && !proceso.deleted ? (
+          <button className="btn btn-danger" onClick={handleAnular}>
+            Anular
+          </button>
+        ) : (
+          <></>
+        )}
       </div>
 
       <dl className="row">

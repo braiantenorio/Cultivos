@@ -286,13 +286,15 @@ function DetalleLote() {
             <div className="col-md-3 ">
               <h3>
                 <span>Procesos&nbsp;&nbsp;</span>
-                {showModeratorBoard && (
+                {showModeratorBoard && !lote.fechaDeBaja ? (
                   <Link
                     to={`/lotes/${loteId}/procesos/new`}
                     className="btn btn-primary "
                   >
                     Cargar
                   </Link>
+                ) : (
+                  <></>
                 )}
               </h3>
             </div>

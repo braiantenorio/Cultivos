@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgramado, Long> {
 
-        @Query("SELECT u.email AS email, u.nombre AS nombreUsuario, l.codigo AS codigoLote, pp.proceso AS proceso " +
+        @Query("SELECT u.email AS email, u.nombre AS nombreUsuario, l.codigo AS codigoLote, pp AS proceso " +
                         "FROM Lote l " +
                         "JOIN l.agenda a " +
                         "JOIN a.procesosProgramado pp " +

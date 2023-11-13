@@ -42,25 +42,42 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
         @Query("SELECT l.codigo FROM Lote l WHERE UPPER(l.codigo) LIKE CONCAT('%', UPPER(?1), '%') ")
         List<String> searchLote(String term);
 
-        @Query("SELECT l FROM Lote l " +
+        @Query("SELECT l, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad FROM Lote l " +
+                        "LEFT JOIN l.subLotes ls " +
                         "WHERE (l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)")
-        List<Lote> findAllFecha(@Param("localDate") LocalDate localDate);
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate) " +
+                        "AND ls.fecha>= :localDate GROUP BY l.id")
+        List<Object[]> findAllFechaWithTotalCantidad(@Param("localDate") LocalDate localDate);
 
-        @Query("SELECT l.id,l, v FROM Lote l JOIN l.procesos p JOIN p.valores v WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) "
-                        +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) AND v.atributo.id IN :listaAtributos")
+        @Query("SELECT l.id, l, v, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad FROM Lote l " +
+                        "JOIN l.procesos p " +
+                        "JOIN p.valores v " +
+                        "LEFT JOIN l.subLotes ls " +
+                        "WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) " +
+                        "AND v.atributo.id IN :listaAtributos AND ls.fecha <= :localDate GROUP BY 3,2,1")
         List<Object[]> findLotesAndValoresByAtributos(@Param("listaAtributos") List<Long> listaAtributos,
-                        LocalDate localDate);
+                        @Param("localDate") LocalDate localDate);
 
-        @Query("SELECT l FROM Lote l WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) AND l.categoria = :categoria")
-        List<Lote> findLotesByCategoria(@Param("categoria") Categoria categoria, LocalDate localDate);
+        @Query("SELECT l, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad " +
+                        "FROM Lote l LEFT JOIN l.subLotes ls " +
+                        "WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) " +
+                        "AND (ls IS NULL OR ls.fecha>= :localDate) AND l.categoria = :categoria " +
+                        "GROUP BY l.id")
+        List<Object[]> findLotesByCategoriaWithTotalCantidad(@Param("categoria") Categoria categoria,
+                        @Param("localDate") LocalDate localDate);
 
-        @Query("SELECT l.id, l, v FROM Lote l JOIN l.procesos p JOIN p.valores v WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) "
-                        +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) AND v.atributo.id IN :listaAtributos AND l.categoria = :categoria")
+        @Query("SELECT l.id, l, v, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad FROM Lote l " +
+                        "JOIN l.procesos p " +
+                        "JOIN p.valores v " +
+                        "LEFT JOIN l.subLotes ls " +
+                        "WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
+                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) " +
+                        "AND v.atributo.id IN :listaAtributos AND l.categoria = :categoria AND ls.fecha<= :localDate GROUP BY 3,2,1")
         List<Object[]> findLotesAndValoresByAtributosAndCategoria(
                         @Param("listaAtributos") List<Long> listaAtributos,
-                        @Param("categoria") Categoria categoria, LocalDate localDate);
+                        @Param("categoria") Categoria categoria,
+                        @Param("localDate") LocalDate localDate);
+
 }
