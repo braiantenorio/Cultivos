@@ -26,8 +26,22 @@ export const getUsers = (): Promise<Usuario[]> => {
 }
 
 export const changeRole = (id: string, role: string): Promise<Usuario> => {
-  return axios.post(API_URL + "/usuarios/id/" + id + "/role/" + role, null, {
-    headers: authHeader(),
+  const url = `${API_URL}/usuarios/id/${id}/role/${role}`;
+  const headers = authHeader();
+
+  return fetch(url, {
+    method: 'POST',
+    headers: {
+      ...headers,
+      'Content-Type': 'application/json', // Ajusta el tipo de contenido según tu necesidad
+    },
+    body: JSON.stringify(null), // Si no necesitas enviar un cuerpo, puedes dejarlo como null
   })
-  .then(response => response.data.data);
-}
+    .then(response => {
+      if (!response.ok) {
+        throw new Error(`Error ${response.status}: ${response.statusText}`);
+      }
+      return response.json();
+    })
+    .then(data => data.data);
+};
