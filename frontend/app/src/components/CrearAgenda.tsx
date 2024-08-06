@@ -359,6 +359,7 @@ function CrearAgenda() {
                     className="btn btn-danger"
                     onClick={() => eliminarProcesoProgramado(index)}
                     title="Eliminar"
+                    disabled={tipo === "Detalle agenda"}
                   >
                     <i
                       className="bi bi-trash"
