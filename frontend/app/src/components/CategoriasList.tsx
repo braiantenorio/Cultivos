@@ -34,9 +34,7 @@ function CategoriasList() {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-    if (user.roles.includes("ROLE_ADMIN")) {
-      setShowModeratorBoard(true);
-    }
+
     navigate(
       `/categorias?pagina=${resultsPage.number + 1}&longitud=${
         resultsPage.size

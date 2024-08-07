@@ -104,9 +104,6 @@ function Menu() {
       setCurrentUser(user);
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
-      if (user.roles.includes("ROLE_ADMIN")) {
-        setShowModeratorBoard(true);
-      }
     }
 
     EventBus.on("logout", logOut);

@@ -25,9 +25,7 @@ function AgendaDeProcesos() {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-    if (user.roles.includes("ROLE_ADMIN")) {
-      setShowModeratorBoard(true);
-    }
+
     fetch(url1, {
       headers: authHeader(),
     })

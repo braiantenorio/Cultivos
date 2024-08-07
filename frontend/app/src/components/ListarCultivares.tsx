@@ -29,9 +29,7 @@ function ListarCultivares() {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-    if (user.roles.includes("ROLE_ADMIN")) {
-      setShowModeratorBoard(true);
-    }
+
     fetchAtributos();
   }, [showDeleted, resultsPage.number, resultsPage.size, cultivares]);
 

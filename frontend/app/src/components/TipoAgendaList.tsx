@@ -35,9 +35,7 @@ function TipoAgendaList() {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-    if (user.roles.includes("ROLE_ADMIN")) {
-      setShowModeratorBoard(true);
-    }
+
     navigate(
       `/agendas?pagina=${resultsPage.number + 1}&longitud=${resultsPage.size}`
     );

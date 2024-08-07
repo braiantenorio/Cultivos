@@ -31,9 +31,7 @@ function ListarAtributos() {
       setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
       setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
     }
-    if (user.roles.includes("ROLE_ADMIN")) {
-      setShowModeratorBoard(true);
-    }
+
     fetchAtributos();
   }, [resultsPage.number, resultsPage.size, showDeleted, categorias]);
 
