@@ -50,6 +50,7 @@ import CrearProcesoProgramado from "./components/CrearProcesoProgramado";
 import AuthVerify from "./common/AuthVerify";
 import CambiarDeCategoria from "./components/CambiarDeCategoria";
 import { Footer } from "./components/Footer";
+import About from "./components/About";
 
 function App() {
   return (
@@ -264,8 +265,14 @@ function App() {
               </RequireAuth>
             }
           />
+          <Route
+            path="/about"
+            element={
+                <About />
+            }
+          />
         </Routes>
-        <Footer />
+        {/*<Footer />*/}
       </NotificationsProvider>
     </BrowserRouter>
   );

@@ -37,7 +37,7 @@ type NotificationsContextType = {
 export const NotificationsContext = createContext<NotificationsContextType>({
   notifications: 0,
   notificationMessages: [],
-  updateNotifications: (newNotificationCount, newMessages) => {},
+  updateNotifications: (newNotificationCount, newMessages) => { },
 });
 
 export const NotificationsProvider = ({
@@ -366,6 +366,18 @@ function Menu() {
                 </ul>
               </div>
               &nbsp;
+              <ul></ul>
+              <div className="nav-item mt-1">
+                <Link to="/about">
+                  <button
+                    className="btn btn-custom-color-2"
+                    type="button"
+                    aria-expanded="false"
+                  >
+                    Acerca de
+                  </button>
+                </Link>
+              </div>
             </ul>
             <ul></ul>
             {showModeratorBoard && (
