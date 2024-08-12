@@ -29,7 +29,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({
 
     if (
       descripcion === "Buscar lote por codigo o proceso" ||
-      "Buscar tipo de proceso por nombre"
+      descripcion === "Buscar tipo de proceso por nombre"
     ) {
       url = `/lotes/search?term=${searchTerm}`;
     } else {
