@@ -111,7 +111,13 @@ function ListarTiposDeProcesos() {
                       {tipoProceso.atributos.map((atributo) => (
                         <tr key={atributo.id}>
                           <td>{atributo.nombre}</td>
-                          <td>{atributo.tipo}</td>
+                          <td>
+                            {typeof atributo.tipo === "string"
+                              ? "texto"
+                              : typeof atributo.tipo === "number"
+                                ? "numero"
+                                : atributo.tipo}
+                          </td>
                           <td>{atributo.obligatorio ? "Si" : "No"}</td>
                           <td>{atributo.decimales}</td>
                           <td>{atributo.caracteres}</td>
@@ -146,9 +152,8 @@ function ListarTiposDeProcesos() {
           {pageNumbers.map((pageNumber) => (
             <li
               key={pageNumber}
-              className={`page-item ${
-                pageNumber === resultsPage.number + 1 ? "active" : ""
-              }`}
+              className={`page-item ${pageNumber === resultsPage.number + 1 ? "active" : ""
+                }`}
             >
               <button
                 className="page-link"
