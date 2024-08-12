@@ -37,20 +37,34 @@ function AgendaDeProcesos() {
       })
       .then((responseData) => {
         setLote(responseData.data);
+        console.log(responseData.data);
         const procesosProgramadosAgregados: ProcesoProgramado[] = [];
         const procesosProgramadosExcluidos: ProcesoProgramado[] = [];
+        const nombresExcluidos: String[] = [];
+        const nombresExcluidos2: String[] = [];
 
         // Recorre la lista de procesos que deseas agregar
         //if(responseData.data.a)
         for (const proceso of responseData.data.agenda.procesosProgramado) {
           // Aplica tu condición lógica
-          if (proceso.diaInicio === 0) {
+
+          // Aplica tus condiciones lógicas
+          if (
+            (proceso.diaInicio === 1 || proceso.diaInicio === 0) &&
+            !nombresExcluidos2.includes(proceso.proceso.nombre)
+          ) {
             procesosProgramadosAgregados.push(proceso);
+            nombresExcluidos2.push(proceso.proceso.nombre);
           }
-          if (proceso.diaInicio === -1) {
+          if (
+            proceso.diaInicio === -1 &&
+            !nombresExcluidos.includes(proceso.proceso.nombre)
+          ) {
             procesosProgramadosExcluidos.push(proceso);
+            nombresExcluidos.push(proceso.proceso.nombre);
           }
         }
+
         setProcesoProgramadoA(procesosProgramadosAgregados);
         setProcesoProgramadoi(procesosProgramadosExcluidos);
       })

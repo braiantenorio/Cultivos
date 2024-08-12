@@ -30,6 +30,9 @@ function DetalleLote() {
     undefined
   );
   const [showDeleted, setShowDeleted] = useState(false);
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [specificDate, setSpecificDate] = useState<string>("");
+  const fechaHoy = new Date().toISOString().split("T")[0];
 
   const url = `/lotes/codigo/${loteId}`;
   useEffect(() => {
@@ -52,7 +55,9 @@ function DetalleLote() {
       })
       .then((responseData) => {
         setLote(responseData.data);
+        console.log(responseData.data);
         setAllProcesos(responseData.data.procesos);
+        //   setSpecificDate(fechaHoy);
       })
       .catch((error) => {
         console.error(error);
@@ -67,12 +72,28 @@ function DetalleLote() {
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
 
-    // Filtra los procesos en función del estado de showDeleted
-    const filteredProcesos = showDeleted1
-      ? allProcesos.filter((proceso) => proceso.deleted)
-      : allProcesos.filter((proceso) => !proceso.deleted); // Asumiendo que hay una propiedad llamada "anulado"
-    const currentProcesos = filteredProcesos.slice(startIndex, endIndex);
-    setCurrentProcesos(currentProcesos);
+    // Filtra los procesos según el estado de showDeleted, el término de búsqueda y la fecha específica
+    const filteredProcesos = allProcesos
+      .filter(
+        (proceso) =>
+          (showDeleted1 ? proceso.deleted : !proceso.deleted) &&
+          (proceso.usuario?.nombre
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase()) ||
+            proceso.usuario?.apellido
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase()) ||
+            proceso.listaDeAtributos?.nombre
+              .toLowerCase()
+              .includes(searchTerm.toLowerCase())) &&
+          (!specificDate ||
+            (proceso.fecha &&
+              new Date(proceso.fecha).toLocaleDateString() ===
+                new Date(specificDate).toLocaleDateString()))
+      )
+      .slice(startIndex, endIndex);
+
+    setCurrentProcesos(filteredProcesos);
     setPageNumbers([]);
     const pagesn = [];
     for (let i = 1; i <= Math.ceil(filteredProcesos.length / pageSize); i++) {
@@ -86,7 +107,7 @@ function DetalleLote() {
       replace: true,
     });
     updateCurrentProcesos(page, pageSize, showDeleted);
-  }, [page, pageSize, lote]);
+  }, [searchTerm, page, pageSize, lote, specificDate]);
 
   if (!lote) {
     return <div>Cargando...</div>;
@@ -168,6 +189,10 @@ function DetalleLote() {
     setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
     // Llama a la función para actualizar la lista de procesos
     updateCurrentProcesos(page, pageSize, showDeleted1);
+  };
+  const handlefecha = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const fecha = event.target.value;
+    setSpecificDate(fecha);
   };
 
   return (
@@ -289,15 +314,15 @@ function DetalleLote() {
       </div>
 
       <div className="processes">
-        <div className="row">
-          <div className="col-8 col-md-6 col-lg-10 row mt-3">
-            <div className="col-md-3 ">
+        <div className="row align-items-center">
+          <div className="col-12 col-md-3 col-lg-6 mt-3 d-flex  align-items-center">
+            <div className="me-lg-4">
               <h3>
                 <span>Procesos&nbsp;&nbsp;</span>
                 {showModeratorBoard && !lote.fechaDeBaja ? (
                   <Link
                     to={`/lotes/${loteId}/procesos/new`}
-                    className="btn btn-primary "
+                    className="btn btn-primary"
                   >
                     Cargar
                   </Link>
@@ -306,17 +331,35 @@ function DetalleLote() {
                 )}
               </h3>
             </div>
-
-            <div className="col-md-3 mb-3 form-check form-switch">
-              <label className="form-check-label mt-1">Anulados</label>
+            <div className="form-check form-switch ms-1">
+              <label className="form-check-label mt-1 ms-2">Anulados</label>
               <input
-                className="form-check-input ms-3 mt-2"
+                className="form-check-input ms-1 mt-2"
                 type="checkbox"
                 checked={showDeleted}
                 onChange={() => handleShowDeletedChange(!showDeleted)}
               />
             </div>
           </div>
+        </div>
+
+        <div className="input-group mb-3">
+          <input
+            type="text"
+            className="form-control-sm"
+            placeholder="Buscar "
+            value={searchTerm}
+            title="Buscar por nombre/apellido de usuario, tipo de proceso o fecha"
+            onChange={(e) => setSearchTerm(e.target.value)}
+          />
+          <input
+            type="date"
+            className="form-control-sm"
+            id="fechaDesde"
+            name="fechaDesde"
+            title="Buscar por nombre/apellido de usuario, tipo de proceso o fecha"
+            onChange={handlefecha}
+          />
         </div>
 
         <div className="table-responsive">
@@ -371,7 +414,10 @@ function DetalleLote() {
                   <td>{proceso.listaDeAtributos?.nombre}</td>
                   <td>
                     {proceso.fecha
-                      ? new Date(proceso.fecha).toLocaleDateString()
+                      ? new Date(
+                          new Date(proceso.fecha).getTime() +
+                            24 * 60 * 60 * 1000
+                        ).toLocaleDateString()
                       : ""}
                   </td>
                 </Link>
