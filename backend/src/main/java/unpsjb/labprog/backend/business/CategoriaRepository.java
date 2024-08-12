@@ -18,4 +18,7 @@ public interface CategoriaRepository extends CrudRepository<Categoria, Long>,
 
     @Query("SELECT c FROM Categoria c WHERE c.deleted=?1 ")
     List<Categoria> findAllCategorias(boolean filtered);
+
+    @Query("SELECT l.nombre FROM Categoria l WHERE UPPER(l.nombre) LIKE CONCAT('%', UPPER(?1), '%') ")
+    List<String> search(String term);
 }

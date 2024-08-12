@@ -63,6 +63,10 @@ public class CategoriaService {
 		}
 	}
 
+	public List<String> search(String term) {
+		return repository.search("%" + term + "%");
+	}
+
 	public List<Categoria> findLotesActivosByCategoria(long id) {
 		return repository.findLotesActivosByCategoria(id);
 	}

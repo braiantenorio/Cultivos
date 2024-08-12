@@ -144,7 +144,10 @@ function AgendaGeneralDeProcesos() {
       <div className="row align-items-center">
         <div className="col-12 col-md-6 col-lg-3  mb-md-0">
           <div className="d-flex align-items-center">
-            <AutoComplete onOptionSelect={handleOptionSelect} />
+            <AutoComplete
+              onOptionSelect={handleOptionSelect}
+              descripcion="Buscar lote por codigo o proceso"
+            />
             <button
               type="button"
               className="btn btn-primary"

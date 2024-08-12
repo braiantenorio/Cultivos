@@ -12,5 +12,6 @@ import lombok.Setter;
 public class InformeDTO {
     private StockDTO stock;
     private List<DDJJDTO> ddjjs;
-    private String fecha;
+    private String fechaDesde;
+    private String fechaHasta;
 }

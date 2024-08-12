@@ -23,6 +23,11 @@ public class ListaDeAtributosService {
         return result;
     }
 
+    public List<ListaDeAtributos> findAll(String term) {
+
+        return repository.findAll(term);
+    }
+
     public ListaDeAtributos findById(long id) {
         return repository.findById(id).orElse(null);
     }

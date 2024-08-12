@@ -6,6 +6,7 @@ import { ResultsPage } from "../types/ResultsPage";
 import { Hidden } from "@mui/material";
 import Usuario from "../types/usuario";
 import * as AuthService from "../services/auth.service";
+import AutoComplete from "./AutoComplete";
 
 function Loteslist() {
   const location = useLocation();
@@ -88,6 +89,9 @@ function Loteslist() {
   const handleBuscarLote = () => {
     fetchLotes();
   };
+  const handleOptionSelect = (option: React.SetStateAction<string>) => {
+    setSearchTerm(option);
+  };
 
   // Resto del código del componente
 
@@ -123,12 +127,9 @@ function Loteslist() {
       <div className="row g-3 align-items-center">
         <div className="col-12 col-md-6 col-lg-3  mb-sm-1">
           <div className="d-flex align-items-center">
-            <input
-              type="search"
-              placeholder="Buscar Lote por código"
-              value={searchTerm}
-              onChange={handleSearchInputChange}
-              className="form-control"
+            <AutoComplete
+              onOptionSelect={handleOptionSelect}
+              descripcion="Buscar lote por codigo, categoria o cultivar"
             />
             <button
               type="button"
@@ -244,13 +245,14 @@ function Loteslist() {
                         data-boundary="viewport"
                       >
                         <li>
-                          <a
+                          <Link
                             className="dropdown-item"
-                            href={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}
+                            to={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}
                           >
                             Detalle
-                          </a>
+                          </Link>
                         </li>
+
                         {lote.deleted ||
                         !showModeratorBoard ||
                         lote.cantidad === 0 ? (

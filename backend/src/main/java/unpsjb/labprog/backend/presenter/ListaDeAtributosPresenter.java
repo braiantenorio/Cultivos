@@ -32,8 +32,9 @@ public class ListaDeAtributosPresenter {
 
 	@GetMapping
 	public ResponseEntity<Object> findAll(@RequestParam(defaultValue = "0") int page,
-			@RequestParam(defaultValue = "10") int size) {
-		return Response.ok(service.findByPage(service.findAll(), page, size));
+			@RequestParam(defaultValue = "10") int size,
+			@RequestParam(value = "term", required = false) String term) {
+		return Response.ok(service.findByPage(service.findAll(term), page, size));
 	}
 
 	@RequestMapping(value = "/search", method = RequestMethod.GET)

@@ -1,11 +1,16 @@
 import React, { useState, useEffect, useRef } from "react";
 import authHeader from "../services/auth-header";
+import { Description } from "@mui/icons-material";
 
 interface AutoCompleteProps {
   onOptionSelect: (option: string) => void;
+  descripcion: string;
 }
 
-const AutoComplete: React.FC<AutoCompleteProps> = ({ onOptionSelect }) => {
+const AutoComplete: React.FC<AutoCompleteProps> = ({
+  onOptionSelect,
+  descripcion,
+}) => {
   const [inputValue, setInputValue] = useState("");
   const [filteredOptions, setFilteredOptions] = useState<string[]>([]);
   const [selectedOption, setSelectedOption] = useState<string | null>(null);
@@ -20,8 +25,19 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ onOptionSelect }) => {
   }, [inputValue]);
 
   const fetchResults = async (searchTerm: string) => {
+    let url = "";
+
+    if (
+      descripcion === "Buscar lote por codigo o proceso" ||
+      "Buscar tipo de proceso por nombre"
+    ) {
+      url = `/lotes/search?term=${searchTerm}`;
+    } else {
+      url = `/lotes/categoria-cultivar/search?term=${searchTerm}`; // Cambia esto a la URL que necesites
+    }
+
     try {
-      const response = await fetch(`/lotes/search?term=${searchTerm}`, {
+      const response = await fetch(url, {
         headers: authHeader(),
       });
 
@@ -35,6 +51,7 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ onOptionSelect }) => {
       console.error("Error al buscar:", error);
     }
   };
+
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
@@ -74,8 +91,9 @@ const AutoComplete: React.FC<AutoCompleteProps> = ({ onOptionSelect }) => {
         type="text"
         value={inputValue}
         onChange={handleInputChange}
-        placeholder="Buscar lote o proceso"
+        placeholder="buscar"
         className="form-control"
+        title={descripcion}
       />
       {filteredOptions.length > 0 && (
         <ul

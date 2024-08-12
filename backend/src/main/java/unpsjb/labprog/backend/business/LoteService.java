@@ -25,6 +25,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.io.IOException;
 import java.time.LocalDate;
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.TypedQuery;
 import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.model.Proceso;
 import unpsjb.labprog.backend.model.Usuario;
@@ -102,19 +103,21 @@ public class LoteService {
 
 	// find all con filtro de lotes con softdelete
 	public List<Lote> findAll(boolean isDeleted, String term, String sortField, String sortDirection) {
-		Session session = entityManager.unwrap(Session.class);
+		String queryStr = "SELECT l FROM Lote l " +
+				"JOIN l.categoria c " +
+				"JOIN l.cultivar cv " +
+				"WHERE ((:isDeleted = true AND (:isDeleted = l.deleted OR l.fechaDeBaja IS NOT NULL )) OR (:isDeleted = l.deleted AND l.fechaDeBaja IS NULL)) "
+				+
+				"AND (:term IS NULL OR UPPER(l.codigo) LIKE UPPER(:term) " +
+				"OR UPPER(c.nombre) LIKE UPPER(:term) " +
+				"OR UPPER(cv.nombre) LIKE UPPER(:term)) " +
+				"ORDER BY l." + sortField + " " + sortDirection;
 
-		session.enableFilter("deletedLoteFilter")
-				.setParameter("isDeleted", isDeleted)
-				.setParameter("codigo", "%" + term + "%");
+		TypedQuery<Lote> query = entityManager.createQuery(queryStr, Lote.class);
+		query.setParameter("isDeleted", isDeleted);
+		query.setParameter("term", term == null ? null : "%" + term + "%");
 
-		List<Lote> products = (List<Lote>) (sortDirection.equals("asc")
-				? repository.findAll(Sort.by(sortField).ascending())
-				: repository.findAll(Sort.by(sortField).descending()));
-
-		session.disableFilter("deletedLoteFilter");
-
-		return products;
+		return query.getResultList();
 	}
 
 	public Lote findById(long id) {
@@ -187,12 +190,13 @@ public class LoteService {
 		return repository.findLotesAndValoresByAtributos(list, localDate);
 	}
 
-	public List<Object[]> findLotesByCategoria(Categoria categoria, LocalDate localDate) {
-		return repository.findLotesByCategoriaWithTotalCantidad(categoria, localDate);
+	public List<Object[]> findLotesByCategoria(Categoria categoria, LocalDate localDate, LocalDate localDate1) {
+		return repository.findLotesByCategoriaWithTotalCantidad(categoria.getId(), localDate, localDate1);
 	}
 
-	public List<Object[]> findAllFecha(LocalDate date) {
-		return repository.findAllFechaWithTotalCantidad(date);
+	public List<Object[]> findAllFecha(LocalDate date, LocalDate date1) {
+
+		return repository.findAllFechaWithTotalCantidad(date, date1);
 	}
 
 	public List<Object[]> findLotesAndValoresByAtributosAndCategoria(List<Long> listaAtributos, Categoria categoria,

@@ -26,6 +26,20 @@ public interface ProcesoProgramadoRepository extends CrudRepository<ProcesoProgr
                         "WHERE pp.proceso.nombre = :proceso AND l.codigo = :lote AND pp.completado = false ORDER BY pp.fechaARealizar ASC ")
         List<ProcesoProgramado> findProcesoProgramado(String lote, String proceso);
 
+        @Query("SELECT pp " +
+                        "FROM Lote l " +
+                        "JOIN l.agenda a " +
+                        "JOIN a.procesosProgramado pp " +
+                        "WHERE pp.proceso.nombre = :proceso AND l.codigo = :lote AND pp.diaInicio = 0 ")
+        ProcesoProgramado findProcesoProgramadoUltimo(String lote, String proceso);
+
+        @Query("SELECT l,pp " +
+                        "FROM Lote l " +
+                        "JOIN l.agenda a " +
+                        "JOIN a.procesosProgramado pp " +
+                        "WHERE pp.diaInicio = 0 AND l.deleted = false AND l.fechaDeBaja IS NULL")
+        List<Object[]> findProcesosProgramadosUltimos();
+
         @Query("SELECT  l.codigo AS codigoLote, pp AS proceso " +
                         "FROM Lote l " +
                         "JOIN l.agenda a " +

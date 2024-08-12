@@ -42,6 +42,10 @@ public class CultivarService {
 		repository.deleteById(id);
 	}
 
+	public List<String> search(String term) {
+		return repository.search("%" + term + "%");
+	}
+
 	public List<Cultivar> findAllCultivares(boolean filtered) {
 		return repository.findAllCultivares(filtered);
 	}

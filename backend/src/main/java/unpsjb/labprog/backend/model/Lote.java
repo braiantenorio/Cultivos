@@ -43,9 +43,11 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Audited(targetAuditMode = RelationTargetAuditMode.NOT_AUDITED)
 @FilterDef(name = "deletedLoteFilter", parameters = {
 		@ParamDef(name = "isDeleted", type = boolean.class),
-		@ParamDef(name = "codigo", type = String.class)
+		@ParamDef(name = "term", type = String.class)
 })
-@Filter(name = "deletedLoteFilter", condition = "((:isDeleted AND (:isDeleted = deleted OR fecha_De_Baja IS NOT NULL )) OR (:isDeleted = deleted AND fecha_De_Baja IS NULL)) AND (:codigo IS NOT NULL AND UPPER(codigo) LIKE UPPER(:codigo))")
+@Filter(name = "deletedLoteFilter", condition = "((:isDeleted AND (:isDeleted = deleted OR fecha_De_Baja IS NOT NULL )) OR (:isDeleted = deleted AND fecha_De_Baja IS NULL)) "
+		+
+		"AND ((:term IS NOT NULL AND UPPER(codigo) LIKE UPPER(:term)) ")
 
 @JsonIgnoreProperties(value = { "lotePadre" }, allowSetters = true)
 @EntityListeners(AuditingEntityListener.class)

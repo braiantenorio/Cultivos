@@ -4,5 +4,6 @@ import { Stock } from "./stock";
 export type Informe = {
   stock: Stock;
   ddjjs: DDJJ[];
-  fecha: string;
+  fechaDesde: string;
+  fechaHasta: string;
 };

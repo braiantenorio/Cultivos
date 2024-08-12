@@ -52,7 +52,8 @@ const InformeComponent = () => {
             lotesStock: [],
           },
           ddjjs: nuevosDDJJ,
-          fecha: fechaHoy,
+          fechaDesde: fechaHoy,
+          fechaHasta: fechaHoy,
         });
       })
       .catch((error) => {
@@ -124,6 +125,7 @@ const InformeComponent = () => {
   };
 
   const handleGenerarInforme = () => {
+    console.log(informe);
     const url = "/export/generar-informe"; // Reemplaza con la URL correcta
 
     fetch(url, {
@@ -151,7 +153,13 @@ const InformeComponent = () => {
   const handlefecha = (e: any) => {
     setInforme((prevInforme) => ({
       ...prevInforme,
-      fecha: e,
+      fechaDesde: e,
+    }));
+  };
+  const handlefecha1 = (e: any) => {
+    setInforme((prevInforme) => ({
+      ...prevInforme,
+      fechaHasta: e,
     }));
   };
 
@@ -167,23 +175,41 @@ const InformeComponent = () => {
           Generar Informe
         </button>
         &nbsp;&nbsp;
-        <div className="col-md-3 col-12 mb-2 mt-2">
+      </div>
+      <div className="row align-items-center">
+        <div className="col-md-4 col-12 mb-2 mt-2 d-flex align-items-center">
+          <label htmlFor="fechaDesde" className="me-2">
+            Desde:
+          </label>
           <input
             type="date"
             className="form-control"
-            id="codigo"
-            name="codigo"
-            value={informe?.fecha}
+            id="fechaDesde"
+            name="fechaDesde"
+            value={informe?.fechaDesde}
             onChange={(event) => handlefecha(event.target.value)}
           />
         </div>
+        <div className="col-md-4 col-12 mb-2 mt-2 d-flex align-items-center">
+          <label htmlFor="fechaHasta" className="me-2">
+            Hasta:
+          </label>
+          <input
+            type="date"
+            className="form-control"
+            id="fechaHasta"
+            name="fechaHasta"
+            value={informe?.fechaHasta}
+            onChange={(event) => handlefecha1(event.target.value)}
+          />
+        </div>
+        {generado && (
+          <div className="col-md-4 col-12 mb-2 mt-2 d-flex justify-content-md-end justify-content-start">
+            <DescargarExcelButton informe={informe} />
+          </div>
+        )}
       </div>
 
-      {generado && (
-        <div className="descargar-button-container mb-2">
-          <DescargarExcelButton informe={informe!} />
-        </div>
-      )}
       <ul className="mb-3"></ul>
       <ul className="mb-3"></ul>
       <div className="row">
@@ -220,6 +246,7 @@ const InformeComponent = () => {
                   <span>Detalles Stock de Materiales</span>
                 </h3>
                 <button
+                  hidden
                   className="btn btn-primary ms-2"
                   onClick={() => setIsAddAtributoFormVisible(true)}
                 >
@@ -267,6 +294,7 @@ const InformeComponent = () => {
                 Detalle DDJJ {activeTab}
                 &nbsp;&nbsp;
                 <button
+                  hidden
                   className="btn btn-primary ms-2"
                   onClick={() => setIsAddAtributoFormVisible(true)}
                 >

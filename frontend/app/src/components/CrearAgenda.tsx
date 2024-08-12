@@ -348,9 +348,7 @@ function CrearAgenda() {
                     onChange={(e) =>
                       handleInputChange(index, "frecuencia", e.target.value)
                     }
-                    disabled={
-                      proceso.cantidad <= 1 || tipo === "Detalle agenda"
-                    }
+                    disabled={tipo === "Detalle agenda"}
                   />
                 </td>
                 <td>

@@ -8,6 +8,7 @@ import unpsjb.labprog.backend.business.LoteService;
 import unpsjb.labprog.backend.business.AgendaService;
 import unpsjb.labprog.backend.business.TipoAgendaService;
 import unpsjb.labprog.backend.business.CategoriaService;
+import unpsjb.labprog.backend.business.CultivarService;
 import unpsjb.labprog.backend.business.ListaDeAtributosService;
 import unpsjb.labprog.backend.business.UsuarioService;
 import unpsjb.labprog.backend.business.ProcesoProgramadoService;
@@ -54,6 +55,9 @@ public class LotePresenter {
 
   @Autowired
   CategoriaService serviceCategoria;
+
+  @Autowired
+  CultivarService serviceCultivar;
 
   @Autowired
   UsuarioService serviceUsuario;
@@ -105,16 +109,31 @@ public class LotePresenter {
     LocalDate fechaActual = LocalDate.now();
     if (lote.getAgenda().getTipoAgenda() != null) {
       for (ProcesoProgramado procesoOriginal : lote.getAgenda().getTipoAgenda().getProcesosProgramado()) {
-        for (int i = 0; i < procesoOriginal.getCantidad(); i++) {
+        int repeticiones = procesoOriginal.getCantidad();
+        if (repeticiones == 0) {
+          if (procesoOriginal.getFrecuencia() > 7) {
+            repeticiones = 1;
+          } else {
+            repeticiones = 7 / procesoOriginal.getFrecuencia();
+          }
+        }
+        for (int i = 0; i < repeticiones; i++) {
           ProcesoProgramado procesoCopia = new ProcesoProgramado();
           procesoCopia.setCompletado(false);
           procesoCopia.setProceso(procesoOriginal.getProceso());
-          procesoCopia.setDiaInicio(i);
+          procesoCopia.setDiaInicio(i + 1);
 
           LocalDate fechaARealizar = fechaActual
               .plusDays((procesoOriginal.getDiaInicio() - 1) + (procesoOriginal.getFrecuencia() * i));
           procesoCopia.setFechaARealizar(fechaARealizar);
+          if (procesoOriginal.getCantidad() == 0 && i == repeticiones - 1) {
+
+            procesoCopia.setDiaInicio(0);
+            procesoCopia.setFrecuencia(procesoOriginal.getFrecuencia());
+            procesoCopia.setCantidad(repeticiones);
+          }
           procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+
         }
 
       }
@@ -174,6 +193,17 @@ public class LotePresenter {
     return Response.ok(resul);
   }
 
+  @GetMapping("/categoria-cultivar/search")
+  public ResponseEntity<Object> searchC(@RequestParam(value = "term", required = false) String term
+
+  // ,@RequestParam(value = "proceso", required = false) String proceso
+  ) {
+    List<String> resul = service.search(term);
+    resul.addAll(serviceCategoria.search(term));
+    resul.addAll(serviceCultivar.search(term));
+    return Response.ok(resul);
+  }
+
   @RequestMapping(value = "/{id}/procesoprogramado", method = RequestMethod.PUT)
   @PreAuthorize("hasRole('MODERATOR')")
   public ResponseEntity<Object> findById(@PathVariable("id") String id,
@@ -230,16 +260,31 @@ public class LotePresenter {
     LocalDate fechaActual = LocalDate.now();
     if (lote.getAgenda().getTipoAgenda() != null) {
       for (ProcesoProgramado procesoOriginal : lote.getAgenda().getTipoAgenda().getProcesosProgramado()) {
-        for (int i = 0; i < procesoOriginal.getCantidad(); i++) {
+        int repeticiones = procesoOriginal.getCantidad();
+        if (repeticiones == 0) {
+          if (procesoOriginal.getFrecuencia() > 7) {
+            repeticiones = 1;
+          } else {
+            repeticiones = 7 / procesoOriginal.getFrecuencia();
+          }
+        }
+        for (int i = 0; i < repeticiones; i++) {
           ProcesoProgramado procesoCopia = new ProcesoProgramado();
           procesoCopia.setCompletado(false);
           procesoCopia.setProceso(procesoOriginal.getProceso());
-          procesoCopia.setDiaInicio(i);
+          procesoCopia.setDiaInicio(i + 1);
 
           LocalDate fechaARealizar = fechaActual
               .plusDays((procesoOriginal.getDiaInicio() - 1) + (procesoOriginal.getFrecuencia() * i));
           procesoCopia.setFechaARealizar(fechaARealizar);
+          if (procesoOriginal.getCantidad() == 0 && i == repeticiones - 1) {
+
+            procesoCopia.setDiaInicio(0);
+            procesoCopia.setFrecuencia(procesoOriginal.getFrecuencia());
+            procesoCopia.setCantidad(repeticiones);
+          }
           procesosCopia.add(serviceProcesoProgramado.add(procesoCopia));
+
         }
 
       }
@@ -254,16 +299,17 @@ public class LotePresenter {
   }
 
   @GetMapping("/mostrar-pdf/{id}/{fileName}.pdf")
-  public ResponseEntity<byte[]> mostrarPDF(@PathVariable("id") Long id, @PathVariable("fileName") String fileName) throws IOException {
-      byte[] contenidoPDF = service.generarContenidoPDF(id);
-  
-      HttpHeaders headers = new HttpHeaders();
-      headers.setContentType(MediaType.APPLICATION_PDF);
-  
-      return ResponseEntity
-              .ok()
-              .headers(headers)
-              .body(contenidoPDF);
+  public ResponseEntity<byte[]> mostrarPDF(@PathVariable("id") Long id, @PathVariable("fileName") String fileName)
+      throws IOException {
+    byte[] contenidoPDF = service.generarContenidoPDF(id);
+
+    HttpHeaders headers = new HttpHeaders();
+    headers.setContentType(MediaType.APPLICATION_PDF);
+
+    return ResponseEntity
+        .ok()
+        .headers(headers)
+        .body(contenidoPDF);
   }
 
 }

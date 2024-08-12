@@ -92,6 +92,11 @@ public class ProcesoService {
 		if (pp != null && !(indep)) {
 			pp.get(0).setCompletado(true);
 			procesoProgramadoService.update(pp.get(0));
+			ProcesoProgramado pp1 = procesoProgramadoService.findProcesoProgramadoUltimo(id, proceso);
+			if (pp1 != null) {
+				// procesoProgramadoService.crearProcesosProgramadosCantidadIndefinida();
+				pp1.setCantidad(pp1.getCantidad() - 1);
+			}
 
 		}
 		return null;

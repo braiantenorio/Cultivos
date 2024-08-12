@@ -82,7 +82,9 @@ function DetalleLote() {
   };
 
   useEffect(() => {
-    navigate(`/lotes/${loteId}/procesos?pagina=${page}&longitud=${pageSize}`);
+    navigate(`/lotes/${loteId}/procesos?pagina=${page}&longitud=${pageSize}`, {
+      replace: true,
+    });
     updateCurrentProcesos(page, pageSize, showDeleted);
   }, [page, pageSize, lote]);
 
@@ -173,6 +175,10 @@ function DetalleLote() {
       <div className="d-flex justify-content-between align-items-center">
         <h2>Detalle del Lote</h2>
 
+        <button className="btn btn-secondary" onClick={() => navigate(-1)}>
+          <i className="bi bi-arrow-left"></i>{" "}
+        </button>
+
         <div className="dropdown" style={{ position: "static" }}>
           <button
             className="d-flex align-items-center link-body-emphasis text-decoration-none"
@@ -229,6 +235,7 @@ function DetalleLote() {
                   <button
                     className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
                     onClick={handleAnular}
+                    disabled={lote.deleted || lote.fechaDeBaja != null}
                   >
                     Anular
                   </button>

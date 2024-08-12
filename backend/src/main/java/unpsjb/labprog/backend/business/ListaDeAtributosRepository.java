@@ -20,4 +20,7 @@ public interface ListaDeAtributosRepository extends CrudRepository<ListaDeAtribu
     @Query("SELECT l.nombre FROM ListaDeAtributos l WHERE UPPER(l.nombre) LIKE CONCAT('%', UPPER(?1), '%') ")
     List<String> search(String term);
 
+    @Query("SELECT l FROM ListaDeAtributos l WHERE UPPER(l.nombre) LIKE CONCAT('%', UPPER(?1), '%') ")
+    List<ListaDeAtributos> findAll(String term);
+
 }

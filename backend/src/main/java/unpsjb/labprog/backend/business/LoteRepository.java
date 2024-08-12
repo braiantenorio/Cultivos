@@ -42,12 +42,18 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
         @Query("SELECT l.codigo FROM Lote l WHERE UPPER(l.codigo) LIKE CONCAT('%', UPPER(?1), '%') ")
         List<String> searchLote(String term);
 
-        @Query("SELECT l, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad FROM Lote l " +
-                        "LEFT JOIN l.subLotes ls " +
-                        "WHERE (l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate) " +
-                        "AND ls.fecha>= :localDate GROUP BY l.id")
-        List<Object[]> findAllFechaWithTotalCantidad(@Param("localDate") LocalDate localDate);
+        @Query(value = "SELECT c.nombre, ca.nombre, l.codigo, l.cantidad FROM lotes_audit_log l " +
+                        "JOIN lotes lo on lo.id = l.id " +
+                        "JOIN cultivares c on lo.cultivar_id=c.id " +
+                        "JOIN categorias ca on lo.categoria_id=ca.id " +
+                        "WHERE l.rev = (SELECT l2.rev FROM lotes_audit_log l2 " +
+                        "WHERE l2.id = l.id " +
+                        "ORDER BY l2.cantidad DESC " +
+                        "LIMIT 1) " +
+                        "AND lo.deleted = false " +
+                        "AND l.fecha BETWEEN :fechaDesde AND :fechaHasta", nativeQuery = true)
+        List<Object[]> findAllFechaWithTotalCantidad(@Param("fechaDesde") LocalDate fechaDesde,
+                        @Param("fechaHasta") LocalDate fechaHasta);
 
         @Query("SELECT l.id, l, v, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad FROM Lote l " +
                         "JOIN l.procesos p " +
@@ -59,14 +65,22 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
         List<Object[]> findLotesAndValoresByAtributos(@Param("listaAtributos") List<Long> listaAtributos,
                         @Param("localDate") LocalDate localDate);
 
-        @Query("SELECT l, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad " +
-                        "FROM Lote l LEFT JOIN l.subLotes ls " +
-                        "WHERE ((l.fechaDeBaja IS NULL AND l.fecha <= :localDate) " +
-                        "OR (l.fechaDeBaja IS NOT NULL AND l.fecha <= :localDate AND l.fechaDeBaja >= :localDate)) " +
-                        "AND (ls IS NULL OR ls.fecha>= :localDate) AND l.categoria = :categoria " +
-                        "GROUP BY l.id")
-        List<Object[]> findLotesByCategoriaWithTotalCantidad(@Param("categoria") Categoria categoria,
-                        @Param("localDate") LocalDate localDate);
+        @Query(value = "SELECT c.nombre, ca.nombre, l.codigo, l.cantidad, lop.codigo, lo.fecha FROM lotes_audit_log l "
+                        +
+                        "LEFT JOIN lotes lop ON lop.id = l.lote_padre_id " +
+                        "JOIN lotes lo ON lo.id = l.id " +
+
+                        "JOIN cultivares c ON lo.cultivar_id = c.id " +
+                        "LEFT JOIN categorias ca ON lop.categoria_id = ca.id " +
+                        "WHERE l.rev = (SELECT l2.rev FROM lotes_audit_log l2 WHERE l2.id = l.id ORDER BY l2.cantidad DESC LIMIT 1) "
+                        +
+                        "AND l.fecha BETWEEN :fechaDesde AND :fechaHasta " +
+                        "AND lo.deleted = false " +
+                        "AND lo.categoria_id = :categoriaId", nativeQuery = true)
+        List<Object[]> findLotesByCategoriaWithTotalCantidad(@Param("categoriaId") Long categoriaId,
+
+                        @Param("fechaDesde") LocalDate fechaDesde,
+                        @Param("fechaHasta") LocalDate fechaHasta);
 
         @Query("SELECT l.id, l, v, COALESCE(SUM(ls.cantidad), 0) AS totalCantidad FROM Lote l " +
                         "JOIN l.procesos p " +

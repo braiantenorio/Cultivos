@@ -18,4 +18,7 @@ public interface CultivarRepository extends CrudRepository<Cultivar, Long>,
 
     @Query("SELECT c FROM Cultivar c WHERE c.deleted=?1 ")
     List<Cultivar> findAllCultivares(boolean filtered);
+
+    @Query("SELECT l.nombre FROM Cultivar l WHERE UPPER(l.nombre) LIKE CONCAT('%', UPPER(?1), '%') ")
+    List<String> search(String term);
 }

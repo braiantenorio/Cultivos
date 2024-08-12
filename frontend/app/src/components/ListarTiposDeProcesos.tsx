@@ -1,8 +1,7 @@
-import { Link } from "react-router-dom";
 import React, { useEffect, useState } from "react";
-import { TipoAgenda } from "../types/tipoAgenda";
 import { TipoDeProceso } from "../types/tipoDeProceso";
 import authHeader from "../services/auth-header";
+import AutoComplete from "./AutoComplete"; // Importa el componente AutoComplete
 import { ResultsPage } from "../types/ResultsPage";
 
 function ListarTiposDeProcesos() {
@@ -14,13 +13,15 @@ function ListarTiposDeProcesos() {
     size: 7,
     number: 0,
   });
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     fetchAtributos();
   }, [resultsPage.number, resultsPage.size]);
 
   const fetchAtributos = () => {
     fetch(
-      `/listaDeAtributos?page=${resultsPage.number}&size=${resultsPage.size}`,
+      `/listaDeAtributos?page=${resultsPage.number}&size=${resultsPage.size}&term=${searchTerm}`,
       {
         headers: authHeader(),
       }
@@ -39,19 +40,46 @@ function ListarTiposDeProcesos() {
         console.error(error);
       });
   };
+  const handleBuscarLote = () => {
+    fetchAtributos();
+  };
+
+  const handleSearchInputChange = (term: string) => {
+    setSearchTerm(term);
+  };
+
   const handlePageChange = (newPage: number) => {
     setResultsPage({
       ...resultsPage,
       number: newPage,
     });
   };
+
   const pageNumbers = Array.from(Array(resultsPage.totalPages).keys()).map(
     (n) => n + 1
   );
 
   return (
     <div className="container">
-      <h2>Tipos de Procesos </h2>
+      <h2>Tipos de Procesos</h2>
+      <div className="row mb-3">
+        <div className="col-md-6">
+          <AutoComplete
+            onOptionSelect={handleSearchInputChange}
+            descripcion="Buscar tipo de proceso por nombre"
+          />
+          <button
+            type="button"
+            className="btn btn-primary"
+            onClick={handleBuscarLote}
+          >
+            <i
+              className="bi bi-search bi-lg"
+              style={{ fontSize: "1rem", cursor: "pointer" }}
+            ></i>
+          </button>
+        </div>
+      </div>
       <div className="table-responsive">
         <table className="table table-striped table-bordered">
           <thead>
@@ -62,10 +90,10 @@ function ListarTiposDeProcesos() {
             </tr>
           </thead>
           <tbody>
-            {resultsPage.content.map((tipoAgenda, index) => (
-              <tr key={tipoAgenda.id}>
+            {resultsPage.content.map((tipoProceso, index) => (
+              <tr key={tipoProceso.id}>
                 <td>{index + 1}</td>
-                <td>{tipoAgenda.nombre}</td>
+                <td>{tipoProceso.nombre}</td>
                 <td colSpan={4}>
                   <table className="table table-sm mb-0">
                     <thead>
@@ -77,19 +105,18 @@ function ListarTiposDeProcesos() {
                         <th>Caracteres</th>
                         <th>Maximo</th>
                         <th>Minimo</th>
-                        <th></th>
                       </tr>
                     </thead>
                     <tbody>
-                      {tipoAgenda.atributos.map((tipoAgenda, index) => (
-                        <tr key={tipoAgenda.id}>
-                          <td>{tipoAgenda.nombre}</td>
-                          <td>{tipoAgenda.tipo}</td>
-                          <td>{tipoAgenda.obligatorio ? "Si" : "No"}</td>
-                          <td>{tipoAgenda.decimales}</td>
-                          <td>{tipoAgenda.caracteres}</td>
-                          <td>{tipoAgenda.maximo}</td>
-                          <td>{tipoAgenda.minimo}</td>
+                      {tipoProceso.atributos.map((atributo) => (
+                        <tr key={atributo.id}>
+                          <td>{atributo.nombre}</td>
+                          <td>{atributo.tipo}</td>
+                          <td>{atributo.obligatorio ? "Si" : "No"}</td>
+                          <td>{atributo.decimales}</td>
+                          <td>{atributo.caracteres}</td>
+                          <td>{atributo.maximo}</td>
+                          <td>{atributo.minimo}</td>
                         </tr>
                       ))}
                     </tbody>
@@ -101,65 +128,46 @@ function ListarTiposDeProcesos() {
         </table>
       </div>
       {!resultsPage.content.length && (
-        <div className="alert alert-warning">No se encontraron lotes</div>
+        <div className="alert alert-warning">
+          No se encontraron tipos de procesos
+        </div>
       )}
       <nav aria-label="Page navigation example">
-        <div className="d-flex justify-content-between align-items-center">
-          <div>
-            <ul className="pagination">
-              <li
-                className={`page-item ${resultsPage.first ? "disabled" : ""}`}
+        <ul className="pagination">
+          <li className={`page-item ${resultsPage.first ? "disabled" : ""}`}>
+            <button
+              className="page-link"
+              onClick={() => handlePageChange(resultsPage.number - 1)}
+              disabled={resultsPage.first}
+            >
+              &lsaquo;
+            </button>
+          </li>
+          {pageNumbers.map((pageNumber) => (
+            <li
+              key={pageNumber}
+              className={`page-item ${
+                pageNumber === resultsPage.number + 1 ? "active" : ""
+              }`}
+            >
+              <button
+                className="page-link"
+                onClick={() => handlePageChange(pageNumber - 1)}
               >
-                <button
-                  className="page-link"
-                  onClick={() => handlePageChange(resultsPage.number - 1)}
-                  disabled={resultsPage.first}
-                >
-                  &lsaquo;
-                </button>
-              </li>
-              {pageNumbers.map((pageNumber) => (
-                <li
-                  key={pageNumber}
-                  className={`page-item ${
-                    pageNumber === resultsPage.number + 1 ? "active" : ""
-                  }`}
-                >
-                  <button
-                    className="page-link"
-                    onClick={() => handlePageChange(pageNumber - 1)}
-                  >
-                    {pageNumber}
-                  </button>
-                </li>
-              ))}
-              <li className={`page-item ${resultsPage.last ? "disabled" : ""}`}>
-                <button
-                  className="page-link"
-                  onClick={() => handlePageChange(resultsPage.number + 1)}
-                  disabled={resultsPage.last}
-                >
-                  &rsaquo;
-                </button>
-              </li>
-            </ul>
-          </div>
-          <div className="input-group col-auto d-none d-md-flex align-items-center">
-            <div className="input-group-text mb-3">Elementos por página</div>
-            &nbsp;&nbsp;
-            <div className="col-1">
-              <input
-                type="number"
-                id="pageSizeInput"
-                value={resultsPage.size}
-                onChange={(e) =>
-                  setResultsPage({ ...resultsPage, size: +e.target.value })
-                }
-                className="form-control mb-3"
-              />
-            </div>
-          </div>
-        </div>
+                {pageNumber}
+              </button>
+            </li>
+          ))}
+          <li className={`page-item ${resultsPage.last ? "disabled" : ""}`}>
+            <button
+              className="page-link"
+              onClick={() => handlePageChange(resultsPage.number + 1)}
+              disabled={resultsPage.last}
+            >
+              &rsaquo;
+            </button>
+          </li>
+        </ul>
       </nav>
     </div>
   );

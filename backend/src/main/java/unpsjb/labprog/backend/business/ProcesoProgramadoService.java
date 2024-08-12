@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import unpsjb.labprog.backend.model.Lote;
 import unpsjb.labprog.backend.model.ProcesoProgramado;
 import java.time.LocalDate;
 import unpsjb.labprog.backend.DTOs.ProcesoProgramadoDTO;
@@ -20,6 +21,12 @@ public class ProcesoProgramadoService {
 
     @Autowired
     ProcesoProgramadoRepository repository;
+
+    @Autowired
+    AgendaService agendaService;
+
+    @Autowired
+    LoteService loteService;
 
     // TODO: Mejorar
     public List<ProcesoProgramado> findAll() {
@@ -40,6 +47,10 @@ public class ProcesoProgramadoService {
 
     public List<ProcesoProgramado> findProcesoProgramado(String lote, String proceso) {
         return repository.findProcesoProgramado(lote, proceso);
+    }
+
+    public ProcesoProgramado findProcesoProgramadoUltimo(String lote, String proceso) {
+        return repository.findProcesoProgramadoUltimo(lote, proceso);
     }
 
     public Map<String, List<ProcesoProgramadoDTO>> obtenerProcesosProgramados() {
@@ -83,6 +94,46 @@ public class ProcesoProgramadoService {
         }
 
         return procesosPendientes;
+    }
+
+    public void crearProcesosProgramadosCantidadIndefinida() {
+        List<Object[]> resultados = repository.findProcesosProgramadosUltimos();
+        for (Object[] resultado : resultados) {
+            Lote lote = (Lote) resultado[0];
+            ProcesoProgramado proceso = (ProcesoProgramado) resultado[1];
+            int repeticiones = proceso.getCantidad() * proceso.getFrecuencia();
+
+            if (repeticiones < 7) {
+
+                if (proceso.getFrecuencia() > 7) {
+                    repeticiones = 1;
+                } else {
+                    repeticiones = 7 / proceso.getFrecuencia();
+                }
+                proceso.setDiaInicio(1);
+                this.update(proceso);
+                LocalDate fechaActual = proceso.getFechaARealizar();
+                for (int i = 0; i < repeticiones; i++) {
+                    ProcesoProgramado procesoCopia = new ProcesoProgramado();
+                    procesoCopia.setCompletado(false);
+                    procesoCopia.setProceso(proceso.getProceso());
+                    procesoCopia.setDiaInicio(i + 1);
+
+                    LocalDate fechaARealizar = fechaActual
+                            .plusDays(proceso.getFrecuencia() * (i + 1));
+                    procesoCopia.setFechaARealizar(fechaARealizar);
+                    if (i == repeticiones - 1) {
+                        procesoCopia.setDiaInicio(0);
+                        procesoCopia.setFrecuencia(proceso.getFrecuencia());
+                        procesoCopia.setCantidad(repeticiones + proceso.getCantidad());
+                    }
+                    lote.getAgenda().addprocesoProgramado(this.add(procesoCopia));
+
+                }
+                lote.setAgenda(agendaService.update(lote.getAgenda()));
+                loteService.update(lote);
+            }
+        }
     }
 
     public Page<ProcesoProgramadoDTO> findByPage(List<ProcesoProgramadoDTO> clientes, int page, int size) {

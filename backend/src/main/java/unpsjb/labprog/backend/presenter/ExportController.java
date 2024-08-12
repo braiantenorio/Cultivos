@@ -8,6 +8,9 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.sql.Date;
+
+//import org.apache.poi.hpsf.Date;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -237,15 +240,19 @@ public class ExportController {
         // Define el formato de la cadena de fecha
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
         LocalDate fecha = LocalDate.now();
+        LocalDate fechaHasta = LocalDate.now();
 
         try {
-            fecha = LocalDate.parse(informeF.getFecha(), formatter);
-
+            fecha = LocalDate.parse(informeF.getFechaDesde(), formatter);
+            fechaHasta = LocalDate.parse(informeF.getFechaHasta(), formatter);
         } catch (Exception e) {
             // System.err.println("Error al analizar la cadena de fecha: " +
             // e.getMessage());
         }
-        List<Object[]> lotes = loteService.findAllFecha(fecha);
+        informe.setFechaDesde(informeF.getFechaDesde());
+        informe.setFechaHasta(informeF.getFechaHasta());
+
+        List<Object[]> lotes = loteService.findAllFecha(fecha, fechaHasta);
         StockDTO stock = new StockDTO();
         StockDTO stocki = informeF.getStock();
         List<Long> list = new ArrayList<>();
@@ -259,13 +266,17 @@ public class ExportController {
         if (list.size() == 0) {
             for (Object[] result : lotes) {
                 loteStock = new LoteStockDTO();
-                Lote l = (Lote) result[0];
-                Long longValue = (Long) result[1];
-                int loteId = longValue.intValue();
-                loteStock.setCodigo(l.getCodigo());
-                loteStock.setCantidad(l.getCantidad() + loteId);
-                loteStock.setVariedad(l.getCultivar().getNombre());
-                loteStock.setCategoria(l.getCategoria().getNombre());
+                // Lote l = (Lote) result[0];
+                String cultivar = (String) result[0];
+                String categoria = (String) result[1];
+                String codigo = (String) result[2];
+
+                Integer longValue = (Integer) result[3];
+                // int loteId = longValue.intValue();
+                loteStock.setCodigo(codigo);
+                loteStock.setCantidad(longValue);
+                loteStock.setVariedad(cultivar);
+                loteStock.setCategoria(categoria);
 
                 lotesStock.add(loteStock);
             }
@@ -307,7 +318,7 @@ public class ExportController {
         DDJJDTO ddjjdtoM;
         for (DDJJDTO ddjjdto : ddjjdtos) {
             ddjjdtoM = new DDJJDTO();
-            List<Object[]> lotesc = loteService.findLotesByCategoria(ddjjdto.getCategoria(), fecha);
+            List<Object[]> lotesc = loteService.findLotesByCategoria(ddjjdto.getCategoria(), fecha, fechaHasta);
             List<Atributo> dAtributos = ddjjdto.getAtributos();
             ddjjdtoM.setAtributos(dAtributos);
             ddjjdtoM.setCategoria(ddjjdto.getCategoria());
@@ -321,18 +332,25 @@ public class ExportController {
 
                 for (Object[] result : lotesc) {
                     loteD = new LoteDDJJDTO();
-                    Lote ld = (Lote) result[0];
-                    Long longValue = (Long) result[1];
-                    int loteId = longValue.intValue();
+                    String cultivar = (String) result[0];
 
-                    loteD.setCodigo(ld.getCodigo());
-                    if (ld.getLotePadre() != null) {
-                        loteD.setCodigoPadre(ld.getLotePadre().getCodigo());
-                        loteD.setCategoriaPadre(ld.getLotePadre().getCategoria().getNombre());
+                    String codigo = (String) result[2];
+                    Integer longValue = (Integer) result[3];
+
+                    // LocalDate fechaL = (LocalDate) result[5];
+                    Date sqlDate = (Date) result[5]; // Suponiendo que la fecha está en la posición 4
+                    LocalDate fechaL = sqlDate.toLocalDate();
+
+                    loteD.setCodigo(codigo);
+                    if (result[1] != null) {
+                        String categoriaP = (String) result[1];
+                        String codigoP = (String) result[4];
+                        loteD.setCodigoPadre(codigoP);
+                        loteD.setCategoriaPadre(categoriaP);
                     }
-                    loteD.setCantidad(ld.getCantidad() + loteId);
-                    loteD.setVariedad(ld.getCultivar().getNombre());
-                    loteD.setFecha(ld.getFecha());
+                    loteD.setCantidad(longValue);
+                    loteD.setVariedad(cultivar);
+                    loteD.setFecha(fechaL);
                     lotesD.add(loteD);
                 }
             } else {
