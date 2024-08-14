@@ -403,6 +403,7 @@ function CambiarDeCategoria() {
           </div>
         </div>
       </div>
+
       <div
         className="modal fade"
         id="exampleModalToggle2"

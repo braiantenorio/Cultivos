@@ -7,6 +7,8 @@ import { useNotifications } from "../Menu";
 import { TipoAgenda } from "../types/tipoAgenda";
 import { Agenda } from "../types/agenda";
 import authHeader from "../services/auth-header";
+import Usuario from "../types/usuario";
+import * as AuthService from "../services/auth.service";
 
 const CrearLote: React.FC = () => {
   const [cantidadError, setCantidadError] = useState("");
@@ -14,6 +16,7 @@ const CrearLote: React.FC = () => {
   const [nuevoLote, setNuevoLote] = useState<Lote>({} as Lote);
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const [cultivares, setCultivares] = useState<Cultivar[]>([]);
+  const [huboError, setHuboError] = useState(false);
   const navigate = useNavigate();
   const { notifications, updateNotifications } = useNotifications();
   const [tipoAgendas, setTipoAgendas] = useState<TipoAgenda[]>([]);
@@ -22,10 +25,23 @@ const CrearLote: React.FC = () => {
     cultivar: true,
     // lotePadre: true,
   });
+  const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
+  const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
+  const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
+    undefined
+  );
+  const [generarCodigo, setGenerarCodigo] = useState(true);
 
   useEffect(() => {
     const url = "/categorias/search";
     const url1 = "/cultivares/search";
+    const user = AuthService.getCurrentUser();
+
+    if (user) {
+      setCurrentUser(user);
+      setShowModeratorBoard(user.roles.includes("ROLE_MODERATOR"));
+      setShowAdminBoard(user.roles.includes("ROLE_ADMIN"));
+    }
 
     fetch(url, {
       headers: authHeader(),
@@ -175,6 +191,14 @@ const CrearLote: React.FC = () => {
     }));
   };
 
+  const handleSwitchChange = () => {
+    setGenerarCodigo((prevState) => !prevState);
+    setNuevoLote((prevLote) => ({
+      ...prevLote,
+      codigo: "", // Reset codigo if switching to manual input
+    }));
+  };
+
   const handleLoteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
     const { value } = event.target;
     const selectdlote = lotes.find(
@@ -201,6 +225,7 @@ const CrearLote: React.FC = () => {
   };
 
   const handleGuardarLote = () => {
+    setHuboError(false);
     const url = "/lotes";
     fetch(url, {
       method: "POST",
@@ -239,10 +264,11 @@ const CrearLote: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error al enviar la solicitud POST:", error);
+        setHuboError(true);
         if (error.message === "Error de solicitud incorrecta (BadRequest)") {
           setCantidadError("La cantidad es incorrecta. Verifique los valores.");
         } else {
-          setCantidadError("Se produjo un error al realizar la solicitud.");
+          setCantidadError("Ya existe un lote con ese numero de secuencia.");
         }
       });
   };
@@ -289,9 +315,10 @@ const CrearLote: React.FC = () => {
                   className="form-select"
                   id="agenda"
                   name="agenda"
-                  value={nuevoLote.agenda?.tipoAgenda.id}
+                  value={nuevoLote.agenda?.tipoAgenda?.id || ""}
                   onChange={handleAgendaChange}
                 >
+                  <option value=""></option>
                   {tipoAgendas.map((categoria) => (
                     <option key={categoria.id} value={categoria.id}>
                       {categoria.version}
@@ -335,10 +362,41 @@ const CrearLote: React.FC = () => {
             value={nuevoLote.cantidad}
             onChange={handleInputChange}
           />
-          {cantidadError && (
-            <div className="alert alert-danger">{cantidadError}</div>
-          )}
         </div>
+        {showAdminBoard && (
+          <div className="mb-2 col-12 col-lg-5 d-flex align-items-center">
+            <label className="form-label me-2  mt-1 ">
+              Generar número de secuencia de forma automatica:
+            </label>
+            <div className="form-check form-switch ms-3 mt-1">
+              <input
+                className="form-check-input"
+                type="checkbox"
+                checked={generarCodigo}
+                onChange={handleSwitchChange}
+              />
+            </div>
+          </div>
+        )}
+        {!generarCodigo && (
+          <div className="mb-3 col-12 col-lg-5">
+            <label htmlFor="codigo" className="form-label">
+              Número de secuencia:
+            </label>
+            <input
+              type="text"
+              className="form-control"
+              id="codigo"
+              name="codigo"
+              value={nuevoLote.codigo}
+              onChange={handleInputChange}
+            />
+            {cantidadError && (
+              <div className="alert alert-danger">{cantidadError}</div>
+            )}
+          </div>
+        )}
+
         <div className="mb-3">
           <button
             type="button"
@@ -346,7 +404,6 @@ const CrearLote: React.FC = () => {
             data-bs-toggle="modal"
             data-bs-target="#exampleModalToggle"
             disabled={
-              nuevoLote.codigo === "" ||
               nuevoLote.cantidad < 1 ||
               nuevoLote.cantidad == null ||
               nuevoLote.categoria === undefined ||
@@ -417,32 +474,62 @@ const CrearLote: React.FC = () => {
         <div className="modal-dialog modal-dialog-centered">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title ">
-                Lote Creado Correctamente &nbsp; &nbsp;
-                <i
-                  className="bi bi-check-circle-fill text-success "
-                  style={{ fontSize: "2rem" }}
-                ></i>
-              </h5>
+              {huboError ? (
+                <>
+                  <h5 className="modal-title text-danger">
+                    Ocurrió un error &nbsp; &nbsp;
+                    <i
+                      className="bi bi-x-circle-fill text-danger"
+                      style={{ fontSize: "2rem" }}
+                    ></i>
+                  </h5>
+                </>
+              ) : (
+                <>
+                  <h5 className="modal-title ">
+                    Lote Creado Correctamente &nbsp; &nbsp;
+                    <i
+                      className="bi bi-check-circle-fill text-success"
+                      style={{ fontSize: "2rem" }}
+                    ></i>
+                  </h5>
+                </>
+              )}
             </div>
             <div className="modal-body">
-              <p>
-                El código del lote generado es:{" "}
-                <span className="badge bg-primary text-white me-2 fs-6">
-                  {codigoLoteGenerado}
-                </span>
-              </p>
+              {huboError ? (
+                <p>{cantidadError}</p>
+              ) : (
+                <>
+                  <p>
+                    El código del lote generado es:{" "}
+                    <span className="badge bg-primary text-white me-2 fs-6">
+                      {codigoLoteGenerado}
+                    </span>
+                  </p>
+                </>
+              )}
             </div>
 
             <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-primary"
-                data-bs-dismiss="modal"
-                onClick={handleCancelar1}
-              >
-                Ok
-              </button>
+              {huboError ? (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  data-bs-dismiss="modal"
+                >
+                  Ok
+                </button>
+              ) : (
+                <button
+                  type="button"
+                  className="btn btn-primary"
+                  data-bs-dismiss="modal"
+                  onClick={handleCancelar1}
+                >
+                  Ok
+                </button>
+              )}
             </div>
           </div>
         </div>

@@ -17,6 +17,7 @@ public class LoteDDJJDTO {
     private LocalDate fecha;
     private String variedad;
     private int cantidad;
+    private int cantidadActual;
     private String codigoPadre;
     private String categoriaPadre;
     private List<Valor> valores = new ArrayList<>();

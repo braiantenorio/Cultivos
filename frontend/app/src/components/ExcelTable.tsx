@@ -259,7 +259,8 @@ const InformeComponent = () => {
                     <tr>
                       <th>Código</th>
                       <th>Variedad</th>
-                      <th>Cantidad</th>
+                      <th>Cantidad Inicial</th>
+                      <th>Cantidad Actual</th>
                       <th>Categoria</th>
                       {informe?.stock?.atributos?.map((atributo) => (
                         <th key={atributo.id}>{atributo.nombre}</th>
@@ -272,6 +273,7 @@ const InformeComponent = () => {
                         <td>{lote.codigo}</td>
                         <td>{lote.variedad}</td>
                         <td>{lote.cantidad}</td>
+                        <td>{lote.cantidadActual}</td>
                         <td>{lote.categoria}</td>
                         {informe?.stock?.atributos?.map((atributo) => (
                           <td key={atributo.id}>
@@ -313,8 +315,9 @@ const InformeComponent = () => {
                             <tr>
                               <th>Código</th>
                               <th>Variedad</th>
-                              <th>Cantidad</th>
-                              <th>fecha</th>
+                              <th>Cantidad inicial</th>
+                              <th>Cantidad actual</th>
+                              <th>fecha de Creacion</th>
                               <th>Codigo Padre</th>
                               <th>Categoria Padre</th>
 
@@ -329,6 +332,7 @@ const InformeComponent = () => {
                                 <td>{lote.codigo}</td>
                                 <td>{lote.variedad}</td>
                                 <td>{lote.cantidad}</td>
+                                <td>{lote.cantidadActual}</td>
                                 <td>
                                   {" "}
                                   {new Date(

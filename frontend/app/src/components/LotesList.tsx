@@ -150,7 +150,9 @@ function Loteslist() {
             checked={showDeleted}
             onChange={handleShowDeletedChange}
           />
-          <label className="form-check-label mt-1">Mostrar Inactivos</label>
+          <label className="form-check-label mt-1">
+            Mostrar Inactivos/Anulados
+          </label>
         </div>
       </div>
 

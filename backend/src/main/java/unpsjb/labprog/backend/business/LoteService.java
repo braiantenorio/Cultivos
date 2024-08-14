@@ -171,9 +171,16 @@ public class LoteService {
 	}
 
 	public String generarCodigo(Lote lote) {
-		int count = repository.countLotesByCategoria(lote.getCategoria(), lote.getCultivar()) + 1;
 		LocalDate fecha = LocalDate.now();
 		int year = fecha.getYear() % 100;
+		int count = 0;
+		if (lote.getCodigo() == null) {
+			count = repository.countLotesByCategoria(lote.getCategoria().getId(), lote.getCultivar().getId()) + 1;
+
+		} else {
+			count = Integer.parseInt(lote.getCodigo());
+
+		}
 		String codigo = lote.getCultivar().getCodigo() + "-" + lote.getCategoria().getCodigo() +
 				"-" + count + "-" + year;
 		return codigo;

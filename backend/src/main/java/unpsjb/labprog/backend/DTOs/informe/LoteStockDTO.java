@@ -16,6 +16,7 @@ public class LoteStockDTO {
     private String codigo;
     private String variedad;
     private int cantidad;
+    private int cantidadActual;
     private String categoria;
     private List<Valor> valores = new ArrayList<>();
 

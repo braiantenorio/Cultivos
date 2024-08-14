@@ -5,6 +5,7 @@ export type LoteDDJJ = {
   fecha: Date;
   variedad: string;
   cantidad: number;
+  cantidadActual: number;
   codigoPadre: string;
   categoriaPadre: string;
   valores: Valor[];

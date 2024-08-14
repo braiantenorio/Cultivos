@@ -91,17 +91,18 @@ public class ExportController {
         headerRow2.createCell(0).setCellValue("Codigo");
         headerRow2.createCell(1).setCellValue("Categoria");
         headerRow2.createCell(2).setCellValue("Variedad");
-        headerRow2.createCell(3).setCellValue("Cantidad ");
+        headerRow2.createCell(3).setCellValue("Cantidad Inicial ");
+        headerRow2.createCell(4).setCellValue("Cantidad Actual");
 
-        for (int i = 4; i < 4 + stock.getAtributos().size(); i++) {
-            headerRow2.createCell(i).setCellValue(stock.getAtributos().get(i - 4).getNombre());
+        for (int i = 5; i < 5 + stock.getAtributos().size(); i++) {
+            headerRow2.createCell(i).setCellValue(stock.getAtributos().get(i - 5).getNombre());
         }
 
         // Crear un mapa para realizar un seguimiento de los atributos y sus índices de
         // celdas correspondientes
         Map<String, Integer> atributoIndexMap = new HashMap<>();
-        for (int i = 4; i < 4 + stock.getAtributos().size(); i++) {
-            atributoIndexMap.put(stock.getAtributos().get(i - 4).getNombre(), i);
+        for (int i = 5; i < 5 + stock.getAtributos().size(); i++) {
+            atributoIndexMap.put(stock.getAtributos().get(i - 5).getNombre(), i);
         }
 
         // Llenar la hoja con datos
@@ -112,9 +113,10 @@ public class ExportController {
             row.createCell(1).setCellValue(dato.getCategoria());
             row.createCell(2).setCellValue(dato.getVariedad());
             row.createCell(3).setCellValue(dato.getCantidad());
+            row.createCell(4).setCellValue(dato.getCantidadActual());
 
             // Llenar celdas de valores en función del orden de los atributos
-            for (int i = 4; i < 4 + stock.getAtributos().size(); i++) {
+            for (int i = 5; i < 5 + stock.getAtributos().size(); i++) {
                 Valor valor = null;
                 // Buscar el valor correspondiente al atributo en el mapa
                 for (Valor v : dato.getValores()) {
@@ -130,7 +132,7 @@ public class ExportController {
             }
 
         }
-        for (int i = 1; i < 4 + stock.getAtributos().size(); i++) {
+        for (int i = 1; i < 5 + stock.getAtributos().size(); i++) {
             sheet.autoSizeColumn(i);
         }
         // Obtener el estilo de celda para centrar el contenido
@@ -141,7 +143,7 @@ public class ExportController {
         // Aplicar el estilo de centrado a todas las celdas
         for (int rowIndex = 2; rowIndex < rowNum; rowIndex++) {
             Row rows = sheet.getRow(rowIndex);
-            for (int colIndex = 0; colIndex < 4 + stock.getAtributos().size(); colIndex++) {
+            for (int colIndex = 0; colIndex < 5 + stock.getAtributos().size(); colIndex++) {
                 Cell cell = rows.getCell(colIndex);
                 if (cell != null) {
                     cell.setCellStyle(centerAlignStyle);
@@ -167,19 +169,20 @@ public class ExportController {
         Row headerRow2 = sheet.createRow(2);
         headerRow2.createCell(0).setCellValue("Codigo");
         headerRow2.createCell(1).setCellValue("Variedad");
-        headerRow2.createCell(2).setCellValue("Fecha ");
-        headerRow2.createCell(3).setCellValue("Cantidad ");
-        headerRow2.createCell(4).setCellValue("Codigo De Lote Origen ");
-        headerRow2.createCell(5).setCellValue("Categoria del Lote Origen");
+        headerRow2.createCell(2).setCellValue("Fecha de Creacion ");
+        headerRow2.createCell(3).setCellValue("Cantidad Inicial");
+        headerRow2.createCell(4).setCellValue("Cantidad Actual");
+        headerRow2.createCell(5).setCellValue("Codigo De Lote Origen ");
+        headerRow2.createCell(6).setCellValue("Categoria del Lote Origen");
 
-        for (int i = 6; i < 6 + ddjj.getAtributos().size(); i++) {
-            headerRow2.createCell(i).setCellValue(ddjj.getAtributos().get(i - 6).getNombre());
+        for (int i = 7; i < 7 + ddjj.getAtributos().size(); i++) {
+            headerRow2.createCell(i).setCellValue(ddjj.getAtributos().get(i - 7).getNombre());
         }
         // Crear un mapa para realizar un seguimiento de los atributos y sus índices de
         // celdas correspondientes
         Map<String, Integer> atributoIndexMap = new HashMap<>();
-        for (int i = 6; i < 6 + ddjj.getAtributos().size(); i++) {
-            atributoIndexMap.put(ddjj.getAtributos().get(i - 6).getNombre(), i);
+        for (int i = 7; i < 7 + ddjj.getAtributos().size(); i++) {
+            atributoIndexMap.put(ddjj.getAtributos().get(i - 7).getNombre(), i);
         }
 
         // Llenar la hoja con datos
@@ -188,17 +191,25 @@ public class ExportController {
             Row row = sheet.createRow(rowNum++);
             row.createCell(0).setCellValue(dato.getCodigo());
             row.createCell(1).setCellValue(dato.getVariedad());
-            row.createCell(2).setCellValue(dato.getFecha());
+            LocalDate localDate = dato.getFecha();
+
+            // Definir un formato de fecha
+            DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+
+            // Convertir LocalDate a String
+            String dateString = localDate.format(formatter);
+            row.createCell(2).setCellValue(dateString);
             row.createCell(3).setCellValue(dato.getCantidad());
-            row.createCell(4).setCellValue(dato.getCodigoPadre());
-            row.createCell(5).setCellValue(dato.getCategoriaPadre());
+            row.createCell(4).setCellValue(dato.getCantidadActual());
+            row.createCell(5).setCellValue(dato.getCodigoPadre());
+            row.createCell(6).setCellValue(dato.getCategoriaPadre());
 
             // Llenar celdas de valores en función del orden de los atributos
-            for (int i = 6; i < 6 + ddjj.getAtributos().size(); i++) {
+            for (int i = 7; i < 7 + ddjj.getAtributos().size(); i++) {
                 Valor valor = null;
                 // Buscar el valor correspondiente al atributo en el mapa
                 for (Valor v : dato.getValores()) {
-                    if (v.getAtributo().getNombre().equals(ddjj.getAtributos().get(i - 6).getNombre())) {
+                    if (v.getAtributo().getNombre().equals(ddjj.getAtributos().get(i - 7).getNombre())) {
                         valor = v;
                         break;
                     }
@@ -211,7 +222,7 @@ public class ExportController {
 
         }
         // Ajustar automáticamente el ancho de las columnas después de llenar los datos
-        for (int i = 1; i < 6 + ddjj.getAtributos().size(); i++) {
+        for (int i = 1; i < 7 + ddjj.getAtributos().size(); i++) {
             sheet.autoSizeColumn(i);
         }
         // Obtener el estilo de celda para centrar el contenido
@@ -222,7 +233,7 @@ public class ExportController {
         // Aplicar el estilo de centrado a todas las celdas
         for (int rowIndex = 2; rowIndex < rowNum; rowIndex++) {
             Row rows = sheet.getRow(rowIndex);
-            for (int colIndex = 0; colIndex < 6 + ddjj.getAtributos().size(); colIndex++) {
+            for (int colIndex = 0; colIndex < 7 + ddjj.getAtributos().size(); colIndex++) {
                 Cell cell = rows.getCell(colIndex);
                 if (cell != null) {
                     cell.setCellStyle(centerAlignStyle);
@@ -272,9 +283,11 @@ public class ExportController {
                 String codigo = (String) result[2];
 
                 Integer longValue = (Integer) result[3];
+                Integer longValue2 = (Integer) result[4];
                 // int loteId = longValue.intValue();
                 loteStock.setCodigo(codigo);
                 loteStock.setCantidad(longValue);
+                loteStock.setCantidadActual(longValue2);
                 loteStock.setVariedad(cultivar);
                 loteStock.setCategoria(categoria);
 
@@ -336,6 +349,7 @@ public class ExportController {
 
                     String codigo = (String) result[2];
                     Integer longValue = (Integer) result[3];
+                    Integer longValue2 = (Integer) result[6];
 
                     // LocalDate fechaL = (LocalDate) result[5];
                     Date sqlDate = (Date) result[5]; // Suponiendo que la fecha está en la posición 4
@@ -349,6 +363,7 @@ public class ExportController {
                         loteD.setCategoriaPadre(categoriaP);
                     }
                     loteD.setCantidad(longValue);
+                    loteD.setCantidadActual(longValue2);
                     loteD.setVariedad(cultivar);
                     loteD.setFecha(fechaL);
                     lotesD.add(loteD);

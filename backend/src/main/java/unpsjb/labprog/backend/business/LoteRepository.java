@@ -32,17 +32,27 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
                         "AND :categoria MEMBER OF c.subCategorias")
         List<Lote> findAllActivosByCategoria(@Param("categoria") Categoria categoria);
 
-        @Query("SELECT COUNT(l) FROM Lote l " +
-                        "JOIN l.categoria c " +
-                        "WHERE c = :categoria " +
-                        "AND l.cultivar= :cultivar " +
-                        "AND YEAR(l.fecha) = YEAR(CURRENT_DATE)")
-        int countLotesByCategoria(@Param("categoria") Categoria categoria, @Param("cultivar") Cultivar cultivar);
+        @Query(value = "SELECT COALESCE(MAX(CAST( " +
+                        "SUBSTRING( " +
+                        "l.codigo, " +
+                        "POSITION('-' IN l.codigo) + 1 + POSITION('-' IN SUBSTRING(l.codigo, POSITION('-' IN l.codigo) + 1)), "
+                        +
+                        "POSITION('-' IN SUBSTRING(l.codigo, POSITION('-' IN l.codigo) + 1 + POSITION('-' IN SUBSTRING(l.codigo, POSITION('-' IN l.codigo) + 1)))) - 1 "
+                        +
+                        ") " +
+                        "AS INTEGER)),0) " +
+                        "FROM lotes l " +
+
+                        "JOIN categorias c ON l.categoria_id = c.id " +
+                        "WHERE c.id = :categoriaId " +
+                        "AND l.cultivar_id = :cultivarId " +
+                        "AND EXTRACT(YEAR FROM l.fecha) = EXTRACT(YEAR FROM CURRENT_DATE)", nativeQuery = true)
+        int countLotesByCategoria(@Param("categoriaId") Long categoriaId, @Param("cultivarId") Long cultivarId);
 
         @Query("SELECT l.codigo FROM Lote l WHERE UPPER(l.codigo) LIKE CONCAT('%', UPPER(?1), '%') ")
         List<String> searchLote(String term);
 
-        @Query(value = "SELECT c.nombre, ca.nombre, l.codigo, l.cantidad FROM lotes_audit_log l " +
+        @Query(value = "SELECT c.nombre, ca.nombre, l.codigo, l.cantidad, lo.cantidad FROM lotes_audit_log l " +
                         "JOIN lotes lo on lo.id = l.id " +
                         "JOIN cultivares c on lo.cultivar_id=c.id " +
                         "JOIN categorias ca on lo.categoria_id=ca.id " +
@@ -65,7 +75,7 @@ public interface LoteRepository extends CrudRepository<Lote, Long>, PagingAndSor
         List<Object[]> findLotesAndValoresByAtributos(@Param("listaAtributos") List<Long> listaAtributos,
                         @Param("localDate") LocalDate localDate);
 
-        @Query(value = "SELECT c.nombre, ca.nombre, l.codigo, l.cantidad, lop.codigo, lo.fecha FROM lotes_audit_log l "
+        @Query(value = "SELECT c.nombre, ca.nombre, l.codigo, l.cantidad, lop.codigo, lo.fecha, lo.cantidad FROM lotes_audit_log l "
                         +
                         "LEFT JOIN lotes lop ON lop.id = l.lote_padre_id " +
                         "JOIN lotes lo ON lo.id = l.id " +
