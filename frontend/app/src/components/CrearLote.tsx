@@ -25,6 +25,7 @@ const CrearLote: React.FC = () => {
     cultivar: true,
     // lotePadre: true,
   });
+  const [codigoValido, setCodigoValido] = useState(true); // Nuevo estado para validar el código
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
@@ -190,6 +191,27 @@ const CrearLote: React.FC = () => {
       agenda: agenda,
     }));
   };
+  const handleInputChange1 = (
+    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = event.target;
+
+    // Verificar si el valor del código es numérico
+    if (name === "codigo" && !generarCodigo) {
+      const esNumeroValido = /^\d+$/.test(value); // Verifica que solo haya dígitos
+      setCodigoValido(esNumeroValido);
+      if (!esNumeroValido) {
+        setCantidadError("El número de secuencia debe ser un número válido.");
+      } else {
+        setCantidadError(""); // Limpiar el error si es un número válido
+      }
+    }
+
+    setNuevoLote((prevLote) => ({
+      ...prevLote,
+      [name]: value,
+    }));
+  };
 
   const handleSwitchChange = () => {
     setGenerarCodigo((prevState) => !prevState);
@@ -197,6 +219,7 @@ const CrearLote: React.FC = () => {
       ...prevLote,
       codigo: "", // Reset codigo if switching to manual input
     }));
+    setCodigoValido(true); // Resetear la validación del código
   };
 
   const handleLoteChange = (event: React.ChangeEvent<HTMLSelectElement>) => {
@@ -272,6 +295,12 @@ const CrearLote: React.FC = () => {
         }
       });
   };
+  const guardarDeshabilitado =
+    nuevoLote.cantidad < 1 ||
+    nuevoLote.cantidad == null ||
+    nuevoLote.categoria === undefined ||
+    nuevoLote.cultivar === undefined ||
+    (!generarCodigo && (!nuevoLote.codigo || !codigoValido));
 
   const handleCancelar = () => {
     navigate(-1);
@@ -384,12 +413,12 @@ const CrearLote: React.FC = () => {
               Número de secuencia:
             </label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               id="codigo"
               name="codigo"
               value={nuevoLote.codigo}
-              onChange={handleInputChange}
+              onChange={handleInputChange1}
             />
             {cantidadError && (
               <div className="alert alert-danger">{cantidadError}</div>
@@ -403,12 +432,7 @@ const CrearLote: React.FC = () => {
             className="btn btn-success"
             data-bs-toggle="modal"
             data-bs-target="#exampleModalToggle"
-            disabled={
-              nuevoLote.cantidad < 1 ||
-              nuevoLote.cantidad == null ||
-              nuevoLote.categoria === undefined ||
-              nuevoLote.cultivar === undefined
-            }
+            disabled={guardarDeshabilitado}
           >
             Guardar
           </button>

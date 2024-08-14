@@ -174,7 +174,7 @@ public class LoteService {
 		LocalDate fecha = LocalDate.now();
 		int year = fecha.getYear() % 100;
 		int count = 0;
-		if (lote.getCodigo() == null) {
+		if (lote.getCodigo() == null || lote.getCodigo().equals("")) {
 			count = repository.countLotesByCategoria(lote.getCategoria().getId(), lote.getCultivar().getId()) + 1;
 
 		} else {
