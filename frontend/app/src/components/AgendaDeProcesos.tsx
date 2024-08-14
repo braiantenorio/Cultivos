@@ -8,6 +8,7 @@ import Usuario from "../types/usuario";
 
 function AgendaDeProcesos() {
   const { loteId } = useParams();
+  const navigate = useNavigate();
   const [lote, setLote] = useState<Lote | null>(null);
   const url1 = `/lotes/id/${loteId}`;
   const [lotes, setProcesoProgramadoA] = useState<ProcesoProgramado[]>([]);
@@ -79,11 +80,21 @@ function AgendaDeProcesos() {
 
   return (
     <div className="container">
-      <h3>
-        Lote: &nbsp;
-        <span className="badge badge-custom-1 text-white me-6 fs-7">
-          {lote.codigo}
-        </span>{" "}
+      <h3 className="mb-6">
+        <div className="row align-items-center">
+          <div className="col-6 col-md-6 col-lg-6 ">
+            Lote: &nbsp;
+            <span className=" badge badge-custom-1 text-white fs-7">
+              {lote.codigo}
+            </span>
+          </div>
+
+          <div className="col-4 col-md-6 col-lg-4  ms-5">
+            <button className="btn btn-danger " onClick={() => navigate(-1)}>
+              Atrás <i className="bi bi-arrow-left"></i>
+            </button>
+          </div>
+        </div>
       </h3>
 
       <div className="d-flex flex-wrap">
@@ -96,7 +107,7 @@ function AgendaDeProcesos() {
               {lote.agenda.tipoAgenda?.version}
             </span>{" "}
           </h4>
-          <table className="table">
+          <table className="table ">
             <thead>
               <tr>
                 <th>#</th>

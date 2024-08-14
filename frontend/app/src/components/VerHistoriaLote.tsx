@@ -37,8 +37,17 @@ function VerHistoriaLote() {
 
   return (
     <div className="container">
-      <div className="d-flex justify-content-between align-items-center">
-        <h2>Historia de lote</h2>
+      <div>
+        <h2>
+          <div className="mb-3 row align-items-center">
+            <div className="col-6 col-md-6 col-lg-3"> Historia del Lote</div>
+            <div className="col-4 col-md-6 col-lg-4  ms-5">
+              <button className="btn btn-danger" onClick={() => navigate(-1)}>
+                Atras <i className="bi bi-arrow-left"></i>{" "}
+              </button>
+            </div>
+          </div>
+        </h2>
       </div>
       {lotes.map((lote) => (
         <div>

@@ -272,7 +272,7 @@ function CrearCategoria() {
           className="alert alert-warning alert-dismissible fade show"
           role="alert"
         >
-          <strong>¡Advertencia!</strong> Este atributo ya está en la lista.
+          <strong>¡Advertencia!</strong> Este categoria ya está en la lista.
           <button
             type="button"
             className="btn-close"
