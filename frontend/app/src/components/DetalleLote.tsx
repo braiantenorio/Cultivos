@@ -199,11 +199,10 @@ function DetalleLote() {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
         <h2>Detalle del Lote</h2>
-
-        <button className="btn btn-secondary" onClick={() => navigate(-1)}>
-          <i className="bi bi-arrow-left"></i>{" "}
+        &nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;
+        <button className="btn btn-danger" onClick={() => navigate(-1)}>
+          Atras <i className="bi bi-arrow-left"></i>{" "}
         </button>
-
         <div className="dropdown" style={{ position: "static" }}>
           <button
             className="d-flex align-items-center link-body-emphasis text-decoration-none"
