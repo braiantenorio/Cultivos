@@ -242,6 +242,7 @@ function Loteslist() {
                       >
                         <i className="bi bi-three-dots"></i>
                       </button>
+
                       <ul
                         className="dropdown-menu text-small shadow "
                         data-boundary="viewport"
@@ -253,8 +254,14 @@ function Loteslist() {
                           >
                             Detalle
                           </Link>
-                        </li>
 
+                          <a
+                            className="dropdown-item"
+                            href={`/lotes/log/${lote.id}`}
+                          >
+                            Logs
+                          </a>
+                        </li>
                         {lote.deleted ||
                         !showModeratorBoard ||
                         lote.cantidad === 0 ? (
@@ -269,14 +276,6 @@ function Loteslist() {
                             </a>
                           </li>
                         )}
-                        <li>
-                          <a
-                            className="dropdown-item"
-                            href={`/lotes/log/${lote.id}`}
-                          >
-                            Logs
-                          </a>
-                        </li>
 
                         <li>
                           <a

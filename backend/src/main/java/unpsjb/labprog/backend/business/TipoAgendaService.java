@@ -9,6 +9,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import unpsjb.labprog.backend.model.Cultivar;
 import unpsjb.labprog.backend.model.TipoAgenda;
 
 @Service
@@ -54,6 +55,14 @@ public class TipoAgendaService {
 
 	public void delete(Long id) {
 		repository.deleteById(id);
+	}
+
+	public List<TipoAgenda> findLotesActivosByTipoAgenda(long id) {
+		return repository.findLotesActivosByTipoAgenda(id);
+	}
+
+	public List<TipoAgenda> findAllCultivares(boolean filtered) {
+		return repository.findAllCultivares(filtered);
 	}
 
 	public Page<TipoAgenda> findByPage(List<TipoAgenda> clientes, int page, int size) {

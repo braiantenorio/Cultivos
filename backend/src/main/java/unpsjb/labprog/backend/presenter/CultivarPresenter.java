@@ -29,7 +29,7 @@ public class CultivarPresenter {
   CultivarService service;
 
   @GetMapping
-  //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  // @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> findAll(
       @RequestParam(value = "filtered", required = false) boolean filtered,
       @RequestParam(defaultValue = "0") int page,

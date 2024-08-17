@@ -19,6 +19,7 @@ function TipoAgendaList() {
   const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
     undefined
   );
+  const [showDeleted, setShowDeleted] = useState(false);
   const user = AuthService.getCurrentUser();
 
   const [resultsPage, setResultsPage] = useState<ResultsPage<TipoAgenda>>({
@@ -40,12 +41,15 @@ function TipoAgendaList() {
       `/agendas?pagina=${resultsPage.number + 1}&longitud=${resultsPage.size}`
     );
     fetchAtributos();
-  }, [resultsPage.number, resultsPage.size]);
+  }, [showDeleted, resultsPage.number, resultsPage.size, tipoAgendas]);
 
   const fetchAtributos = () => {
-    fetch(`/tipoagendas?page=${resultsPage.number}&size=${resultsPage.size}`, {
-      headers: authHeader(),
-    })
+    fetch(
+      `/tipoagendas?filtered=${showDeleted}&page=${resultsPage.number}&size=${resultsPage.size}`,
+      {
+        headers: authHeader(),
+      }
+    )
       .then((response) => {
         if (!response.ok) {
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
@@ -72,7 +76,7 @@ function TipoAgendaList() {
   const handleEliminarTipoAgenda = (tipoAgendaId: number) => {
     swal({
       title: "¿Estás seguro?",
-      text: "Una vez borrado, no podrás recuperar esta agenda.",
+      text: "Una vez archivada, no podrás usar esta agenda.",
       icon: "warning",
       buttons: ["Cancelar", "Anular"],
       dangerMode: true,
@@ -85,7 +89,7 @@ function TipoAgendaList() {
           .then((response) => {
             if (response.ok) {
               // Si la respuesta es exitosa, puedes realizar acciones adicionales aquí
-              swal("El lote ha sido anulado.", {
+              swal("La agenda ha sido archivada.", {
                 icon: "success",
               }).then(() => {
                 // Eliminar el tipoAgenda de la lista
@@ -97,6 +101,11 @@ function TipoAgendaList() {
               });
             } else {
               // Si la respuesta no es exitosa, maneja el error aquí
+              swal("Hay Lotes activos con ese Agenda.", {
+                icon: "error",
+              }).then(() => {
+                // Eliminar el tipoAgenda de la lista
+              });
               console.error("Error al anular el lote");
             }
           })
@@ -108,9 +117,46 @@ function TipoAgendaList() {
     });
   };
 
+  const handleEliminarTipoAgenda1 = (tipoAgendaId: number) => {
+    fetch(`/tipoagendas/${tipoAgendaId}`, {
+      method: "PUT",
+      headers: authHeader(),
+    })
+      .then((response) => {
+        if (response.ok) {
+          setTipoAgendas((prevTipoAgendas) =>
+            prevTipoAgendas.filter(
+              (tipoAgenda) => tipoAgenda.id !== tipoAgendaId
+            )
+          );
+        } else {
+          console.error("Error al anular el lote");
+        }
+      })
+      .catch((error) => {
+        console.error("Error al anular el lote", error);
+      });
+  };
+
+  const handleShowDeletedChange = () => {
+    setShowDeleted(!showDeleted); // Alternar entre mostrar y ocultar elementos eliminados
+  };
+
   return (
     <div className="container">
       <h2>Agendas </h2>
+
+      <div className="col-auto">
+        <label className="form-check-label form-switch">
+          <input
+            className="form-check-input"
+            type="checkbox"
+            checked={showDeleted}
+            onChange={handleShowDeletedChange}
+          />
+          Mostrar Archivadas
+        </label>
+      </div>
 
       <table className="table table-responsive">
         <thead>
@@ -155,19 +201,29 @@ function TipoAgendaList() {
 
                     {showModeratorBoard && (
                       <div>
-                        <li>
-                          <hr className="dropdown-divider" />
-                        </li>
-                        <li>
-                          <button
-                            className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
-                            onClick={() =>
-                              handleEliminarTipoAgenda(tipoAgenda.id)
-                            }
-                          >
-                            Anular
-                          </button>
-                        </li>
+                        {!tipoAgenda.deleted ? (
+                          <li>
+                            <button
+                              className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
+                              onClick={() =>
+                                handleEliminarTipoAgenda(tipoAgenda.id)
+                              }
+                            >
+                              Archivar
+                            </button>
+                          </li>
+                        ) : (
+                          <li>
+                            <button
+                              className="dropdown-item d-flex gap-2 align-items-center"
+                              onClick={() =>
+                                handleEliminarTipoAgenda1(tipoAgenda.id)
+                              }
+                            >
+                              Restaurar
+                            </button>
+                          </li>
+                        )}
                       </div>
                     )}
                   </ul>
@@ -178,7 +234,7 @@ function TipoAgendaList() {
         </tbody>
       </table>
       {!resultsPage.content.length && (
-        <div className="alert alert-warning">No se encontraron lotes</div>
+        <div className="alert alert-warning">No se encontraron Agendas</div>
       )}
       <nav aria-label="Page navigation example">
         <div className="d-flex justify-content-between align-items-center">
