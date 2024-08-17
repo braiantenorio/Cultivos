@@ -85,9 +85,7 @@ function App() {
           <Route
             path="/categorias"
             element={
-              <RequireAuth>
                 <CategoriasList />
-              </RequireAuth>
             }
           />
           <Route
@@ -101,33 +99,25 @@ function App() {
           <Route
             path="/cultivares"
             element={
-              <RequireAuth>
                 <ListarCultivares />
-              </RequireAuth>
             }
           />
           <Route
             path="/generar/informe"
             element={
-              <RequireAuth>
                 <ExcelTable />
-              </RequireAuth>
             }
           />
           <Route
             path="/agenda/general"
             element={
-              <RequireAuth>
                 <AgendaGeneralDeProcesos />
-              </RequireAuth>
             }
           />
           <Route
             path="/lotes"
             element={
-              <RequireAuth>
                 <Loteslist />
-              </RequireAuth>
             }
           />
           <Route
@@ -142,9 +132,7 @@ function App() {
           <Route
             path="/lotes/log/:loteId"
             element={
-              <RequireAuth>
                 <LoteRevisiones />
-              </RequireAuth>
             }
           />
           <Route path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
@@ -159,9 +147,7 @@ function App() {
           <Route
             path="/lotes/:loteId/agenda"
             element={
-              <RequireAuth>
                 <AgendaDeProcesos />
-              </RequireAuth>
             }
           />
           <Route
@@ -175,9 +161,7 @@ function App() {
           <Route
             path="/procesos/:procesoId"
             element={
-              <RequireAuth>
                 <DetalleProceso />
-              </RequireAuth>
             }
           />
           <Route
@@ -191,9 +175,7 @@ function App() {
           <Route
             path="/agendas"
             element={
-              <RequireAuth>
                 <TipoAgendaList />
-              </RequireAuth>
             }
           />
           <Route
@@ -207,9 +189,7 @@ function App() {
           <Route
             path="/atributos"
             element={
-              <RequireAuth>
                 <ListarAtributos />
-              </RequireAuth>
             }
           />
           <Route
@@ -223,28 +203,20 @@ function App() {
           <Route
             path="/tipo-proceso"
             element={
-              <RequireAuth>
                 <ListarTiposDeProcesos />
-              </RequireAuth>
             }
           />
           <Route
             path="/"
             element={
               //deberiamos deja un solo home no? o podriamos hacer que uno sea como una pantalla de presentacion y el otro si sea el home del software. xd
-              <RequireAuth>
-                {" "}
                 <Home />
-              </RequireAuth>
             }
           />
           <Route
             path="/home"
             element={
-              <RequireAuth>
-                {" "}
                 <Home />
-              </RequireAuth>
             }
           />
           <Route path="/login" element={<Login />} />
@@ -272,7 +244,6 @@ function App() {
             }
           />
         </Routes>
-        {/*<Footer />*/}
       </NotificationsProvider>
     </BrowserRouter>
   );
