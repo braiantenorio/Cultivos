@@ -394,10 +394,10 @@ const CrearLote: React.FC = () => {
         </div>
         {showAdminBoard && (
           <div className="mb-2 col-12 col-lg-5 d-flex align-items-center">
-            <label className="form-label me-2  mt-1 ">
+            <label className="form-label me-2  mt-1 " hidden>
               Generar número de secuencia de forma automatica:
             </label>
-            <div className="form-check form-switch ms-3 mt-1">
+            <div className="form-check form-switch ms-3 mt-1" hidden>
               <input
                 className="form-check-input"
                 type="checkbox"
