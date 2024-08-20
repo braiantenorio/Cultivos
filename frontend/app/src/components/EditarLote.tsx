@@ -4,22 +4,16 @@ import { Categoria } from "../types/categoria";
 import authHeader from "../services/auth-header";
 
 const EditarLote: React.FC = () => {
+  const [cantidadError, setCantidadError] = useState("");
   const { loteId } = useParams();
   const [lote, setLote] = useState({
     codigo: "",
     cantidad: 0,
-    categoria: { id: 0, nombre: "" },
+    categoria: { id: 0, nombre: "", codigo: 0 },
+    cultivar: { id: 0, nombre: "", codigo: 0 },
   });
   const [categorias, setCategorias] = useState<Categoria[]>([]);
   const navigate = useNavigate();
-  const requestOptions = {
-    method: "PUT",
-    headers: {
-      "Content-Type": "application/json",
-      Authorization: authHeader().Authorization,
-    },
-    body: JSON.stringify(lote),
-  };
 
   useEffect(() => {
     const url = `/lotes/id/${loteId}`;
@@ -58,35 +52,52 @@ const EditarLote: React.FC = () => {
       });
   }, [loteId]);
 
-  const handleInputChange = (
-    event: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>
-  ) => {
-    const { name, value } = event.target;
-    setLote((prevLote) => ({
-      ...prevLote,
-      [name]: value,
-    }));
-  };
-  const handleCategoriaChange = (
-    event: React.ChangeEvent<HTMLSelectElement>
+  const handleNumeroSecuenciaChange = (
+    event: React.ChangeEvent<HTMLInputElement>
   ) => {
     const { value } = event.target;
-    const selectedCategoria = categorias.find(
-      (categoria) => categoria.id === parseInt(value, 10)
-    );
 
-    setLote((prevLote) => ({
-      ...prevLote,
-      categoria: selectedCategoria || { id: 0, nombre: "" },
-    }));
+    // Validar que el valor ingresado sea un número
+    if (/^\d*$/.test(value)) {
+      // Limpiar el mensaje de error
+      setCantidadError("");
+
+      // Actualizar el código con el nuevo valor
+      const nuevoCodigo = lote.codigo
+        .split("-")
+        .map((num, index) => (index === 2 ? value : num))
+        .join("-");
+      setLote((prevLote) => ({
+        ...prevLote,
+        codigo: nuevoCodigo,
+      }));
+    } else {
+      // Si el valor no es un número, mostrar el error
+      setCantidadError("El valor debe ser un número.");
+    }
   };
 
   const handleGuardarLote = () => {
     const url = `/lotes`;
-    fetch(url, requestOptions)
+    fetch(url, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: authHeader().Authorization,
+      },
+      body: JSON.stringify(lote),
+    })
       .then((response) => {
         if (!response.ok) {
-          throw new Error(`Error al realizar la solicitud: ${response.status}`);
+          if (response.status === 400) {
+            // Es un error BadRequest
+            throw new Error("Error de solicitud incorrecta (BadRequest)");
+          } else {
+            // Otro tipo de error
+            throw new Error(
+              `Error al realizar la solicitud: ${response.status}`
+            );
+          }
         }
         return response.json();
       })
@@ -96,12 +107,19 @@ const EditarLote: React.FC = () => {
       })
       .catch((error) => {
         console.error("Error al enviar la solicitud PUT:", error);
+        if (error.message === "Error de solicitud incorrecta (BadRequest)") {
+          setCantidadError("La cantidad es incorrecta. Verifique los valores.");
+        } else {
+          setCantidadError("Ya existe un lote con ese número de secuencia.");
+        }
       });
   };
 
   const handleCancelar = () => {
     navigate(-1);
   };
+
+  const tercerNumeroSecuencia = lote.codigo.split("-")[2] || "";
 
   return (
     <div className="container">
@@ -117,7 +135,7 @@ const EditarLote: React.FC = () => {
             id="codigo"
             name="codigo"
             value={lote.codigo}
-            onChange={handleInputChange}
+            readOnly
           />
         </div>
         <div className="mb-3">
@@ -130,33 +148,55 @@ const EditarLote: React.FC = () => {
             id="cantidad"
             name="cantidad"
             value={lote.cantidad}
-            onChange={handleInputChange}
+            readOnly
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="cultivarId" className="form-label">
+            Cultivar:
+          </label>
+          <input
+            className="form-select"
+            id="cultivarId"
+            name="cultivarId"
+            value={lote.cultivar.nombre + " (" + lote.cultivar.codigo + ")"}
+            readOnly
           />
         </div>
         <div className="mb-3">
           <label htmlFor="categoriaId" className="form-label">
             Categoría:
           </label>
-          <select
+          <input
             className="form-select"
             id="categoriaId"
             name="categoriaId"
-            value={lote.categoria.id}
-            onChange={handleCategoriaChange}
-          >
-            <option value={0}>Seleccione una categoría</option>
-            {categorias.map((categoria) => (
-              <option key={categoria.id} value={categoria.id}>
-                {categoria.nombre}
-              </option>
-            ))}
-          </select>
+            value={lote.categoria.nombre + " (" + lote.categoria.codigo + ")"}
+            readOnly
+          />
+        </div>
+        <div className="mb-3">
+          <label htmlFor="numeroSecuencia" className="form-label">
+            Número de Secuencia:
+          </label>
+          <input
+            type="text" // Cambiar a "text" para aceptar solo dígitos y permitir validación
+            className="form-control"
+            id="numeroSecuencia"
+            name="numeroSecuencia"
+            value={tercerNumeroSecuencia}
+            onChange={handleNumeroSecuenciaChange}
+          />
+          {cantidadError && (
+            <div className="alert alert-danger">{cantidadError}</div>
+          )}
         </div>
         <div className="mb-3">
           <button
             type="button"
             className="btn btn-success"
             onClick={handleGuardarLote}
+            disabled={tercerNumeroSecuencia === ""}
           >
             Guardar
           </button>
