@@ -144,9 +144,9 @@ function CrearAgenda() {
       field === "cantidad" ||
       field === "diaInicio"
     ) {
-      procesoToUpdate[field] = parseInt(value as string, 10);
+      const numericValue = value ? parseInt(value, 10) : 0;
+      procesoToUpdate[field] = isNaN(numericValue) ? 0 : numericValue;
     } else if (field === "proceso") {
-      // Actualiza el objeto proceso con el tipo de proceso seleccionado
       procesoToUpdate.proceso =
         tiposDeProcesos.find((proceso) => proceso.id === parseInt(value)) ||
         ({} as TipoDeProceso);
@@ -179,6 +179,28 @@ function CrearAgenda() {
     const procesosActualizados = [...tipoAgenda.procesosProgramado];
     procesosActualizados.splice(index, 1); // Elimina el proceso programado en la posición 'index'
     setTipoAgenda({ ...tipoAgenda, procesosProgramado: procesosActualizados });
+  };
+
+  const isFormValid = () => {
+    if (!tipoAgenda.categoria.id || !tipoAgenda.version) {
+      return false;
+    }
+
+    if (tipoAgenda.procesosProgramado.length === 0) {
+      return false;
+    }
+
+    for (let proceso of tipoAgenda.procesosProgramado) {
+      if (
+        !proceso.proceso.id ||
+        proceso.diaInicio <= 0 || // Verifica si no hay un proceso seleccionado
+        (proceso.frecuencia <= 0 && proceso.cantidad !== 1)
+      ) {
+        return false;
+      }
+    }
+
+    return true;
   };
 
   const handleCancelar = () => {
@@ -219,6 +241,7 @@ function CrearAgenda() {
                     className="btn btn-success"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModalToggle"
+                    disabled={!isFormValid()}
                   >
                     Guardar
                   </button>
@@ -248,7 +271,9 @@ function CrearAgenda() {
             onChange={handleCategoriaChange}
             disabled={tipo === "Detalle agenda"}
           >
-            <option value={0}>Seleccione una categoría</option>
+            <option value="" disabled selected hidden>
+              Seleccionar...
+            </option>
             {categorias.map((categoria) => (
               <option key={categoria.id} value={categoria.id}>
                 {categoria.nombre}
