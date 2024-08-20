@@ -159,7 +159,7 @@ public class LotePresenter {
   public void delete(@PathVariable("id") Long id) {
     Lote lote = service.findById(id);
     service.delete(id);
-    if (lote.getLotePadre() != null) {
+    if (lote.getLotePadre() != null && lote.getCategoria().getLimite() == true) {
       Lote lotePadre = service.findById(lote.getLotePadre().getId());
       lotePadre.setFechaDeBaja(null);
       lotePadre.setCantidad(lotePadre.getCantidad() + lote.getCantidad());
