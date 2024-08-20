@@ -164,6 +164,7 @@ function CrearCategoria() {
                 className="btn btn-success"
                 data-bs-toggle="modal"
                 data-bs-target="#exampleModalToggle"
+                disabled={categoria.nombre === "" || categoria.codigo === ""}
               >
                 Guardar
               </button>

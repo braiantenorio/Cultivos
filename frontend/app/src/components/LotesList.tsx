@@ -271,6 +271,7 @@ function Loteslist() {
                             <a
                               className="dropdown-item"
                               href={`/lotes/${lote.id}/edit`}
+                              hidden
                             >
                               Editar
                             </a>

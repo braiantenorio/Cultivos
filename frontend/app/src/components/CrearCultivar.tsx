@@ -10,10 +10,10 @@ function CrearCultivar() {
   const [tipo, setTipo] = useState("Crear Cultivar");
 
   const [cantidadError, setCantidadError] = useState("");
-  const [cultivar, setCultivar] = useState<Cultivar>({
+  const [cultivar, setCultivar] = useState({
     id: -1,
     nombre: "",
-    codigo: 0,
+    codigo: "",
     deleted: false,
   });
 
@@ -88,6 +88,7 @@ function CrearCultivar() {
       ...prevLote,
       [name]: value,
     }));
+    console.log(cultivar);
   };
 
   const handleCancelar = () => {
@@ -136,6 +137,7 @@ function CrearCultivar() {
           className="btn btn-success"
           data-bs-toggle="modal"
           data-bs-target="#exampleModalToggle"
+          disabled={cultivar.nombre === "" || cultivar.codigo === ""}
         >
           Guardar
         </button>
