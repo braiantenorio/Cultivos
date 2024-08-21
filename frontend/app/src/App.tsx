@@ -51,6 +51,8 @@ import AuthVerify from "./common/AuthVerify";
 import CambiarDeCategoria from "./components/CambiarDeCategoria";
 import { Footer } from "./components/Footer";
 import About from "./components/About";
+import ForgetPassword from "./components/ForgetPassword";
+import PasswordReset from "./components/PasswordReset";
 
 function App() {
   return (
@@ -241,6 +243,18 @@ function App() {
             path="/about"
             element={
                 <About />
+            }
+          />
+          <Route
+            path="/forgot-password"
+            element={
+              <ForgetPassword/>
+            }
+          />
+          <Route
+            path="/reset-password"
+            element={
+              <PasswordReset/>
             }
           />
         </Routes>

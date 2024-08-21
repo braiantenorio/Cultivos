@@ -70,6 +70,8 @@ export const NotificationsProvider = ({
     currentUser?.roles.includes("ROLE_ADMIN") ||
     location.pathname === "/login" ||
     location.pathname === "/register" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/reset-password" ||
     location.pathname === "/home" ||
     location.pathname === "/";
 
@@ -90,7 +92,7 @@ export const useNotifications = () => {
 function Menu() {
   const location = useLocation();
   const isLoginPage =
-    location.pathname === "/login" || location.pathname === "/register";
+    location.pathname === "/login" || location.pathname === "/register"|| location.pathname === "/forgot-password"|| location.pathname === "/reset-password";
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<Usuario | undefined>(

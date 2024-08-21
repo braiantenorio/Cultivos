@@ -1,8 +1,6 @@
 import React, { useState, ChangeEvent, FormEvent } from "react";
 import { register } from "../services/auth.service";
 
-//import register from "../services/auth.service"
-
 interface FormData {
   nombre: string;
   apellido: string;

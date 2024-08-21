@@ -54,4 +54,22 @@ public class EmailServiceImpl implements IEmailService {
             throw new RuntimeException(e);
         }
     }
+
+
+    public void sendEmailMime(String[] toUser, String subject, String message) {
+        try {
+            MimeMessage mimeMessage = mailSender.createMimeMessage();
+            MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true);
+    
+            helper.setFrom(emailUser);
+            helper.setTo(toUser);
+            helper.setSubject(subject);
+            helper.setText(message, true); // true indica que el mensaje es HTML
+    
+            mailSender.send(mimeMessage);
+        } catch (Exception e) {
+            e.printStackTrace();
+            // Manejo de excepciones
+        }
+    }
 }

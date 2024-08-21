@@ -1,5 +1,6 @@
 package unpsjb.labprog.backend.model;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -62,6 +63,11 @@ public class Usuario {
              joinColumns = @JoinColumn(name = "user_id"),
              inverseJoinColumns = @JoinColumn(name = "role_id"))
   private Set<Role> roles = new HashSet<>();
+
+  private String token;
+    
+  @Column(columnDefinition = "TIMESTAMP")
+  private LocalDateTime tokenCreationDate;
 
   public Usuario(String username, String email, String password, String nombre, String apellido) {
     this.username = username;

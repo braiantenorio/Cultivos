@@ -16,8 +16,10 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import unpsjb.labprog.backend.model.ERole;
@@ -27,8 +29,10 @@ import unpsjb.labprog.backend.payload.request.LoginRequest;
 import unpsjb.labprog.backend.payload.request.SignupRequest;
 import unpsjb.labprog.backend.payload.response.JwtResponse;
 import unpsjb.labprog.backend.payload.response.MessageResponse;
+import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.business.RoleRepository;
 import unpsjb.labprog.backend.business.UsuarioRepository;
+import unpsjb.labprog.backend.business.UsuarioService;
 import unpsjb.labprog.backend.jwt.JwtUtils;
 import unpsjb.labprog.backend.business.UserDetailsImpl;
 
@@ -41,6 +45,9 @@ public class AuthPresenter {
 
   @Autowired
   UsuarioRepository userRepository;
+
+  @Autowired
+  UsuarioService userService;
 
   @Autowired
   RoleRepository roleRepository;
@@ -65,7 +72,8 @@ public class AuthPresenter {
         .collect(Collectors.toList());
 
     return ResponseEntity
-        .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles, userDetails.getNombre(), userDetails.getApellido()));
+        .ok(new JwtResponse(jwt, userDetails.getId(), userDetails.getUsername(), userDetails.getEmail(), roles,
+            userDetails.getNombre(), userDetails.getApellido()));
   }
 
   @PostMapping("/signup")
@@ -92,22 +100,22 @@ public class AuthPresenter {
     } else {
       strRoles.forEach(role -> {
         switch (role) {
-        case "admin":
-          Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(adminRole);
+          case "admin":
+            Role adminRole = roleRepository.findByName(ERole.ROLE_ADMIN)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(adminRole);
 
-          break;
-        case "mod":
-          Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(modRole);
+            break;
+          case "mod":
+            Role modRole = roleRepository.findByName(ERole.ROLE_MODERATOR)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(modRole);
 
-          break;
-        default:
-          Role userRole = roleRepository.findByName(ERole.ROLE_USER)
-              .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
-          roles.add(userRole);
+            break;
+          default:
+            Role userRole = roleRepository.findByName(ERole.ROLE_USER)
+                .orElseThrow(() -> new RuntimeException("Error: Role is not found."));
+            roles.add(userRole);
         }
       });
     }
@@ -116,5 +124,17 @@ public class AuthPresenter {
     userRepository.save(user);
 
     return ResponseEntity.ok(new MessageResponse("Usuario registrado exitosamente!"));
+  }
+
+  @PostMapping("/forgot-password")
+  public ResponseEntity<Object> forgotPass(@RequestParam String email) {
+    userService.forgotPass(email);
+
+    return ResponseEntity.ok(null);
+  }
+
+  @PutMapping("/reset-password")
+  public ResponseEntity<Object> resetPass(@RequestParam String token, @RequestParam String password) {
+    return (userService.resetPass(token, password)) ? Response.ok(null) : Response.badRequest("token invalido");
   }
 }

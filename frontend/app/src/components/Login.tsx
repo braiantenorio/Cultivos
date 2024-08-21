@@ -103,10 +103,12 @@ const Login: React.FC<Props> = () => {
             )}
           </form>
 
-        <div className="component-with-margin">
-     
-        <p><small>Si todavía no tienes una cuenta, <a href="/register">regístrate aquí.</a></small></p>
-        </div>
+          <div className="component-with-margin">
+
+            <p><small>Si todavía no tienes una cuenta, <a href="/register">regístrate aquí.</a></small></p>
+          </div>
+
+            <p><small>Si olvidaste tu contraseña, haz click <a href="/forgot-password">aquí.</a></small></p>
 
         </div>
 
