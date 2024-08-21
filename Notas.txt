@@ -48,3 +48,18 @@ Procesos independientes a varios lotes.
 
 Agregar procesos programados: IMPORTANTE
 
+
+
+funciono!
+
+┌──(braian㉿DESKTOP-89JMANG)-[~/test/cult]
+└─$ docker cp ./script.SQL database:/home/
+Preparing to copy...
+Copying to container - 3.584kB
+Successfully copied 3.584kB to database:/home/
+
+┌──(braian㉿DESKTOP-89JMANG)-[~/test/cult]
+└─$ docker exec -i database psql -U APP -d labprog -f /home/script.SQL
+INSERT 0 7
+INSERT 0 3
+
