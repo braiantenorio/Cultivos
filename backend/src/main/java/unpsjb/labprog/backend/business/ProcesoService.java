@@ -102,7 +102,7 @@ public class ProcesoService {
 		return null;
 	}
 
-	private Usuario obtenerUsuario() {
+	public Usuario obtenerUsuario() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		String username = authentication.getName();
 		Usuario usuario = usuarioService.findByUsername(username);

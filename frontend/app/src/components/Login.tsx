@@ -2,7 +2,6 @@ import React, { useState, ChangeEvent, FormEvent } from "react";
 import { NavigateFunction, useNavigate } from 'react-router-dom';
 import { login } from "../services/auth.service";
 
-
 type Props = {}
 
 const Login: React.FC<Props> = () => {
@@ -32,7 +31,6 @@ const Login: React.FC<Props> = () => {
 
     login(formData.username, formData.password).then(
       () => {
-        //console.log("nose")
         navigate("/home");
         window.location.reload();
       },
@@ -108,7 +106,7 @@ const Login: React.FC<Props> = () => {
             <p><small>Si todavía no tienes una cuenta, <a href="/register">regístrate aquí.</a></small></p>
           </div>
 
-            <p><small>Si olvidaste tu contraseña, haz click <a href="/forgot-password">aquí.</a></small></p>
+          <p><small>Si olvidaste tu contraseña, haz click <a href="/forgot-password">aquí.</a></small></p>
 
         </div>
 

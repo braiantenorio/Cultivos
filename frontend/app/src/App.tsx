@@ -53,6 +53,7 @@ import { Footer } from "./components/Footer";
 import About from "./components/About";
 import ForgetPassword from "./components/ForgetPassword";
 import PasswordReset from "./components/PasswordReset";
+import EditProfile from "./components/EditProfile";
 
 function App() {
   return (
@@ -255,6 +256,12 @@ function App() {
             path="/reset-password"
             element={
               <PasswordReset/>
+            }
+          />
+          <Route
+            path="/edit-profile"
+            element={
+              <EditProfile/>
             }
           />
         </Routes>

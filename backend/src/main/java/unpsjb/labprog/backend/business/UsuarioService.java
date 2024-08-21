@@ -9,7 +9,6 @@ import java.util.Set;
 import java.util.UUID;
 import java.util.Optional;
 
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
@@ -24,7 +23,7 @@ import unpsjb.labprog.backend.model.Usuario;
 
 @Service
 public class UsuarioService {
-	private static final long EXPIRE_TOKEN=30;
+	private static final long EXPIRE_TOKEN = 30;
 
 	@Value("${FRONTEND_URL}")
 	private String frontend_url;
@@ -39,7 +38,7 @@ public class UsuarioService {
 	EmailServiceImpl emailService;
 
 	@Autowired
-  	PasswordEncoder encoder;
+	PasswordEncoder encoder;
 
 	// TODO: Mejorar
 	public List<Usuario> findAll() {
@@ -106,59 +105,59 @@ public class UsuarioService {
 
 	}
 
-	 public void forgotPass(String email){
-        Optional<Usuario> userOptional = Optional.ofNullable(repository.findByEmail(email));
-        Usuario user=userOptional.get();
-        user.setToken(generateToken());
-        user.setTokenCreationDate(LocalDateTime.now());
+	public void forgotPass(String email) {
+		Optional<Usuario> userOptional = Optional.ofNullable(repository.findByEmail(email));
+		Usuario user = userOptional.get();
+		user.setToken(generateToken());
+		user.setTokenCreationDate(LocalDateTime.now());
 
-        user=repository.save(user);
+		user = repository.save(user);
 
-		String resetLink = frontend_url +"/reset-password?token=" + user.getToken();
-        String[] recipients = {email}; // Crea un arreglo con un solo elemento
+		String resetLink = frontend_url + "/reset-password?token=" + user.getToken();
+		String[] recipients = { email }; // Crea un arreglo con un solo elemento
 
 		String emailBody = "<p>Hola,</p>"
-		+ "<p>Haga click <a href=\"" + resetLink + "\">aquí</a> para restablecer su contraseña.</p>"
-		+ "<p>Si no solicitó este cambio, puede ignorar este correo.</p>";
-		emailService.sendEmailMime(recipients, "Petición de cambio de contraseña",emailBody );
-    }
+				+ "<p>Haga click <a href=\"" + resetLink + "\">aquí</a> para restablecer su contraseña.</p>"
+				+ "<p>Si no solicitó este cambio, puede ignorar este correo.</p>";
+		emailService.sendEmailMime(recipients, "Petición de cambio de contraseña", emailBody);
+	}
 
-    public Boolean resetPass(String token, String password){
-        Optional<Usuario> userOptional= Optional.ofNullable(repository.findByToken(token));
+	public Boolean resetPass(String token, String password) {
+		Optional<Usuario> userOptional = Optional.ofNullable(repository.findByToken(token));
 
-        if(!userOptional.isPresent()){
-            return false;
-        }
-        LocalDateTime tokenCreationDate = userOptional.get().getTokenCreationDate();
+		if (!userOptional.isPresent()) {
+			return false;
+		}
+		LocalDateTime tokenCreationDate = userOptional.get().getTokenCreationDate();
 
-        if (isTokenExpired(tokenCreationDate)) {
-            return false;
-        }
+		if (isTokenExpired(tokenCreationDate)) {
+			return false;
+		}
 
-        Usuario user = userOptional.get();
+		Usuario user = userOptional.get();
 
-        user.setPassword(encoder.encode(password)); // TODO: ENCODE
-        user.setToken(null);
-        user.setTokenCreationDate(null);
+		user.setPassword(encoder.encode(password));
+		user.setToken(null);
+		user.setTokenCreationDate(null);
 
-        repository.save(user);
+		repository.save(user);
 
-        return true;
-    }
+		return true;
+	}
 
-    private String generateToken() {
-        StringBuilder token = new StringBuilder();
+	private String generateToken() {
+		StringBuilder token = new StringBuilder();
 
-        return token.append(UUID.randomUUID().toString())
-                .append(UUID.randomUUID().toString()).toString();
-    }
+		return token.append(UUID.randomUUID().toString())
+				.append(UUID.randomUUID().toString()).toString();
+	}
 
-    private boolean isTokenExpired(final LocalDateTime tokenCreationDate) {
+	private boolean isTokenExpired(final LocalDateTime tokenCreationDate) {
 
-        LocalDateTime now = LocalDateTime.now();
-        Duration diff = Duration.between(tokenCreationDate, now);
+		LocalDateTime now = LocalDateTime.now();
+		Duration diff = Duration.between(tokenCreationDate, now);
 
-        return diff.toMinutes() >= EXPIRE_TOKEN;
-    }
+		return diff.toMinutes() >= EXPIRE_TOKEN;
+	}
 
 }
