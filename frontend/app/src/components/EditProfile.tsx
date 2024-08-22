@@ -66,8 +66,13 @@ const EditProfile: React.FC = () => {
             });
 
             if (response.ok) {
-                // Obtener los datos del usuario actualizado
-                const userResponse = await fetch('/usuarios/getUser', {
+                let name = JSON.parse(sessionStorage.getItem('user')!).username
+
+                if(updateData.username !== name){
+                    name = profileData.username;
+
+                }
+                const userResponse = await fetch('/usuarios/getUser?username=' +name, {
                   method: 'GET',
                   headers: {
                     'Content-Type': 'application/json',
@@ -180,7 +185,6 @@ const EditProfile: React.FC = () => {
                         type="password"
                         className='form-control'
                         name="Rpassword"
-                        required
                         pattern={`^(${profileData.password})$`}
                         placeholder="Repetir contraseña"
                     />

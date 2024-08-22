@@ -71,6 +71,7 @@ public class SecurityConfiguration {
             .requestMatchers("/procesos/**").permitAll()
             .requestMatchers("/qrcodes/**").permitAll()
             .requestMatchers("/lotes/mostrar-pdf/**").permitAll()
+            .requestMatchers("/usuarios/**").permitAll()
             .anyRequest().authenticated()).cors();
 
     http.authenticationProvider(authenticationProvider());
