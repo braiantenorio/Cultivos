@@ -159,7 +159,7 @@ function ListarCultivares() {
             <tr key={tipoAgenda.id}>
               <td>{tipoAgenda.nombre}</td>
               <td>{tipoAgenda.codigo}</td>
-              {showModeratorBoard && (
+              {(showModeratorBoard || showAdminBoard) && (
                 <td>
                   <div className="dropdown" style={{ position: "static" }}>
                     <button

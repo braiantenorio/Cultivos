@@ -128,7 +128,7 @@ function AgendaDeProcesos() {
         <div className="table-responsive col-lg-6 col-12 mt-2">
           <h4 className="col-lg-8">
             Procesos Programados independientes &nbsp;
-            {showModeratorBoard && (
+            {(showModeratorBoard || showAdminBoard) && (
               <Link
                 to={`/lotes/${lote.codigo}/agenda/new`}
                 className="btn btn-primary"

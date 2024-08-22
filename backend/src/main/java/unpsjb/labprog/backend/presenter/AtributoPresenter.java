@@ -43,7 +43,7 @@ public class AtributoPresenter {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> crear(@RequestBody Atributo tipoAgenda) {
 
     return Response.ok(
@@ -52,7 +52,7 @@ public class AtributoPresenter {
   }
 
   @PutMapping(value = "/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     Atributo loteOrNull = service.findById(id);
     loteOrNull.setDeleted(false);
@@ -68,7 +68,7 @@ public class AtributoPresenter {
   }
 
   @DeleteMapping(value = "/delete/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> delete(@PathVariable("id") long id) {
     List<Atributo> categorias = service.findTipoDeProcesosByAtributo(id);
     if (categorias.size() > 0) {

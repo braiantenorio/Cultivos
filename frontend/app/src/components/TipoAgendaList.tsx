@@ -199,7 +199,7 @@ function TipoAgendaList() {
                       </a>
                     </li>
 
-                    {showModeratorBoard && (
+                    {(showModeratorBoard || showAdminBoard) && (
                       <div>
                         {!tipoAgenda.deleted ? (
                           <li>

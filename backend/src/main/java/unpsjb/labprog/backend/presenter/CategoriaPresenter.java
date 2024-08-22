@@ -29,7 +29,7 @@ public class CategoriaPresenter {
   CategoriaService service;
 
   @GetMapping
-  //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  // @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> findAll(@RequestParam(value = "filtered", required = false) boolean filtered,
       @RequestParam(defaultValue = "0") int page,
       @RequestParam(defaultValue = "10") int size) {
@@ -48,7 +48,7 @@ public class CategoriaPresenter {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> crear(@RequestBody Categoria tipoAgenda) {
 
     return Response.ok(
@@ -57,7 +57,7 @@ public class CategoriaPresenter {
   }
 
   @PutMapping(value = "/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     Categoria loteOrNull = service.findById(id);
     loteOrNull.setDeleted(false);
@@ -67,7 +67,7 @@ public class CategoriaPresenter {
   }
 
   @DeleteMapping(value = "/delete/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> delete(@PathVariable("id") long id) {
     List<Categoria> categorias = service.findLotesActivosByCategoria(id);
     if (categorias.size() > 0) {

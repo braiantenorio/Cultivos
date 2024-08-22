@@ -38,7 +38,7 @@ public class ProcesoPresenter {
 	}
 
 	@PostMapping(value = "/lote/{codigo}")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Object> crear(@RequestBody Proceso Proceso, @PathVariable("codigo") String codigo,
 			@RequestParam(value = "indep", required = false) boolean indep) {
 
@@ -46,7 +46,7 @@ public class ProcesoPresenter {
 	}
 
 	@PostMapping(value = "/lotes")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Object> crear(@RequestBody LoteCodigoDTO loteCodigo) {
 
 		for (String lote : loteCodigo.getLotesCodigos()) {
@@ -57,13 +57,13 @@ public class ProcesoPresenter {
 	}
 
 	@PutMapping
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Object> update(@RequestBody Proceso lote) {
 		return Response.ok(service.update(lote), "Proceso actualizado correctamente");
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public void delete(@PathVariable("id") Long id) {
 		service.delete(id);
 	}

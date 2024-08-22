@@ -103,7 +103,7 @@ public class LotePresenter {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> crear(@RequestBody Lote lote) {
 
     List<ProcesoProgramado> procesosCopia = new ArrayList<>();
@@ -151,7 +151,7 @@ public class LotePresenter {
   }
 
   @PutMapping
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('ADMIN')")
   public ResponseEntity<Object> update(@RequestBody LotesCategoriaDTO loteDTO) {
 
     // Verificar si el lote padre está vacío
@@ -310,7 +310,7 @@ public class LotePresenter {
   }
 
   @RequestMapping(value = "/{id}/procesoprogramado", method = RequestMethod.PUT)
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> findById(@PathVariable("id") String id,
       @RequestBody ProcesoProgramado procesoProgramado) {
     Lote loteOrNull = service.findByCode(id);
@@ -321,7 +321,7 @@ public class LotePresenter {
   }
 
   @PostMapping("/{loteId}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> CambiarDeCategoria(@RequestBody LotesCategoriaDTO lotesCategoriaDTO,
       @PathVariable String loteId) {
     Lote lote = service.findByCode(loteId);

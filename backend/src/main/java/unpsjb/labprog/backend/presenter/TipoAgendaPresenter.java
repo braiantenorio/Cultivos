@@ -44,7 +44,7 @@ public class TipoAgendaPresenter {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> crear(@RequestBody TipoAgenda tipoAgenda) {
     TipoAgenda loteOrNull = service.findByCategoria(tipoAgenda.getCategoria().getNombre(), tipoAgenda.getVersion());
     if (tipoAgenda.getId() != null && loteOrNull != null) {
@@ -67,7 +67,7 @@ public class TipoAgendaPresenter {
   }
 
   @PutMapping(value = "/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     TipoAgenda loteOrNull = service.findById(id);
     loteOrNull.setDeleted(false);
@@ -77,7 +77,7 @@ public class TipoAgendaPresenter {
   }
 
   @DeleteMapping(value = "/delete/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> delete(@PathVariable("id") Long id) {
 
     List<TipoAgenda> categorias = service.findLotesActivosByTipoAgenda(id);

@@ -291,7 +291,7 @@ const CrearLote: React.FC = () => {
         if (error.message === "Error de solicitud incorrecta (BadRequest)") {
           setCantidadError("La cantidad es incorrecta. Verifique los valores.");
         } else {
-          setCantidadError("Ya existe un lote con ese numero de secuencia.");
+          setCantidadError("");
         }
       });
   };
@@ -499,39 +499,33 @@ const CrearLote: React.FC = () => {
           <div className="modal-content">
             <div className="modal-header">
               {huboError ? (
-                <>
-                  <h5 className="modal-title text-danger">
-                    Ocurrió un error &nbsp; &nbsp;
-                    <i
-                      className="bi bi-x-circle-fill text-danger"
-                      style={{ fontSize: "2rem" }}
-                    ></i>
-                  </h5>
-                </>
+                <h5 className="modal-title text-danger">
+                  Ocurrió un error &nbsp; &nbsp;
+                  <i
+                    className="bi bi-x-circle-fill text-danger"
+                    style={{ fontSize: "2rem" }}
+                  ></i>
+                </h5>
               ) : (
-                <>
-                  <h5 className="modal-title ">
-                    Lote Creado Correctamente &nbsp; &nbsp;
-                    <i
-                      className="bi bi-check-circle-fill text-success"
-                      style={{ fontSize: "2rem" }}
-                    ></i>
-                  </h5>
-                </>
+                <h5 className="modal-title ">
+                  Lote Creado Correctamente &nbsp; &nbsp;
+                  <i
+                    className="bi bi-check-circle-fill text-success"
+                    style={{ fontSize: "2rem" }}
+                  ></i>
+                </h5>
               )}
             </div>
             <div className="modal-body">
               {huboError ? (
-                <p>{cantidadError}</p>
+                <p></p>
               ) : (
-                <>
-                  <p>
-                    El código del lote generado es:{" "}
-                    <span className="badge bg-primary text-white me-2 fs-6">
-                      {codigoLoteGenerado}
-                    </span>
-                  </p>
-                </>
+                <p>
+                  El código del lote generado es:{" "}
+                  <span className="badge bg-primary text-white me-2 fs-6">
+                    {codigoLoteGenerado}
+                  </span>
+                </p>
               )}
             </div>
 

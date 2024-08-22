@@ -49,7 +49,7 @@ public class CultivarPresenter {
   }
 
   @PostMapping
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> crear(@RequestBody Cultivar tipoAgenda) {
 
     return Response.ok(
@@ -58,7 +58,7 @@ public class CultivarPresenter {
   }
 
   @PutMapping(value = "/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     Cultivar loteOrNull = service.findById(id);
     loteOrNull.setDeleted(false);
@@ -68,7 +68,7 @@ public class CultivarPresenter {
   }
 
   @DeleteMapping(value = "/delete/{id}")
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> delete(@PathVariable("id") long id) {
     List<Cultivar> categorias = service.findLotesActivosByCultivar(id);
     if (categorias.size() > 0) {

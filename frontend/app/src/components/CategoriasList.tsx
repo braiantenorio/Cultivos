@@ -164,7 +164,7 @@ function CategoriasList() {
             <tr key={categoria.id}>
               <td>{categoria.nombre}</td>
               <td>{categoria.codigo}</td>
-              {showModeratorBoard && (
+              {(showModeratorBoard || showAdminBoard) && (
                 <td>
                   <div className="dropdown" style={{ position: "static" }}>
                     <button

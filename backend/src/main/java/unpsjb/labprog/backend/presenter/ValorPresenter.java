@@ -36,7 +36,7 @@ public class ValorPresenter {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Object> crear(@RequestBody Valor valor) {
 
 		return Response.ok(
@@ -45,13 +45,13 @@ public class ValorPresenter {
 	}
 
 	@PutMapping
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Object> update(@RequestBody Valor valor) {
 		return Response.ok(service.update(valor), "Lote actualizado correctamente");
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public void delete(@PathVariable("id") Long id) {
 		service.delete(id);
 	}

@@ -35,7 +35,7 @@ public class NotificacionPresenter {
   }
 
   @RequestMapping(value = "/{id}", method = RequestMethod.PUT)
-  @PreAuthorize("hasRole('MODERATOR')")
+  @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<Object> update(@PathVariable("id") long id) {
     Notificacion notificacion = service.findById(id);
     notificacion.setRead(true);

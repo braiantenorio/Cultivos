@@ -37,7 +37,7 @@ type NotificationsContextType = {
 export const NotificationsContext = createContext<NotificationsContextType>({
   notifications: 0,
   notificationMessages: [],
-  updateNotifications: (newNotificationCount, newMessages) => { },
+  updateNotifications: (newNotificationCount, newMessages) => {},
 });
 
 export const NotificationsProvider = ({
@@ -92,7 +92,10 @@ export const useNotifications = () => {
 function Menu() {
   const location = useLocation();
   const isLoginPage =
-    location.pathname === "/login" || location.pathname === "/register"|| location.pathname === "/forgot-password"|| location.pathname === "/reset-password";
+    location.pathname === "/login" ||
+    location.pathname === "/register" ||
+    location.pathname === "/forgot-password" ||
+    location.pathname === "/reset-password";
   const [showModeratorBoard, setShowModeratorBoard] = useState<boolean>(false);
   const [showAdminBoard, setShowAdminBoard] = useState<boolean>(false);
   const [currentUser, setCurrentUser] = useState<Usuario | undefined>(
@@ -209,14 +212,14 @@ function Menu() {
                       Listar
                     </Link>
                   </li>
-                  {showModeratorBoard && (
+                  {(showModeratorBoard || showAdminBoard) && (
                     <li>
                       <Link className="dropdown-item" to="/lotes/crear-lote">
                         Nuevo
                       </Link>
                     </li>
                   )}
-                  {showModeratorBoard && (
+                  {(showModeratorBoard || showAdminBoard) && (
                     <li>
                       {" "}
                       <Link to="/generar/informe" className="dropdown-item">
@@ -247,7 +250,7 @@ function Menu() {
                       Atributos
                     </Link>
                   </li>
-                  {showModeratorBoard && (
+                  {(showModeratorBoard || showAdminBoard) && (
                     <li>
                       <Link className="dropdown-item" to="/atributos/new">
                         Nuevo atributo
@@ -262,7 +265,7 @@ function Menu() {
                       Tipos de procesos
                     </Link>
                   </li>
-                  {showModeratorBoard && (
+                  {(showModeratorBoard || showAdminBoard) && (
                     <li>
                       <Link className="dropdown-item" to="/tipo-proceso/new">
                         Nuevo tipo de proceso
@@ -295,7 +298,7 @@ function Menu() {
                       Listar
                     </Link>
                   </li>
-                  {showModeratorBoard && (
+                  {(showModeratorBoard || showAdminBoard) && (
                     <li>
                       <Link className="dropdown-item" to="/agendas/new">
                         Nuevo
@@ -328,7 +331,7 @@ function Menu() {
                       Listar
                     </Link>
                   </li>
-                  {showModeratorBoard && (
+                  {(showModeratorBoard || showAdminBoard) && (
                     <li>
                       <Link className="dropdown-item" to="/categorias/new">
                         Nuevo
@@ -358,7 +361,7 @@ function Menu() {
                       Listar
                     </Link>
                   </li>
-                  {showModeratorBoard && (
+                  {(showModeratorBoard || showAdminBoard) && (
                     <li>
                       <Link className="dropdown-item" to="/cultivares/new">
                         Nuevo
@@ -382,7 +385,7 @@ function Menu() {
               </div>
             </ul>
             <ul></ul>
-            {showModeratorBoard && (
+            {(showModeratorBoard || showAdminBoard) && (
               <Link
                 to="/agenda/general?pagina=1&longitud=7"
                 className="btn btn-custom-color-2 position-relative rounded-circle "
@@ -407,7 +410,7 @@ function Menu() {
               {showAdminBoard && (
                 <li className="nav-item">
                   <Link to="/admin" className="nav-link">
-                     <b>Admin Board</b>
+                    <b>Admin Board</b>
                   </Link>
                 </li>
               )}

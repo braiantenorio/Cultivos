@@ -249,7 +249,7 @@ function DetalleLote() {
               </a>
             </li>
 
-            {showModeratorBoard && (
+            {(showModeratorBoard || showAdminBoard) && (
               <div>
                 <li>
                   <hr className="dropdown-divider" />
@@ -318,7 +318,7 @@ function DetalleLote() {
             <div className="me-lg-4">
               <h3>
                 <span>Procesos&nbsp;&nbsp;</span>
-                {showModeratorBoard && !lote.fechaDeBaja ? (
+                {(showModeratorBoard || showAdminBoard) && !lote.fechaDeBaja ? (
                   <Link
                     to={`/lotes/${loteId}/procesos/new`}
                     className="btn btn-primary"

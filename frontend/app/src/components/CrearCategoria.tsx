@@ -233,7 +233,7 @@ function CrearCategoria() {
           <label htmlFor="validationCustom04" className="form-label col-md-3  ">
             Se puede Transformar en las categorias:
           </label>
-          {showModeratorBoard && (
+          {(showModeratorBoard || showAdminBoard) && (
             <div className="row">
               <div className="mt-2 mt-md-0 ms-md-2 col-8 col-md-8">
                 <select

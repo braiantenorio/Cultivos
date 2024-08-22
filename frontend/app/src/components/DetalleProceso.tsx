@@ -132,7 +132,7 @@ function DetalleProceso() {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
         <h2>Detalle del proceso</h2>
-        {showModeratorBoard && !proceso.deleted ? (
+        {(showModeratorBoard || showAdminBoard) && !proceso.deleted ? (
           <button className="btn btn-danger" onClick={handleAnular}>
             Anular
           </button>

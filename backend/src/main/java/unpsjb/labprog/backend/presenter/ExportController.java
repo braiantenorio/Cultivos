@@ -42,7 +42,7 @@ public class ExportController {
     LoteService loteService;
 
     @PostMapping(value = "/toExcel")
-    @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<byte[]> exportToExcel(@RequestBody InformeDTO informeDTO) throws IOException {
         // Crear un libro de Excel
         Workbook workbook = new XSSFWorkbook();
@@ -244,7 +244,7 @@ public class ExportController {
     }
 
     @PostMapping(value = "/generar-informe")
-    // @PreAuthorize("hasRole('MODERATOR')")
+    @PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
     public ResponseEntity<Object> crear(@RequestBody InformeDTO informeF) {
         InformeDTO informe = new InformeDTO();
 

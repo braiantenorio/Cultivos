@@ -284,7 +284,7 @@ function Loteslist() {
                           </a>
                         </li>
                         {lote.deleted ||
-                        !showModeratorBoard ||
+                        !(showModeratorBoard || showAdminBoard) ||
                         lote.cantidad === 0 ? (
                           <></>
                         ) : (

@@ -165,8 +165,8 @@ function ListarAtributos() {
                   {typeof atributo.tipo === "string"
                     ? "texto"
                     : typeof atributo.tipo === "number"
-                      ? "numero"
-                      : atributo.tipo}
+                    ? "numero"
+                    : atributo.tipo}
                 </td>
                 <td>{atributo.obligatorio ? "Si" : "No"}</td>
                 <td>{atributo.decimales}</td>
@@ -174,7 +174,7 @@ function ListarAtributos() {
                 <td>{atributo.maximo}</td>
                 <td>{atributo.minimo}</td>
 
-                {showModeratorBoard && (
+                {(showModeratorBoard || showAdminBoard) && (
                   <td>
                     <div className="dropdown" style={{ position: "static" }}>
                       <button
@@ -247,8 +247,9 @@ function ListarAtributos() {
               {pageNumbers.map((pageNumber) => (
                 <li
                   key={pageNumber}
-                  className={`page-item ${pageNumber === resultsPage.number + 1 ? "active" : ""
-                    }`}
+                  className={`page-item ${
+                    pageNumber === resultsPage.number + 1 ? "active" : ""
+                  }`}
                 >
                   <button
                     className="page-link"

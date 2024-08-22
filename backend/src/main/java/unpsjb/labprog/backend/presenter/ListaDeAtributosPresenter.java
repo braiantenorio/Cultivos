@@ -43,7 +43,7 @@ public class ListaDeAtributosPresenter {
 	}
 
 	@PostMapping
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Object> crear(@RequestBody ListaDeAtributos ListaDeAtributos) {
 
 		return Response.ok(
@@ -52,13 +52,13 @@ public class ListaDeAtributosPresenter {
 	}
 
 	@PutMapping
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public ResponseEntity<Object> update(@RequestBody ListaDeAtributos ListaDeAtributos) {
 		return Response.ok(service.update(ListaDeAtributos), "ListaDeAtributos actualizado correctamente");
 	}
 
 	@DeleteMapping(value = "/delete/{id}")
-	@PreAuthorize("hasRole('MODERATOR')")
+	@PreAuthorize("hasRole('MODERATOR') or hasRole('ADMIN')")
 	public void delete(@PathVariable("id") Long id) {
 		service.delete(id);
 	}
