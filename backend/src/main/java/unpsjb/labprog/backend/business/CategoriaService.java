@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import unpsjb.labprog.backend.model.Categoria;
+import unpsjb.labprog.backend.model.Lote;
 
 @Service
 public class CategoriaService {
@@ -23,6 +24,10 @@ public class CategoriaService {
 		List<Categoria> result = new ArrayList<>();
 		repository.findAll().forEach(e -> result.add(e));
 		return result;
+	}
+
+	public Categoria findByCode(String code) {
+		return repository.findByCode(code).orElse(null);
 	}
 
 	public List<Categoria> findAllCategorias(boolean filtered) {

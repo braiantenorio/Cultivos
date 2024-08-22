@@ -262,18 +262,16 @@ function Loteslist() {
                             Logs
                           </a>
                         </li>
-                        {lote.deleted ||
-                        !showAdminBoard ||
-                        lote.cantidad === 0 ? (
+                        {!showAdminBoard ? (
                           <></>
                         ) : (
                           <li>
-                            <a
+                            <Link
                               className="dropdown-item"
-                              href={`/lotes/${lote.id}/edit`}
+                              to={`/lotes/${lote.id}/edit`}
                             >
                               Editar
-                            </a>
+                            </Link>
                           </li>
                         )}
 

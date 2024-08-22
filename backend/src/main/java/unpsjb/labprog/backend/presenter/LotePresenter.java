@@ -4,6 +4,7 @@ import unpsjb.labprog.backend.Response;
 import unpsjb.labprog.backend.DTOs.LotesCategoriaDTO;
 import unpsjb.labprog.backend.model.Agenda;
 import unpsjb.labprog.backend.model.Lote;
+import unpsjb.labprog.backend.model.Categoria;
 import unpsjb.labprog.backend.business.LoteService;
 import unpsjb.labprog.backend.business.AgendaService;
 import unpsjb.labprog.backend.business.TipoAgendaService;
@@ -151,8 +152,111 @@ public class LotePresenter {
 
   @PutMapping
   @PreAuthorize("hasRole('MODERATOR')")
-  public ResponseEntity<Object> update(@RequestBody Lote lote) {
-    return Response.ok(service.update(lote), "Lote actualizado correctamente");
+  public ResponseEntity<Object> update(@RequestBody LotesCategoriaDTO loteDTO) {
+
+    // Verificar si el lote padre está vacío
+    if (loteDTO.getLotes().get(1).getCodigo() == null || loteDTO.getLotes().get(1).getCodigo().equals("")) {
+      // Solo actualiza el lote hijo
+      Lote loteHijo = loteDTO.getLotes().get(0);
+
+      return Response.ok(service.update(loteHijo), "Lote hijo actualizado correctamente");
+    } else {
+      if (loteDTO.isEstado() == true) {
+
+        Lote lotePadre = service.findByCode(loteDTO.getLotes().get(1).getCodigo());
+        if (lotePadre == null) {
+          return ResponseEntity.badRequest().body("Código del lote padre no encontrado.");
+        }
+        Lote loteHijo = loteDTO.getLotes().get(0);
+        String[] codigoPadreParts1 = loteDTO.getLotes().get(1).getCodigo().split("-");
+        String[] codigoHijoParts1 = loteDTO.getLotes().get(0).getCodigo().split("-");
+        List<Categoria> categorias = lotePadre.getCategoria().getSubCategorias();
+        Categoria c1 = serviceCategoria.findByCode(codigoHijoParts1[1]);
+        if (!codigoPadreParts1[0].equals(codigoHijoParts1[0]) || !categorias.stream()
+            .anyMatch(categoria -> categoria.equals(c1))) {
+          return ResponseEntity.badRequest().body("Código del lote padre no encontrado.");
+        }
+        if (lotePadre.getLotePadre() != null && lotePadre.getLotePadre().getCodigo().equals(loteHijo.getCodigo())) {
+          return ResponseEntity.badRequest().body("Código del lote padre no encontrado.");
+        }
+        loteHijo.setLotePadre(lotePadre);
+
+        return Response.ok(service.update(loteHijo), "Lote actualizado correctamente");
+      }
+      // Lote padre no está vacío
+      else {
+        Lote lotePadre1 = service.findByCode(loteDTO.getLotes().get(1).getCodigo());
+        // Verificar si el código ya existe y está inactivo
+        if (lotePadre1 != null) {
+          return ResponseEntity.badRequest().body("El código existe");
+        }
+
+        // Validar condiciones del lote padre
+        String[] codigoPadreParts = loteDTO.getLotes().get(1).getCodigo().split("-");
+        String[] codigoHijoParts = loteDTO.getLotes().get(0).getCodigo().split("-");
+        if (codigoPadreParts.length != 4) {
+          return ResponseEntity.badRequest().body("Formato invalido");
+        }
+        // Validar primera parte del código
+        if (!codigoPadreParts[0].equals(codigoHijoParts[0])) {
+          return ResponseEntity.badRequest().body("La primera parte del código no coincide.");
+        }
+
+        // Validar segunda parte del código
+        Categoria c = serviceCategoria.findByCode(codigoPadreParts[1]);
+        if (c == null) {
+          return ResponseEntity.badRequest().body("Categoría no encontrada.");
+        }
+        // Obtener las subcategorías del lote padre
+        List<Categoria> subCategorias = c.getSubCategorias();
+
+        Lote lotehijo1 = service.findByCode(loteDTO.getLotes().get(0).getCodigo());
+        if (!subCategorias.stream().anyMatch(categoria -> categoria.equals(lotehijo1.getCategoria()))) {
+          return ResponseEntity.badRequest().body("La categoría no pertenece a las subcategorías del lote padre.");
+        }
+
+        // Validar número de secuencia y asegurarse de que es un número
+        try {
+
+          int numeroSecuenciaHijo = Integer.parseInt(codigoPadreParts[2]);
+
+          // Validar terminación del año
+          int yearHijo = Integer.parseInt(codigoHijoParts[3]);
+          int yearPadre = Integer.parseInt(codigoPadreParts[3]);
+          if (yearHijo < yearPadre || yearHijo > yearPadre + 1) {
+            return ResponseEntity.badRequest().body("La terminación del año del código del lote padre es inválida.");
+          }
+
+          // Actualizar lote (hijo y padre)
+          Lote loteHij = loteDTO.getLotes().get(0);
+          Lote lotePadre2 = loteDTO.getLotes().get(1);
+          lotePadre2.setCultivar(lotehijo1.getCultivar());
+          lotePadre2.setCategoria(c);
+          lotePadre2.setFechaDeBaja(LocalDate.now());
+          Lote lotepadreA = service.add(lotePadre2);
+          LocalDate fecha = lotepadreA.getFecha();
+          int year = fecha.getYear();
+          int lastTwoDigitsOfYear = year % 100;
+          if (lastTwoDigitsOfYear != yearPadre) {
+            // Restar un año a la fecha
+            lotepadreA.setFecha(fecha.minusYears(lastTwoDigitsOfYear - yearPadre));
+          }
+          loteHij.setLotePadre(service.update(lotepadreA));
+
+          return Response.ok(service.update(loteHij), "Lote actualizado correctamente");
+
+        } catch (NumberFormatException e) {
+          return ResponseEntity.badRequest().body("El número de secuencia no es válido.");
+        }
+      }
+    }
+  }
+
+  @RequestMapping(value = "/lotepadre/{code}", method = RequestMethod.GET)
+
+  public ResponseEntity<Object> findByCodeP(@PathVariable("code") String code) {
+    Lote loteOrNull = service.findByCode(code);
+    return (loteOrNull != null) ? Response.ok(loteOrNull.getLotePadre()) : Response.notFound();
   }
 
   @DeleteMapping(value = "/delete/{id}")

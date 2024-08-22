@@ -12,5 +12,6 @@ import java.util.List;
 public class LotesCategoriaDTO {
 
     private List<Lote> lotes;
+    private boolean estado;
 
 }
