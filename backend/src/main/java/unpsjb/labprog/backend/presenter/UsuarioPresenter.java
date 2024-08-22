@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @CrossOrigin(origins = "*", maxAge = 3600)
 @RestController
@@ -58,7 +59,7 @@ public class UsuarioPresenter {
   }
 
   @PostMapping("/updateProfile")
-  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
   public ResponseEntity<?> updateProfile(@RequestBody UpdateProfileDTO request) {
     Usuario user = procesoService.obtenerUsuario();
     
@@ -69,6 +70,7 @@ public class UsuarioPresenter {
     user.setNombre(request.getNombre());
     user.setApellido(request.getApellido());
     user.setEmail(request.getEmail());
+    user.setUsername(request.getUsername());
 
     if (request.getPassword() != null && !request.getPassword().isEmpty()) {
       user.setPassword(encoder.encode(request.getPassword()));
@@ -80,9 +82,9 @@ public class UsuarioPresenter {
   }
 
   @GetMapping(value = "/getUser")
-  @PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
-  public ResponseEntity<Object> getUser() {
-    return Response.ok(procesoService.obtenerUsuario());
+  //@PreAuthorize("hasRole('USER') or hasRole('MODERATOR') or hasRole('ADMIN')")
+  public ResponseEntity<Object> getUser(@RequestParam String username) {
+    return Response.ok(service.findByUsername(username));
   }
 
 }

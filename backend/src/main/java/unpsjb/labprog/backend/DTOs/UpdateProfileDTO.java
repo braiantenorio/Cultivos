@@ -13,7 +13,6 @@ import lombok.Setter;
 @AllArgsConstructor
 public class UpdateProfileDTO {
     
-    
     private String nombre;
     private String apellido;
     private String email;
