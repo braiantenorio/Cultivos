@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { TipoDeProceso } from "../types/tipoDeProceso";
 import authHeader from "../services/auth-header";
-import AutoComplete from "./AutoComplete"; // Importa el componente AutoComplete
+import AutoComplete from "./AutoComplete";
 import { ResultsPage } from "../types/ResultsPage";
 
 function ListarTiposDeProcesos() {
@@ -16,10 +16,10 @@ function ListarTiposDeProcesos() {
   const [searchTerm, setSearchTerm] = useState("");
 
   useEffect(() => {
-    fetchAtributos();
+    fetchTiposDeProcesos();
   }, [resultsPage.number, resultsPage.size]);
 
-  const fetchAtributos = () => {
+  const fetchTiposDeProcesos = () => {
     fetch(
       `/listaDeAtributos?page=${resultsPage.number}&size=${resultsPage.size}&term=${searchTerm}`,
       {
@@ -40,8 +40,9 @@ function ListarTiposDeProcesos() {
         console.error(error);
       });
   };
+
   const handleBuscarLote = () => {
-    fetchAtributos();
+    fetchTiposDeProcesos();
   };
 
   const handleSearchInputChange = (term: string) => {
@@ -115,8 +116,8 @@ function ListarTiposDeProcesos() {
                             {typeof atributo.tipo === "string"
                               ? "texto"
                               : typeof atributo.tipo === "number"
-                                ? "numero"
-                                : atributo.tipo}
+                              ? "numero"
+                              : atributo.tipo}
                           </td>
                           <td>{atributo.obligatorio ? "Si" : "No"}</td>
                           <td>{atributo.decimales}</td>
@@ -139,40 +140,62 @@ function ListarTiposDeProcesos() {
         </div>
       )}
       <nav aria-label="Page navigation example">
-        <ul className="pagination">
-          <li className={`page-item ${resultsPage.first ? "disabled" : ""}`}>
-            <button
-              className="page-link"
-              onClick={() => handlePageChange(resultsPage.number - 1)}
-              disabled={resultsPage.first}
-            >
-              &lsaquo;
-            </button>
-          </li>
-          {pageNumbers.map((pageNumber) => (
-            <li
-              key={pageNumber}
-              className={`page-item ${pageNumber === resultsPage.number + 1 ? "active" : ""
-                }`}
-            >
-              <button
-                className="page-link"
-                onClick={() => handlePageChange(pageNumber - 1)}
+        <div className="d-flex justify-content-between align-items-center">
+          <div>
+            <ul className="pagination">
+              <li
+                className={`page-item ${resultsPage.first ? "disabled" : ""}`}
               >
-                {pageNumber}
-              </button>
-            </li>
-          ))}
-          <li className={`page-item ${resultsPage.last ? "disabled" : ""}`}>
-            <button
-              className="page-link"
-              onClick={() => handlePageChange(resultsPage.number + 1)}
-              disabled={resultsPage.last}
-            >
-              &rsaquo;
-            </button>
-          </li>
-        </ul>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(resultsPage.number - 1)}
+                  disabled={resultsPage.first}
+                >
+                  &lsaquo;
+                </button>
+              </li>
+              {pageNumbers.map((pageNumber) => (
+                <li
+                  key={pageNumber}
+                  className={`page-item ${
+                    pageNumber === resultsPage.number + 1 ? "active" : ""
+                  }`}
+                >
+                  <button
+                    className="page-link"
+                    onClick={() => handlePageChange(pageNumber - 1)}
+                  >
+                    {pageNumber}
+                  </button>
+                </li>
+              ))}
+              <li className={`page-item ${resultsPage.last ? "disabled" : ""}`}>
+                <button
+                  className="page-link"
+                  onClick={() => handlePageChange(resultsPage.number + 1)}
+                  disabled={resultsPage.last}
+                >
+                  &rsaquo;
+                </button>
+              </li>
+            </ul>
+          </div>
+          <div className="input-group col-auto d-none d-md-flex align-items-center">
+            <div className="input-group-text mb-3">Elementos por página</div>
+            &nbsp;&nbsp;
+            <div className="col-1">
+              <input
+                type="number"
+                id="pageSizeInput"
+                value={resultsPage.size}
+                onChange={(e) =>
+                  setResultsPage({ ...resultsPage, size: +e.target.value })
+                }
+                className="form-control mb-3"
+              />
+            </div>
+          </div>
+        </div>
       </nav>
     </div>
   );

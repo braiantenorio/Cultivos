@@ -162,8 +162,9 @@ function CrearCategoria() {
               <button
                 type="button"
                 className="btn btn-success"
-                data-bs-toggle="modal"
-                data-bs-target="#exampleModalToggle"
+                data-bs-toggle={id === "new" ? "modal" : ""}
+                data-bs-target={id === "new" ? "#exampleModalToggle" : ""}
+                onClick={id === "new" ? undefined : guardarCategoria}
                 disabled={categoria.nombre === "" || categoria.codigo === ""}
               >
                 Guardar

@@ -72,33 +72,31 @@ function DetalleLote() {
     const startIndex = (page - 1) * pageSize;
     const endIndex = startIndex + pageSize;
 
-    // Filtra los procesos según el estado de showDeleted, el término de búsqueda y la fecha específica
-    const filteredProcesos = allProcesos
-      .filter(
-        (proceso) =>
-          (showDeleted1 ? proceso.deleted : !proceso.deleted) &&
-          (proceso.usuario?.nombre
+    const filteredProcesos = allProcesos.filter(
+      (proceso) =>
+        (showDeleted1 ? proceso.deleted : !proceso.deleted) &&
+        (proceso.usuario?.nombre
+          .toLowerCase()
+          .includes(searchTerm.toLowerCase()) ||
+          proceso.usuario?.apellido
             .toLowerCase()
             .includes(searchTerm.toLowerCase()) ||
-            proceso.usuario?.apellido
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase()) ||
-            proceso.listaDeAtributos?.nombre
-              .toLowerCase()
-              .includes(searchTerm.toLowerCase())) &&
-          (!specificDate ||
-            (proceso.fecha &&
-              new Date(proceso.fecha).toLocaleDateString() ===
-                new Date(specificDate).toLocaleDateString()))
-      )
-      .slice(startIndex, endIndex);
+          proceso.listaDeAtributos?.nombre
+            .toLowerCase()
+            .includes(searchTerm.toLowerCase())) &&
+        (!specificDate ||
+          (proceso.fecha &&
+            new Date(proceso.fecha).toLocaleDateString() ===
+              new Date(specificDate).toLocaleDateString()))
+    );
 
-    setCurrentProcesos(filteredProcesos);
-    setPageNumbers([]);
-    const pagesn = [];
-    for (let i = 1; i <= Math.ceil(filteredProcesos.length / pageSize); i++) {
-      pagesn.push(i);
-    }
+    // Paginación de los procesos filtrados
+    const paginatedProcesos = filteredProcesos.slice(startIndex, endIndex);
+    setCurrentProcesos(paginatedProcesos);
+
+    // Actualización del número de páginas
+    const totalPages = Math.ceil(filteredProcesos.length / pageSize);
+    const pagesn = Array.from({ length: totalPages }, (_, i) => i + 1);
     setPageNumbers(pagesn);
   };
 

@@ -258,7 +258,7 @@ const InformeComponent = () => {
                   <thead>
                     <tr>
                       <th>Código</th>
-                      <th>Variedad</th>
+                      <th>Cultivar</th>
                       <th>Cantidad Inicial</th>
                       <th>Cantidad Actual</th>
                       <th>Categoria</th>
@@ -314,12 +314,12 @@ const InformeComponent = () => {
                           <thead>
                             <tr>
                               <th>Código</th>
-                              <th>Variedad</th>
+                              <th>Cultivar</th>
                               <th>Cantidad inicial</th>
                               <th>Cantidad actual</th>
                               <th>fecha de Creacion</th>
-                              <th>Codigo Padre</th>
-                              <th>Categoria Padre</th>
+                              <th>Codigo Deĺ Lote Origen</th>
+                              <th>Categoria del Lote Origen</th>
 
                               {ddjj?.atributos?.map((atributo) => (
                                 <th key={atributo.id}>{atributo.nombre}</th>

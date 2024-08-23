@@ -90,7 +90,7 @@ public class ExportController {
         Row headerRow2 = sheet.createRow(2);
         headerRow2.createCell(0).setCellValue("Codigo");
         headerRow2.createCell(1).setCellValue("Categoria");
-        headerRow2.createCell(2).setCellValue("Variedad");
+        headerRow2.createCell(2).setCellValue("Cultivar");
         headerRow2.createCell(3).setCellValue("Cantidad Inicial ");
         headerRow2.createCell(4).setCellValue("Cantidad Actual");
 
@@ -168,11 +168,11 @@ public class ExportController {
 
         Row headerRow2 = sheet.createRow(2);
         headerRow2.createCell(0).setCellValue("Codigo");
-        headerRow2.createCell(1).setCellValue("Variedad");
+        headerRow2.createCell(1).setCellValue("Cultivar");
         headerRow2.createCell(2).setCellValue("Fecha de Creacion ");
         headerRow2.createCell(3).setCellValue("Cantidad Inicial");
         headerRow2.createCell(4).setCellValue("Cantidad Actual");
-        headerRow2.createCell(5).setCellValue("Codigo De Lote Origen ");
+        headerRow2.createCell(5).setCellValue("Codigo Del Lote Origen ");
         headerRow2.createCell(6).setCellValue("Categoria del Lote Origen");
 
         for (int i = 7; i < 7 + ddjj.getAtributos().size(); i++) {

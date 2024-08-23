@@ -132,10 +132,40 @@ function DetalleProceso() {
     <div className="container">
       <div className="d-flex justify-content-between align-items-center">
         <h2>Detalle del proceso</h2>
-        {(showModeratorBoard || showAdminBoard) && !proceso.deleted ? (
-          <button className="btn btn-danger" onClick={handleAnular}>
-            Anular
+        <div className="col-4 col-md-6 col-lg-4  ms-5">
+          <button className="btn btn-danger " onClick={() => navigate(-1)}>
+            Atrás <i className="bi bi-arrow-left"></i>
           </button>
+        </div>
+        {(showModeratorBoard || showAdminBoard) && !proceso.deleted ? (
+          <div className="dropdown" style={{ position: "static" }}>
+            <button
+              className="d-flex align-items-center link-body-emphasis text-decoration-none"
+              data-bs-toggle="dropdown"
+              aria-expanded="false"
+              style={{
+                position: "static",
+                padding: 0,
+                border: "none",
+                background: "none",
+              }}
+            >
+              <i className="bi bi-three-dots"></i>
+            </button>
+            <ul
+              className="dropdown-menu text-small shadow "
+              data-boundary="viewport"
+            >
+              <li>
+                <button
+                  className="dropdown-item dropdown-item-danger d-flex gap-2 align-items-center"
+                  onClick={handleAnular}
+                >
+                  Anular
+                </button>
+              </li>
+            </ul>
+          </div>
         ) : (
           <></>
         )}

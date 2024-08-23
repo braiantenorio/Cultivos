@@ -81,19 +81,14 @@ const EditarLote: React.FC = () => {
   ) => {
     const { value } = event.target;
 
-    if (/^\d*$/.test(value)) {
-      setCantidadError("");
-      const nuevoCodigo = lote.codigo
-        .split("-")
-        .map((num, index) => (index === 2 ? value : num))
-        .join("-");
-      setLote((prevLote) => ({
-        ...prevLote,
-        codigo: nuevoCodigo,
-      }));
-    } else {
-      setCantidadError("El valor debe ser un número.");
-    }
+    const nuevoCodigo = lote.codigo
+      .split("-")
+      .map((num, index) => (index === 2 ? value : num))
+      .join("-");
+    setLote((prevLote) => ({
+      ...prevLote,
+      codigo: nuevoCodigo,
+    }));
   };
 
   const handleFechaChange = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -256,10 +251,10 @@ const EditarLote: React.FC = () => {
 
           <div className="col-md-3 mb-3">
             <label htmlFor="numeroSecuencia" className="form-label">
-              Número de Secuencia:
+              Número de Lote:
             </label>
             <input
-              type="text"
+              type="number"
               className="form-control"
               id="numeroSecuencia"
               name="numeroSecuencia"

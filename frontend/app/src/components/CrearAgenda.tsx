@@ -352,7 +352,7 @@ function CrearAgenda() {
                     disabled={tipo === "Detalle agenda"}
                   >
                     <option value="" disabled hidden>
-                      Choose...
+                      Elige...
                     </option>
                     {tiposDeProcesos.map((proceso) => (
                       <option key={proceso.id} value={proceso.id}>

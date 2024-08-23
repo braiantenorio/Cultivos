@@ -61,6 +61,10 @@ function Loteslist() {
     )
       .then((response) => {
         if (!response.ok) {
+          setResultsPage({
+            ...resultsPage,
+            number: 0,
+          });
           throw new Error(`Error al realizar la solicitud: ${response.status}`);
         }
         return response.json();
