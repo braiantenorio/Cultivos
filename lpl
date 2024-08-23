@@ -11,20 +11,20 @@ fi
 # Comandos
 case "$1" in
 	build ) echo "Instalando..."
-  	docker compose -f docker-compose.yml build
+  	docker compose -f docker-compose.yml build 2>/dev/null
     # docker compose -f docker-compose.yml run frontend ./install.sh
-    docker compose -f docker-compose.yml run --rm frontend npm install
+    docker compose -f docker-compose.yml run --rm frontend npm install 2>/dev/null
     #docker compose -f docker-compose.yml run --rm testing npm install
-    docker cp ./init.sql database:/home/
-    docker exec -i database psql -U APP -d labprog -f /home/init.sql
+    #docker cp ./init.sql database:/home/
+    #docker exec -i database psql -U APP -d labprog -f /home/init.sql
     ;;
   config ) echo "Cargando configuración inicial"
     docker cp ./init.sql database:/home/ 1>/dev/null
-    docker exec -i database psql -U APP -d labprog -f /home/init.sql 1>/dev/null 2>/dev/null
+    docker exec -i database psql -U APP -d labprog -f /home/init.sql 2>/dev/null
     if [ $? -eq 0 ]; then
-      echo "El script SQL se ejecutó correctamente."
+      echo "Configuración inicial cargada correctamente."
     else
-      echo "Hubo un error al ejecutar el script SQL."
+      echo "Hubo un error al cargar la configuración."
     fi
     ;;
   up ) echo "Iniciando servidores.."

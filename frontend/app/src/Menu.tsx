@@ -410,7 +410,7 @@ function Menu() {
               {showAdminBoard && (
                 <li className="nav-item">
                   <Link to="/admin" className="nav-link">
-                    <b>Admin Board</b>
+                    <b>Panel del administrador</b>
                   </Link>
                 </li>
               )}
