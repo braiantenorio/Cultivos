@@ -14,7 +14,7 @@ case "$1" in
   	docker compose -f docker-compose.yml build
     # docker compose -f docker-compose.yml run frontend ./install.sh
     docker compose -f docker-compose.yml run --rm frontend npm install
-    docker compose -f docker-compose.yml run --rm testing npm install
+    #docker compose -f docker-compose.yml run --rm testing npm install
     docker cp ./init.sql database:/home/
     docker exec -i database psql -U APP -d labprog -f /home/init.sql
     ;;
@@ -40,9 +40,9 @@ case "$1" in
   mvn ) echo "Ejecutando Maven en servidor backend: $2"
     docker exec -t backend mvn $2
     ;;
-  test ) echo "Testing"
-    docker compose run --rm testing
-    ;;
+  #test ) echo "Testing"
+   # docker compose run --rm testing
+    #;;
   * ) echo "Opción inválida."
       ;;
 esac
