@@ -3,7 +3,6 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { Lote } from "../types/lote";
 import authHeader from "../services/auth-header";
 import { ResultsPage } from "../types/ResultsPage";
-import { Hidden } from "@mui/material";
 import Usuario from "../types/usuario";
 import * as AuthService from "../services/auth.service";
 import AutoComplete from "./AutoComplete";
@@ -206,7 +205,7 @@ function Loteslist() {
                   ></i>
                 )}
               </th>
-              <th>{showDeleted ? "Fecha de baja" : ""} </th>
+              {showDeleted && <th>Fecha de baja</th>}
               <th></th>
             </tr>
           </thead>
@@ -254,7 +253,7 @@ function Loteslist() {
                         <li>
                           <Link
                             className="dropdown-item"
-                            to={`/lotes/${lote.codigo}/procesos?pagina=1&longitud=5`}
+                            to={`/lotes/${lote.codigo}`}
                           >
                             Detalle
                           </Link>
@@ -273,6 +272,7 @@ function Loteslist() {
                             <Link
                               className="dropdown-item"
                               to={`/lotes/${lote.id}/edit`}
+                              hidden
                             >
                               Editar
                             </Link>

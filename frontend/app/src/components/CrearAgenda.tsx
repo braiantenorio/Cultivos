@@ -123,7 +123,7 @@ function CrearAgenda() {
       })
       .then((data) => {
         console.log("Respuesta del servidor:", data);
-        navigate(-1);
+        navigate("/agendas?pagina=1&longitud=7");
       })
       .catch((error) => {
         console.error("Error al crear la agenda:", error);
@@ -331,9 +331,10 @@ function CrearAgenda() {
                 <span className="invisible-text">................</span>
               </th>
               <th>
-                Repetir <span className="invisible-text">...............</span>
+                Repetir N veces{" "}
+                <span className="invisible-text">...............</span>
               </th>
-              <th>Intervalo de días</th>
+              <th>Cada X dias</th>
               <th></th>
             </tr>
           </thead>

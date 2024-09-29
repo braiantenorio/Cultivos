@@ -65,7 +65,7 @@ function CrearCultivar() {
       })
       .then((data) => {
         console.log("Respuesta del servidor:", data);
-        navigate(-1);
+        navigate("/cultivares");
       })
       .catch((error) => {
         if (error.message === "Error de solicitud incorrecta (BadRequest)") {

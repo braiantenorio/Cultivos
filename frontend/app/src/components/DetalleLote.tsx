@@ -14,10 +14,14 @@ function DetalleLote() {
   const queryParams = new URLSearchParams(location.search);
   const [allProcesos, setAllProcesos] = useState<Proceso[]>([]);
   const [currentProcesos, setCurrentProcesos] = useState<Proceso[]>([]);
-  const [page, setPage] = useState(parseInt(queryParams.get("pagina")!, 10));
-  const [pageSize, setPageSize] = useState(
-    parseInt(queryParams.get("longitud")!, 10)
+  const [page, setPage] = useState(
+    parseInt(queryParams.get("pagina") || "1", 10)
   );
+
+  const [pageSize, setPageSize] = useState(
+    parseInt(queryParams.get("longitud") || "5", 10)
+  );
+
   const navigate = useNavigate();
   const totalProcesos = allProcesos.length;
   const totalPages = Math.ceil(totalProcesos / pageSize);
@@ -101,9 +105,6 @@ function DetalleLote() {
   };
 
   useEffect(() => {
-    navigate(`/lotes/${loteId}/procesos?pagina=${page}&longitud=${pageSize}`, {
-      replace: true,
-    });
     updateCurrentProcesos(page, pageSize, showDeleted);
   }, [searchTerm, page, pageSize, lote, specificDate]);
 

@@ -378,6 +378,7 @@ function Menu() {
                     className="btn btn-custom-color-2"
                     type="button"
                     aria-expanded="false"
+                    data-bs-dismiss="offcanvas"
                   >
                     Acerca de
                   </button>
@@ -408,7 +409,7 @@ function Menu() {
             <ul></ul>
             <ul className="navbar-nav ms-auto">
               {showAdminBoard && (
-                <li className="nav-item">
+                <li className="nav-item" data-bs-dismiss="offcanvas">
                   <Link to="/admin" className="nav-link">
                     <b>Panel del administrador</b>
                   </Link>

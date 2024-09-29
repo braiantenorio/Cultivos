@@ -114,7 +114,7 @@ function CrearCategoria() {
       })
       .then((data) => {
         console.log("Respuesta del servidor:", data);
-        navigate(-1);
+        navigate("/categorias?pagina=1&longitud=7");
       })
       .catch((error) => {
         console.error("Error al enviar la solicitud POST:", error);

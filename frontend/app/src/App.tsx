@@ -85,12 +85,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/categorias"
-            element={
-                <CategoriasList />
-            }
-          />
+          <Route path="/categorias" element={<CategoriasList />} />
           <Route
             path="/cultivares/:id"
             element={
@@ -99,30 +94,10 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/cultivares"
-            element={
-                <ListarCultivares />
-            }
-          />
-          <Route
-            path="/generar/informe"
-            element={
-                <ExcelTable />
-            }
-          />
-          <Route
-            path="/agenda/general"
-            element={
-                <AgendaGeneralDeProcesos />
-            }
-          />
-          <Route
-            path="/lotes"
-            element={
-                <Loteslist />
-            }
-          />
+          <Route path="/cultivares" element={<ListarCultivares />} />
+          <Route path="/generar/informe" element={<ExcelTable />} />
+          <Route path="/agenda/general" element={<AgendaGeneralDeProcesos />} />
+          <Route path="/lotes" element={<Loteslist />} />
           <Route
             path="/lotes/:loteId/edit"
             element={
@@ -131,13 +106,8 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route path="/lotes/:loteId/procesos" element={<DetalleLote />} />
-          <Route
-            path="/lotes/log/:loteId"
-            element={
-                <LoteRevisiones />
-            }
-          />
+          <Route path="/lotes/:loteId" element={<DetalleLote />} />
+          <Route path="/lotes/log/:loteId" element={<LoteRevisiones />} />
           <Route path="/lotes/:loteId/historia" element={<VerHistoriaLote />} />
           <Route
             path="/lotes/:loteId/procesos/:listId"
@@ -147,12 +117,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/lotes/:loteId/agenda"
-            element={
-                <AgendaDeProcesos />
-            }
-          />
+          <Route path="/lotes/:loteId/agenda" element={<AgendaDeProcesos />} />
           <Route
             path="/lotes/:loteId/agenda/new"
             element={
@@ -161,12 +126,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/procesos/:procesoId"
-            element={
-                <DetalleProceso />
-            }
-          />
+          <Route path="/procesos/:procesoId" element={<DetalleProceso />} />
           <Route
             path="/agendas/:id"
             element={
@@ -175,12 +135,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/agendas"
-            element={
-                <TipoAgendaList />
-            }
-          />
+          <Route path="/agendas" element={<TipoAgendaList />} />
           <Route
             path="/atributos/new"
             element={
@@ -189,12 +144,7 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/atributos"
-            element={
-                <ListarAtributos />
-            }
-          />
+          <Route path="/atributos" element={<ListarAtributos />} />
           <Route
             path="/tipo-proceso/new"
             element={
@@ -203,25 +153,15 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/tipo-proceso"
-            element={
-                <ListarTiposDeProcesos />
-            }
-          />
+          <Route path="/tipo-proceso" element={<ListarTiposDeProcesos />} />
           <Route
             path="/"
             element={
               //deberiamos deja un solo home no? o podriamos hacer que uno sea como una pantalla de presentacion y el otro si sea el home del software. xd
-                <Home />
+              <Home />
             }
           />
-          <Route
-            path="/home"
-            element={
-                <Home />
-            }
-          />
+          <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/register" element={<Register />} />
           <Route
@@ -240,30 +180,10 @@ function App() {
               </RequireAuth>
             }
           />
-          <Route
-            path="/about"
-            element={
-                <About />
-            }
-          />
-          <Route
-            path="/forgot-password"
-            element={
-              <ForgetPassword/>
-            }
-          />
-          <Route
-            path="/reset-password"
-            element={
-              <PasswordReset/>
-            }
-          />
-          <Route
-            path="/edit-profile"
-            element={
-              <EditProfile/>
-            }
-          />
+          <Route path="/about" element={<About />} />
+          <Route path="/forgot-password" element={<ForgetPassword />} />
+          <Route path="/reset-password" element={<PasswordReset />} />
+          <Route path="/edit-profile" element={<EditProfile />} />
         </Routes>
       </NotificationsProvider>
     </BrowserRouter>
@@ -277,7 +197,7 @@ function Home() {
         Sistema de Gestión y Control en la producción de Cannabis medicinal
       </h1>
 
-      <div className="mt-4 " >
+      <div className="mt-4 ">
         <img src={fondo} alt="Cannabis Medicinal" className="img-fluid" />
       </div>
     </div>

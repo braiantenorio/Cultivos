@@ -82,7 +82,7 @@ function CrearAtributo() {
       .catch((error) => {
         console.error("Error al crear el proceso:", error);
       });
-    navigate(-1);
+    navigate("/atributos");
   };
 
   return (

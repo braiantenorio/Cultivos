@@ -76,7 +76,7 @@ function CrearTipoDeProceso() {
       .catch((error) => {
         console.error("Error al crear el proceso:", error);
       });
-    navigate(-1);
+    navigate("/tipo-proceso");
   };
 
   function onDelete(id: number) {
