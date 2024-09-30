@@ -2,50 +2,54 @@
 
 # Crea el directorio para las instalaciones
 LABPROG_DIR="../common/m2"
- 
+
 if [ ! -d "$LABPROG_DIR" ]; then
-  mkdir -p $LABPROG_DIR
-  echo "Se creó el directorio $LABPROG_DIR"
+    mkdir -p $LABPROG_DIR
+    echo "Se creó el directorio $LABPROG_DIR"
 fi
 
 # Comandos
 case "$1" in
-	build ) echo "Instalando..."
-  	docker compose -f docker-compose.yml build 2>/dev/null
-    echo "Descargando dependencias..."
-    docker compose -f docker-compose.yml run --rm frontend npm install 2>/dev/null
-    ;;
-  config ) echo "Cargando configuración inicial..."
-    docker cp ./init.sql database:/home/ 2>/dev/null
-    docker exec -i database psql -U APP -d labprog -f /home/init.sql 2>/dev/null
-    if [ $? -eq 0 ]; then
-      echo "Configuración inicial cargada correctamente."
-    else
-      echo "Hubo un error al cargar la configuración."
-    fi
-    ;;
-  up ) echo "Iniciando servidores.."
-    docker compose -f docker-compose.yml up -d
-    ;;
-  down ) echo "Deteniendo servidores.."
-    docker compose -f docker-compose.yml down
-    ;;
-	restart ) echo "Reiniciando servicio $2..."
-		docker compose -f docker-compose.yml restart $2
-		;;
-	restart-all ) echo "Reiniciando servidores.."
-		docker compose -f docker-compose.yml restart
-		;;
-	log ) docker compose -f docker-compose.yml logs -f $2
-		;;
-	logs ) docker compose -f docker-compose.yml logs -f
-		;;
-  sh ) echo "Conectando con $2"
-    docker exec -it $2 sh
-    ;;
-  mvn ) echo "Ejecutando Maven en servidor backend: $2"
-    docker exec -t backend mvn $2
-    ;;
-  * ) echo "Opción inválida."
-      ;;
+    build ) echo "Instalando..."
+        docker compose -f docker-compose.yml build 2>/dev/null
+        echo "Descargando dependencias..."
+        docker compose -f docker-compose.yml run --rm frontend npm install 2>/dev/null
+        ;;
+    config ) echo "Cargando configuración inicial..."
+        docker cp ./init.sql database:/home/ 2>/dev/null
+        docker exec -i database psql -U APP -d labprog -f /home/init.sql 2>/dev/null
+        if [ $? -eq 0 ]; then
+            echo "Configuración inicial cargada correctamente."
+        else
+            echo "Hubo un error al cargar la configuración."
+        fi
+        ;;
+    reset ) echo "Reestableciendo base de datos..."
+        docker cp ./reset.sql database:/home/ 2>/dev/null
+        docker exec -i database psql -U APP -d labprog -f /home/reset.sql 2>/dev/null
+        ;;
+    up ) echo "Iniciando servidores.."
+        docker compose -f docker-compose.yml up -d
+        ;;
+    down ) echo "Deteniendo servidores.."
+        docker compose -f docker-compose.yml down
+        ;;
+    restart ) echo "Reiniciando servicio $2..."
+        docker compose -f docker-compose.yml restart $2
+        ;;
+    restart-all ) echo "Reiniciando servidores.."
+        docker compose -f docker-compose.yml restart
+        ;;
+    log ) docker compose -f docker-compose.yml logs -f $2
+        ;;
+    logs ) docker compose -f docker-compose.yml logs -f
+        ;;
+    sh ) echo "Conectando con $2"
+        docker exec -it $2 sh
+        ;;
+    mvn ) echo "Ejecutando Maven en servidor backend: $2"
+        docker exec -t backend mvn $2
+        ;;
+    * ) echo "Opción inválida."
+        ;;
 esac
